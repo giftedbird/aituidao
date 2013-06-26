@@ -21,7 +21,6 @@ public class BookListActivity extends Activity {
 	private BookListHelper mBookListHelper;
 	private List<Book> mBookListData = new ArrayList<Book>();
 	private BookListAdapter mListAdapter;
-	private boolean mIsOnCreate = false;
 	private View mSortByHotBtn;
 	private View mSortByTimeBtn;
 	
@@ -35,24 +34,14 @@ public class BookListActivity extends Activity {
         initData();
         initUi();
         
-        mIsOnCreate = true;
+        mBookListView.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				startRefreshBySortType(mSortType);
+			}
+        }, 600);
     }
     
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-		
-		if (hasFocus && mIsOnCreate) {
-			mIsOnCreate = false;
-			startRefreshBySortType(mSortType);
-		}
-    }
-    
-    @Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-	}
-
 	private void initData() {
 		mBookListHelper = new BookListHelper(this);
 		mBookListHelper.setBookListHelperCB(new BookListHelper.BookListHelperCB() {
@@ -148,7 +137,7 @@ public class BookListActivity extends Activity {
 			mSortByTimeBtn.setSelected(false);
 			break;
 		}
-    		
+    	
 		mSortByHotBtn.setEnabled(false);
 		mSortByTimeBtn.setEnabled(false);
 		
@@ -174,6 +163,7 @@ public class BookListActivity extends Activity {
 		proxy.setRefreshingLabel(refreshingLabel);
 		proxy.setReleaseLabel(releaseLabel);
 		
+		mBookListView.onRefreshComplete();
 		mBookListView.setRefreshing();
     }
     
