@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="3dp"
+    android:background="#00000000" >
+    
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="170dp" >
+	    
+	    <ImageView
+	        android:id="@+id/item_book_cover_iv"
+	        android:layout_width="100dp"
+	        android:layout_height="160dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:scaleType="fitXY"
+	    />
+	    
+	    <TextView
+	        android:id="@+id/item_book_title_tv"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/item_book_cover_iv"
+	        android:layout_marginLeft="15dp"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+	        android:textStyle="bold"
+	        android:textColor="#ff0000"
+	        android:textSize="20sp"
+	    />
+	    
+	    <TextView
+	        android:id="@+id/item_book_author_tv"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/item_book_cover_iv"
+	        android:layout_marginLeft="25dp"
+	        android:layout_below="@id/item_book_title_tv"
+	        android:layout_marginTop="10dp"
+	        android:textStyle="italic"
+	        android:textColor="#ff2345"
+	        android:textSize="12sp"
+	    />
+	    
+	    <TextView
+	        android:id="@+id/item_book_intro_tv"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_toRightOf="@id/item_book_cover_iv"
+	        android:layout_marginLeft="25dp"
+	        android:layout_below="@id/item_book_author_tv"
+	        android:layout_marginTop="10dp"
+	        android:textStyle="normal"
+	        android:textColor="#ff2345"
+	        android:textSize="12sp"
+	        android:ellipsize="end"
+	    />
+	    
+	    <TextView
+	        android:id="@+id/item_book_push_count_tv"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignRight="@id/item_book_cover_iv"
+	        android:layout_marginRight="5dp"
+	        android:layout_alignBottom="@id/item_book_cover_iv"
+	        android:layout_marginBottom="5dp"
+	        android:singleLine="true"
+	        android:textStyle="bold|italic"
+	        android:textColor="#ff2345"
+	        android:textSize="12sp"
+	    />
+	
+	</RelativeLayout>
+	
+</FrameLayout>

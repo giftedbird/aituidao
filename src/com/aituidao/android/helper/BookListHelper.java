@@ -1,7 +1,9 @@
 package com.aituidao.android.helper;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.aituidao.android.R;
 import com.aituidao.android.data.Book;
 
 import android.annotation.SuppressLint;
@@ -71,14 +73,28 @@ public class BookListHelper {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO
+				// TODO 
 				try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				mHandler.sendEmptyMessage(REFRESH_BOOK_LIST_ERROR);
+				
+				List<Book> list = new ArrayList<Book>();
+				for (int i = 0; i < 20; i++) {
+					Book book = new Book();
+					book.mAuthor = "【港】徐中约";
+					book.mTitle = "中国近代史";
+					book.mPushCount = 37;
+					book.mIntro = "中国近代史》自1970年面世后五次修订，销售数十万册，为欧美及东南亚等地中国近代史研究的权威著作及最畅销的学术教科书，是一本极具深远影响的经典作品。这部近代史自清朝立国起，下迄21世纪，缕述四百年来中国近代社会之巨变。然作者明确指出，这段艰难的历程并非如大多西方汉学家所言，是一段西方因素不断输入而中国仅仅被动回应的历史。作者拈出“政府的政策和制度”、“反对外来因素的民族或种族抗争”以及“在新的天地里寻求一条求生之道”三条线索，作为推动近代中国发展的三股最重要动力，并通过对近代中国内部社会动荡的描摹，向世界讲述了“一个古老的儒家帝国经无比艰难，蜕变为一个近代民族国家”的历史。";
+					book.mCoverUrl = R.drawable.temp_1;
+					
+					list.add(book);
+				}
+				
+				
+				mHandler.sendMessage(mHandler.obtainMessage(REFRESH_BOOK_LIST_SUCCESS, list));
 			}
 		}).start();
 	}
