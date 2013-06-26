@@ -8,6 +8,8 @@ import com.aituidao.android.data.Book;
 import android.content.Context;
 import android.graphics.Camera;
 import android.graphics.Matrix;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class BookListAdapter extends BaseAdapter {
+	private static final int NEED_MORE_DATA_NUM = 5;
+	
 	private Context mContext;
 	private List<Book> mList;
 	private LayoutInflater mLayoutInflater;
 	private int mLastItemPos = -1;
+	
+	public static interface NeedMoreDataCB {
+		public void onNeedMoreData();
+	}
+	
+	private NeedMoreDataCB mNeedMoreDataCB;
 	
 	public BookListAdapter(Context context, List<Book> list) {
 		mContext = context.getApplicationContext();
@@ -54,6 +64,10 @@ public class BookListAdapter extends BaseAdapter {
 		mLastItemPos = -1;
 	}
 	
+	public void setNeedMoreDataCB(NeedMoreDataCB cb) {
+		mNeedMoreDataCB = cb;
+	}
+	
 	private static class ViewHolder {
 		private ImageView mCoverIv;
 		private TextView mTitleTv;
@@ -65,6 +79,17 @@ public class BookListAdapter extends BaseAdapter {
 		private View mContentContainer;
 		private View mContentController;
 	}
+	
+	private Runnable mNeedMoreDataCBRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if (mNeedMoreDataCB != null) {
+				mNeedMoreDataCB.onNeedMoreData();
+			}
+		}
+	};
+	
+	private Handler mHandler = new Handler(Looper.myLooper());
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -124,6 +149,12 @@ public class BookListAdapter extends BaseAdapter {
 			mLastItemPos = position;
 
 			startItemAnim(holder.mContentContainer);
+		}
+		
+		if ((mNeedMoreDataCB != null)
+			&& (mList.size() - position - 1 < NEED_MORE_DATA_NUM)) {
+			mHandler.removeCallbacks(mNeedMoreDataCBRunnable);
+			mHandler.post(mNeedMoreDataCBRunnable);
 		}
 		
 		return convertView;

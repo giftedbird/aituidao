@@ -40,15 +40,20 @@ public class BookListActivity extends Activity {
     
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-    		super.onWindowFocusChanged(hasFocus);
-    		
-    		if (hasFocus && mIsOnCreate) {
-    			mIsOnCreate = false;
-    			startRefreshBySortType(mSortType);
-    		}
+		super.onWindowFocusChanged(hasFocus);
+		
+		if (hasFocus && mIsOnCreate) {
+			mIsOnCreate = false;
+			startRefreshBySortType(mSortType);
+		}
     }
     
-    private void initData() {
+    @Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+	}
+
+	private void initData() {
 		mBookListHelper = new BookListHelper(this);
 		mBookListHelper.setBookListHelperCB(new BookListHelper.BookListHelperCB() {
 			@Override
@@ -90,59 +95,59 @@ public class BookListActivity extends Activity {
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initUi() {
-    		mBookListView = (PullToRefreshListView) findViewById(R.id.book_list_view);
-    		mBookListView.setScrollingWhileRefreshingEnabled(false);
-    		mBookListView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
+		mBookListView = (PullToRefreshListView) findViewById(R.id.book_list_view);
+		mBookListView.setScrollingWhileRefreshingEnabled(false);
+		mBookListView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
 			@Override
 			public void onRefresh(PullToRefreshBase refreshView) {
 				mBookListHelper.startRefreshBookListData(mSortType);
 			}
-    		});
+		});
     		
-    		mListAdapter = new BookListAdapter(this, mBookListData);
-    		mBookListView.setAdapter(mListAdapter);
-    		
-    		mSortByHotBtn = findViewById(R.id.book_sort_by_hot_iv);
-    		mSortByTimeBtn = findViewById(R.id.book_sort_by_time_iv);
-    		
-    		mSortByHotBtn.setOnClickListener(new View.OnClickListener() {
+		mListAdapter = new BookListAdapter(this, mBookListData);
+		mBookListView.setAdapter(mListAdapter);
+		
+		mSortByHotBtn = findViewById(R.id.book_sort_by_hot_iv);
+		mSortByTimeBtn = findViewById(R.id.book_sort_by_time_iv);
+		
+		mSortByHotBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startRefreshBySortType(SortType.SORT_BY_HOT);
 			}
 		});
     		
-    		mSortByTimeBtn.setOnClickListener(new View.OnClickListener() {
-    			@Override
-    			public void onClick(View v) {
-    				startRefreshBySortType(SortType.SORT_BY_TIME);
-    			}
-    		});
+		mSortByTimeBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startRefreshBySortType(SortType.SORT_BY_TIME);
+			}
+		});
     }
     
     private void startRefreshBySortType(SortType type) {
-    		if (type == null) {
-    			return;
-    		}
-    		
-    		if (type != mSortType) {
-    			mBookListData.clear();
-    			mListAdapter.notifyDataSetChanged();
-    		}
-    		
-    		mSortType = type;
-    		
-    		switch (mSortType) {
-    		case SORT_BY_TIME:
-    			mSortByHotBtn.setSelected(false);
-    			mSortByTimeBtn.setSelected(true);
-    			break;
-    			
-    		case SORT_BY_HOT:
-    			mSortByHotBtn.setSelected(true);
-    			mSortByTimeBtn.setSelected(false);
-    			break;
-    		}
+		if (type == null) {
+			return;
+		}
+		
+		if (type != mSortType) {
+			mBookListData.clear();
+			mListAdapter.notifyDataSetChanged();
+		}
+		
+		mSortType = type;
+		
+		switch (mSortType) {
+		case SORT_BY_TIME:
+			mSortByHotBtn.setSelected(false);
+			mSortByTimeBtn.setSelected(true);
+			break;
+			
+		case SORT_BY_HOT:
+			mSortByHotBtn.setSelected(true);
+			mSortByTimeBtn.setSelected(false);
+			break;
+		}
     		
 		mSortByHotBtn.setEnabled(false);
 		mSortByTimeBtn.setEnabled(false);
@@ -173,7 +178,7 @@ public class BookListActivity extends Activity {
     }
     
     private void enableSortTypeBtn() {
-    		mSortByHotBtn.setEnabled(true);
+    	mSortByHotBtn.setEnabled(true);
 		mSortByTimeBtn.setEnabled(true);
     }
 }
