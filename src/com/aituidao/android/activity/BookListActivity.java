@@ -58,6 +58,9 @@ public class BookListActivity extends Activity {
 			@Override
 			public void refreshBookListDataError() {
 				mBookListView.onRefreshComplete();
+				
+				mListAdapter.clearLastItemPos();
+				mListAdapter.notifyDataSetChanged();
 			}
 			
 			@Override
@@ -77,6 +80,7 @@ public class BookListActivity extends Activity {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initUi() {
     		mBookListView = (PullToRefreshListView) findViewById(R.id.book_list_view);
+    		mBookListView.setScrollingWhileRefreshingEnabled(false);
     		mBookListView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
 			@Override
 			public void onRefresh(PullToRefreshBase refreshView) {
