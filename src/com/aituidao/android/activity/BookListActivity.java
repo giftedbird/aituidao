@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aituidao.android.R;
+import com.aituidao.android.adapter.BookListAdapter;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
-import com.aituidao.android.listadapter.BookListAdapter;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 

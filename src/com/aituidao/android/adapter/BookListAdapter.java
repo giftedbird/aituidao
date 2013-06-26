@@ -1,4 +1,4 @@
-package com.aituidao.android.listadapter;
+package com.aituidao.android.adapter;
 
 import java.util.List;
 
@@ -63,6 +63,7 @@ public class BookListAdapter extends BaseAdapter {
 		private ImageView mHeadHandleIv;
 		private ImageView mTailHandleIv;
 		private View mContentContainer;
+		private View mContentController;
 	}
 	
 	@Override
@@ -79,6 +80,7 @@ public class BookListAdapter extends BaseAdapter {
 			holder.mHeadHandleIv = (ImageView) convertView.findViewById(R.id.item_head_handle_iv);
 			holder.mTailHandleIv = (ImageView) convertView.findViewById(R.id.item_tail_handle_iv);
 			holder.mContentContainer = convertView.findViewById(R.id.item_content_container);
+			holder.mContentController = convertView.findViewById(R.id.item_inner_content_container_controller);
 			
 			convertView.setTag(holder);
 		}
@@ -110,6 +112,13 @@ public class BookListAdapter extends BaseAdapter {
 		
 		String pushCountStrTail = mContext.getString(R.string.push_count_str_tail);
 		holder.mPushCountTv.setText("" + book.mPushCount + pushCountStrTail);
+		
+		holder.mContentController.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+			}
+		});
 		
 		if (position > mLastItemPos) {
 			mLastItemPos = position;

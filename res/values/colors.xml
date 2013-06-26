@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="controller_bg_pressed">#22000000</drawable>
+</resources>

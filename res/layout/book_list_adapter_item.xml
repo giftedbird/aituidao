@@ -43,16 +43,16 @@
         android:scaleType="fitXY"
     />
     
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/item_content_container"
 		android:layout_width="match_parent"
 		android:layout_height="176dp"
 		android:layout_below="@id/item_head"
 		android:layout_marginLeft="6dp"
-		android:layout_marginRight="6dp"
-		android:orientation="vertical" >
+		android:layout_marginRight="6dp" >
     
 	    <RelativeLayout
+	        android:id="@+id/item_inner_content_container"
 	        android:layout_width="match_parent"
 	        android:layout_height="168dp"
 	        android:background="@drawable/book_item_bg"
@@ -108,13 +108,29 @@
     
         </RelativeLayout>
         
+	    <View
+	        android:id="@+id/item_inner_content_container_controller"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_marginTop="1dp"
+	        android:layout_marginLeft="1dp"
+	        android:layout_marginRight="1dp"
+	        android:layout_alignLeft="@id/item_inner_content_container"
+	        android:layout_alignRight="@id/item_inner_content_container"
+	        android:layout_alignBottom="@id/item_inner_content_container"
+	        android:layout_alignTop="@id/item_inner_content_container"
+	        android:background="@drawable/controller_bg"
+	        android:clickable="true"
+	    />
+	    
         <ImageView
 	        android:layout_width="match_parent"
 	        android:layout_height="8dp"
+	        android:layout_below="@id/item_inner_content_container"
 	        android:scaleType="fitXY"
 	        android:src="@drawable/book_item_below_shadow"
 	    />
         
-    </LinearLayout>
+    </RelativeLayout>
     
 </RelativeLayout>
