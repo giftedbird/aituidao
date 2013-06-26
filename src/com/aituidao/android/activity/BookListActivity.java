@@ -1,20 +1,24 @@
 package com.aituidao.android.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.aituidao.android.R;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
+import com.aituidao.android.listadapter.BookListAdapter;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.app.Activity;
 
 public class BookListActivity extends Activity {
 	private PullToRefreshListView mBookListView;
 	private BookListHelper mBookListHelper;
+	private List<Book> mBookListData = new ArrayList<Book>();
+	private BookListAdapter mListAdapter;
+	private boolean mIsOnCreate = false;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,18 @@ public class BookListActivity extends Activity {
         
         initData();
         initUi();
+        
+        mIsOnCreate = true;
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+    		super.onWindowFocusChanged(hasFocus);
+    		
+    		if (hasFocus && mIsOnCreate) {
+    			mIsOnCreate = false;
+    			mBookListView.setRefreshing();
+    		}
     }
     
     private void initData() {
@@ -30,23 +46,29 @@ public class BookListActivity extends Activity {
 		mBookListHelper.setBookListHelperCB(new BookListHelper.BookListHelperCB() {
 			@Override
 			public void refreshBookListDataSuccess(List<Book> data) {
-				// TODO Auto-generated method stub
+				mBookListView.onRefreshComplete();
+				
+				mBookListData.clear();
+				mBookListData.addAll(data);
+				
+				mListAdapter.notifyDataSetChanged();
 			}
 			
 			@Override
 			public void refreshBookListDataError() {
-				// TODO Auto-generated method stub
 				mBookListView.onRefreshComplete();
 			}
 			
 			@Override
 			public void loadMoreBookListDataSuccess(List<Book> data) {
-				// TODO Auto-generated method stub
+				mBookListData.addAll(data);
+				
+				mListAdapter.notifyDataSetChanged();
 			}
 			
 			@Override
 			public void loadMoreBookListDataError() {
-				// TODO Auto-generated method stub
+				// do nothing
 			}
 		});
 	}
@@ -60,5 +82,8 @@ public class BookListActivity extends Activity {
 				mBookListHelper.startRefreshBookListData();
 			}
     		});
+    		
+    		mListAdapter = new BookListAdapter(this, mBookListData);
+    		mBookListView.setAdapter(mListAdapter);
     }
 }

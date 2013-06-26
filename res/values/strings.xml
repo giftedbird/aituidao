@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Kindle爱推到</string>
+    <string name="refresh_book_list_error">书籍列表刷不出来啊啊啊啊啊，稍后再试试吧 ~_~"</string>
     
 </resources>
