@@ -21,6 +21,30 @@
             android:textSize="20sp"
         />
         
+        <ImageView
+            android:id="@+id/book_sort_by_time_iv"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/title_bar_controller_bg"
+            android:src="@drawable/book_sort_by_time"
+            android:scaleType="center"
+            android:clickable="true"
+        />
+        
+        <ImageView
+            android:id="@+id/book_sort_by_hot_iv"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/book_sort_by_time_iv"
+            android:background="@drawable/title_bar_controller_bg"
+            android:src="@drawable/book_sort_by_hot"
+            android:scaleType="center"
+            android:clickable="true"
+        />
+        
     </RelativeLayout>
     
     <com.handmark.pulltorefresh.library.PullToRefreshListView

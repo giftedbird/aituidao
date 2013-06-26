@@ -13,6 +13,11 @@ import android.os.Looper;
 import android.os.Message;
 
 public class BookListHelper {
+	public static enum SortType {
+		SORT_BY_TIME,
+		SORT_BY_HOT,
+	}
+	
 	private Context mContext;
 	private BookListHelperCB mCB;
 	
@@ -69,7 +74,7 @@ public class BookListHelper {
 		mCB = cb;
 	}
 	
-	public void startRefreshBookListData() {
+	public void startRefreshBookListData(SortType type) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -99,7 +104,7 @@ public class BookListHelper {
 		}).start();
 	}
 	
-	public void startLoadMoreBookListData(final int pageNo) {
+	public void startLoadMoreBookListData(SortType type, final int pageNo) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

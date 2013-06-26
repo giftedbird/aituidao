@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <drawable name="controller_bg_pressed">#22000000</drawable>
+    <drawable name="title_bar_controller_bg_pressed">#22CD3700</drawable>
 </resources>
