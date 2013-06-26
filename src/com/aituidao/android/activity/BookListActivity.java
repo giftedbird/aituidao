@@ -51,6 +51,7 @@ public class BookListActivity extends Activity {
 				mBookListData.clear();
 				mBookListData.addAll(data);
 				
+				mListAdapter.clearLastItemPos();
 				mListAdapter.notifyDataSetChanged();
 			}
 			

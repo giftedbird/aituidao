@@ -6,9 +6,18 @@ import com.aituidao.android.R;
 import com.aituidao.android.data.Book;
 
 import android.content.Context;
+import android.graphics.Camera;
+import android.graphics.Matrix;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.Transformation;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +26,7 @@ public class BookListAdapter extends BaseAdapter {
 	private Context mContext;
 	private List<Book> mList;
 	private LayoutInflater mLayoutInflater;
+	private int mLastItemPos = -1;
 	
 	public BookListAdapter(Context context, List<Book> list) {
 		mContext = context.getApplicationContext();
@@ -40,6 +50,10 @@ public class BookListAdapter extends BaseAdapter {
 		return 0;
 	}
 	
+	public void clearLastItemPos() {
+		mLastItemPos = -1;
+	}
+	
 	private static class ViewHolder {
 		private ImageView mCoverIv;
 		private TextView mTitleTv;
@@ -48,6 +62,7 @@ public class BookListAdapter extends BaseAdapter {
 		private TextView mPushCountTv;
 		private ImageView mHeadHandleIv;
 		private ImageView mTailHandleIv;
+		private View mContentContainer;
 	}
 	
 	@Override
@@ -63,6 +78,7 @@ public class BookListAdapter extends BaseAdapter {
 			holder.mPushCountTv = (TextView) convertView.findViewById(R.id.item_push_count_tv);
 			holder.mHeadHandleIv = (ImageView) convertView.findViewById(R.id.item_head_handle_iv);
 			holder.mTailHandleIv = (ImageView) convertView.findViewById(R.id.item_tail_handle_iv);
+			holder.mContentContainer = convertView.findViewById(R.id.item_content_container);
 			
 			convertView.setTag(holder);
 		}
@@ -95,6 +111,68 @@ public class BookListAdapter extends BaseAdapter {
 		String pushCountStrTail = mContext.getString(R.string.push_count_str_tail);
 		holder.mPushCountTv.setText("" + book.mPushCount + pushCountStrTail);
 		
+		if (position > mLastItemPos) {
+			mLastItemPos = position;
+
+			startItemAnim(holder.mContentContainer);
+		}
+		
 		return convertView;
+	}
+	
+	private void startItemAnim(final View view) {
+		Animation rotateAnim = new ItemRotateAnimation(10, 0, view);
+		rotateAnim.setDuration(350);
+		rotateAnim.setInterpolator(new AccelerateInterpolator());
+
+		Animation scaleAnim = new ScaleAnimation(0.95f, 1.0f, 0.95f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+		scaleAnim.setDuration(350);
+		scaleAnim.setInterpolator(new AccelerateInterpolator());
+
+		Animation translateAnim = new TranslateAnimation(Animation.ABSOLUTE, 0, Animation.ABSOLUTE, 0,
+				Animation.RELATIVE_TO_SELF, 0.2f, Animation.ABSOLUTE, 0);
+		translateAnim.setDuration(400);
+		translateAnim.setInterpolator(new LinearInterpolator());
+
+		AnimationSet animSet = new AnimationSet(false);
+		animSet.addAnimation(translateAnim);
+		animSet.addAnimation(scaleAnim);
+		animSet.addAnimation(rotateAnim);
+
+		view.startAnimation(animSet);
+	}
+	
+	private static class ItemRotateAnimation extends Animation {
+		private float mFromDegree;
+		private float mToDegree;
+		private Camera mCamera;
+		private View mView;
+
+		private ItemRotateAnimation(float fromDegree, float toDegree, View view) {
+			mFromDegree = fromDegree;
+			mToDegree = toDegree;
+			mView = view;
+		}
+
+		@Override
+		public void initialize(int width, int height, int parentWidth, int parentHeight) {
+			super.initialize(width, height, parentWidth, parentHeight);
+			mCamera = new Camera();
+		}
+
+		@Override
+		protected void applyTransformation(float interpolatedTime, Transformation t) {
+			final float degree = mFromDegree + ((mToDegree - mFromDegree) * interpolatedTime);
+			final Matrix matrix = t.getMatrix();
+
+			mCamera.save();
+			mCamera.rotateX(degree);
+			mCamera.getMatrix(matrix);
+			mCamera.restore();
+
+			matrix.preTranslate(-(mView.getWidth() / 2), -(mView.getHeight() / 2));
+			matrix.postTranslate(mView.getWidth() / 2, mView.getHeight() / 2);
+		}
 	}
 }
