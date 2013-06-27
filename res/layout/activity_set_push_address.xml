@@ -91,11 +91,25 @@
         
     </LinearLayout>
     
+    <TextView
+        android:id="@+id/addr_hint_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addr_input_area"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="#CD3700"
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+    />
+    
     <RelativeLayout
         android:id="@+id/book_card"
 	    android:layout_width="match_parent"
 	    android:layout_height="168dp"
-	    android:layout_below="@id/addr_input_area"
+	    android:layout_below="@id/addr_hint_tv"
 	    android:layout_marginTop="20dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"

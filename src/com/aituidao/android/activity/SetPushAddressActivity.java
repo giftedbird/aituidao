@@ -2,15 +2,21 @@ package com.aituidao.android.activity;
 
 import com.aituidao.android.R;
 import com.aituidao.android.data.Book;
+import com.aituidao.android.model.PushSettingModel;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SetPushAddressActivity extends Activity {
 	public static final String KEY_BOOK = "key_book";
@@ -22,8 +28,12 @@ public class SetPushAddressActivity extends Activity {
 	private TextView mBookTitleTv;
 	private TextView mBookAuthorTv;
 	private TextView mBookIntroTv;
+	private TextView mAddrHintTv;
+	
+	private ArrayAdapter<CharSequence> mSpinnerAdapter;
 	
 	private Book mBook;
+	private String mAddrTailStr = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +68,48 @@ public class SetPushAddressActivity extends Activity {
 		mBookTitleTv = (TextView) findViewById(R.id.item_title_tv);
 		mBookAuthorTv = (TextView) findViewById(R.id.item_author_tv);
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
+		mAddrHintTv = (TextView) findViewById(R.id.addr_hint_tv);
 		
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		mAddrTailSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, 
+		            int pos, long id) {
+				mAddrTailStr = mSpinnerAdapter.getItem(pos).toString();
+				
+				mAddrHintTv.setText(mAddrHeadEt.getEditableText().toString()
+						+ "@" + mAddrTailStr);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// do nothing
+			}
+		});
+		
+		mSpinnerAdapter = ArrayAdapter.createFromResource(this,
 		        R.array.push_address_tail_array, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mAddrTailSpinner.setAdapter(adapter);
+		mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mAddrTailSpinner.setAdapter(mSpinnerAdapter);
+		
+		mAddrHeadEt.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void afterTextChanged(Editable s) {
+				// do nothing
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// do nothing
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				mAddrHintTv.setText(mAddrHeadEt.getEditableText().toString()
+						+ "@" + mAddrTailStr);
+			}
+		});
 		
 		// TODO
 		mBookCoverIv.setImageResource(mBook.mCoverUrl);
@@ -73,5 +120,25 @@ public class SetPushAddressActivity extends Activity {
 		mBookAuthorTv.setText(mBook.mAuthor);
 		
 		mBookIntroTv.setText(mBook.mIntro);
+		
+		mNextStepBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String addrHead = mAddrHeadEt.getEditableText().toString();
+				if (TextUtils.isEmpty(addrHead)) {
+					Toast.makeText(SetPushAddressActivity.this,
+							R.string.please_input_addr, Toast.LENGTH_SHORT).show();
+				} else {
+					PushSettingModel.getInstance(SetPushAddressActivity.this)
+						.setNewPushAddress(addrHead, mAddrTailStr);
+					
+					startPushAddrTrustActivity(addrHead);
+				}
+			}
+		});
+	}
+	
+	private void startPushAddrTrustActivity(String addrHead) {
+		// TODO
 	}
 }
