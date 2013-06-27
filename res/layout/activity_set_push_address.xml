@@ -83,6 +83,10 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_gravity="center_vertical"
+		    android:background="@drawable/spinner_bg"
+		    android:gravity="center_vertical|left"
+		    android:padding="2dp"
+		    android:spinnerMode="dialog"
 		/>
         
     </LinearLayout>
