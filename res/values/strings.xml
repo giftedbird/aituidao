@@ -17,7 +17,7 @@
     <string name="please_input_addr">还没有输入地址哦 -_-</string>
     
     <string name="push_address_trust_activity_title">加入信任列表</string>
-    <string name="set_address_trust">请将下面的地址加入到####对应的Amazon信任列表</string>
+    <string name="set_address_trust">请将下面的地址加入到####对应的Amazon信任列表中:</string>
     
     <string-array name="push_address_tail_array">
         <item>kindle.cn</item>
