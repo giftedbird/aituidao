@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Camera;
 import android.graphics.Matrix;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -155,7 +156,9 @@ public class BookListAdapter extends BaseAdapter {
 		if (position > mLastItemPos) {
 			mLastItemPos = position;
 
-			startItemAnim(holder.mContentContainer);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				startItemAnim(holder.mContentContainer);
+			}
 		}
 		
 		if ((mNeedMoreDataCB != null)
