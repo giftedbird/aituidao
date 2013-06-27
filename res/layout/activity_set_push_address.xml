@@ -180,11 +180,12 @@
     <TextView
         android:id="@+id/next_step_btn"
         android:layout_width="match_parent"
-        android:layout_height="37dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/book_card_shadow"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
+        android:padding="6dp"
         android:background="@drawable/buttom_bg"
         android:text="@string/set_push_address_next_step"
         android:textColor="#ffffff"
