@@ -12,6 +12,8 @@ public class PushSettingModel {
 	public static class PushAddress {
 		public String mHead;
 		public String mTail;
+		public boolean mTrusted;
+		public int mIndex;
 	}
 	
 	public static synchronized PushSettingModel getInstance(Context context) {
@@ -23,15 +25,39 @@ public class PushSettingModel {
 	}
 	
 	public void setNewPushAddress(String head, String tail) {
-		int index = getNextPushAddressIndex();
-		setPushAddress(head, tail, index);
-		
-		index = index + 1;
-		if (index >= MAX_PUSH_ADDRESS_COUNT) {
-			index = 0;
+		List<PushAddress> addrList = getPushAddressList();
+		int index = -1;
+		for (PushAddress addr : addrList) {
+			if ((head.equals(addr.mHead)) && (tail.equals(addr.mTail))) {
+				index = addr.mIndex;
+				break;
+			}
 		}
 		
-		setNextPushAddressIndex(index);
+		if (index < 0) {
+			index = getNextPushAddressIndex();
+			setPushAddress(head, tail, index);
+			setPushAddressTrusted(false, index);
+			
+			index = index + 1;
+			if (index >= MAX_PUSH_ADDRESS_COUNT) {
+				index = 0;
+			}
+			
+			setNextPushAddressIndex(index);
+		} else {
+			setPushAddressTrusted(false, index);
+		}
+	}
+	
+	public void setPushAddressTrusted(String head, String tail, boolean truested) {
+		List<PushAddress> addrList = getPushAddressList();
+		for (PushAddress addr : addrList) {
+			if ((head.equals(addr.mHead)) && (tail.equals(addr.mTail))) {
+				setPushAddressTrusted(false, addr.mIndex);
+				break;
+			}
+		}
 	}
 	
 	public List<PushAddress> getPushAddressList() {
@@ -74,10 +100,12 @@ public class PushSettingModel {
 	
 	private static final String PUSH_ADDRESS_HEAD_FRONT = "push_address_head_front_";
 	private static final String PUSH_ADDRESS_HEAD_END = "push_address_head_end_";
+	private static final String PUSH_ADDRESS_TRUSTED = "push_address_trusted_";
 	
 	private PushAddress getPushAddress(int index) {
 		String head = mSharedPreferences.getString(PUSH_ADDRESS_HEAD_FRONT + index, null);
 		String tail = mSharedPreferences.getString(PUSH_ADDRESS_HEAD_END + index, null);
+		boolean trusted = mSharedPreferences.getBoolean(PUSH_ADDRESS_TRUSTED + index, false);
 		
 		if (TextUtils.isEmpty(head) || TextUtils.isEmpty(tail)) {
 			return null;
@@ -85,6 +113,8 @@ public class PushSettingModel {
 			PushAddress pa = new PushAddress();
 			pa.mHead = head;
 			pa.mTail = tail;
+			pa.mTrusted = trusted;
+			pa.mIndex = index;
 			return pa;
 		}
 	}
@@ -92,5 +122,9 @@ public class PushSettingModel {
 	private void setPushAddress(String head, String tail, int index) {
 		mEditor.putString(PUSH_ADDRESS_HEAD_FRONT + index, head).commit();
 		mEditor.putString(PUSH_ADDRESS_HEAD_END + index, tail).commit();
+	}
+	
+	private void setPushAddressTrusted(boolean trusted, int index) {
+		mEditor.putBoolean(PUSH_ADDRESS_TRUSTED + index, trusted).commit();
 	}
 }
