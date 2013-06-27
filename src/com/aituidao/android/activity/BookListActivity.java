@@ -7,7 +7,6 @@ import com.aituidao.android.R;
 import com.aituidao.android.adapter.BookListAdapter;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
-import com.aituidao.android.helper.BookListHelper.SortType;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -23,8 +22,9 @@ public class BookListActivity extends Activity {
 	private BookListAdapter mListAdapter;
 	private View mSortByHotBtn;
 	private View mSortByTimeBtn;
+	private boolean mHasMore = false;
 	
-	private SortType mSortType = SortType.SORT_BY_TIME;
+	private int mSortType = BookListHelper.SORT_TYPE_TIME;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,9 @@ public class BookListActivity extends Activity {
 		mBookListHelper = new BookListHelper(this);
 		mBookListHelper.setBookListHelperCB(new BookListHelper.BookListHelperCB() {
 			@Override
-			public void refreshBookListDataSuccess(List<Book> data) {
+			public void refreshBookListDataSuccess(List<Book> data, boolean hasMore) {
+				mHasMore = hasMore;
+				
 				enableSortTypeBtn();
 				
 				mBookListView.onRefreshComplete();
@@ -69,7 +71,9 @@ public class BookListActivity extends Activity {
 			}
 			
 			@Override
-			public void loadMoreBookListDataSuccess(List<Book> data) {
+			public void loadMoreBookListDataSuccess(List<Book> data, boolean hasMore) {
+				mHasMore = hasMore;
+				
 				mBookListData.addAll(data);
 				
 				mListAdapter.notifyDataSetChanged();
@@ -94,6 +98,15 @@ public class BookListActivity extends Activity {
 		});
     		
 		mListAdapter = new BookListAdapter(this, mBookListData);
+		mListAdapter.setNeedMoreDataCB(new BookListAdapter.NeedMoreDataCB() {	
+			@Override
+			public void onNeedMoreData() {
+				if (mHasMore) {
+					mBookListHelper.startLoadMoreBookListData();
+				}
+			}
+		});
+		
 		mBookListView.setAdapter(mListAdapter);
 		
 		mSortByHotBtn = findViewById(R.id.book_sort_by_hot_iv);
@@ -102,24 +115,21 @@ public class BookListActivity extends Activity {
 		mSortByHotBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startRefreshBySortType(SortType.SORT_BY_HOT);
+				startRefreshBySortType(BookListHelper.SORT_YYPE_HOT);
 			}
 		});
     		
 		mSortByTimeBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startRefreshBySortType(SortType.SORT_BY_TIME);
+				startRefreshBySortType(BookListHelper.SORT_TYPE_TIME);
 			}
 		});
     }
     
-    private void startRefreshBySortType(SortType type) {
-		if (type == null) {
-			return;
-		}
-		
+    private void startRefreshBySortType(int type) {
 		if (type != mSortType) {
+			mHasMore = false;
 			mBookListData.clear();
 			mListAdapter.notifyDataSetChanged();
 		}
@@ -127,12 +137,12 @@ public class BookListActivity extends Activity {
 		mSortType = type;
 		
 		switch (mSortType) {
-		case SORT_BY_TIME:
+		case BookListHelper.SORT_TYPE_TIME:
 			mSortByHotBtn.setSelected(false);
 			mSortByTimeBtn.setSelected(true);
 			break;
 			
-		case SORT_BY_HOT:
+		case BookListHelper.SORT_YYPE_HOT:
 			mSortByHotBtn.setSelected(true);
 			mSortByTimeBtn.setSelected(false);
 			break;
@@ -146,13 +156,13 @@ public class BookListActivity extends Activity {
 		String refreshingLabel = null;
 		String releaseLabel = null;
 		switch (mSortType) {
-		case SORT_BY_TIME:
+		case BookListHelper.SORT_TYPE_TIME:
 			pullLabel = getString(R.string.sort_type_pull_label_for_time);
 			refreshingLabel = getString(R.string.sort_type_refreshing_label_for_time);
 			releaseLabel = getString(R.string.sort_type_release_label_for_time);
 			break;
 			
-		case SORT_BY_HOT:
+		case BookListHelper.SORT_YYPE_HOT:
 			pullLabel = getString(R.string.sort_type_pull_label_for_hot);
 			refreshingLabel = getString(R.string.sort_type_refreshing_label_for_hot);
 			releaseLabel = getString(R.string.sort_type_release_label_for_hot);
