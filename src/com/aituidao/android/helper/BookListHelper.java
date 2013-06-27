@@ -93,26 +93,26 @@ public class BookListHelper {
 					Book book = new Book();
 					switch (r.nextInt(3)) {
 					case 0:
-						book.mAuthor = "¡¾¸Û¡¿ÐìÖÐÔ¼";
-						book.mTitle = "ÖÐ¹ú½ü´úÊ·";
+						book.mAuthor = "ã€æ¸¯ã€‘è®¸ä¸­çº¦";
+						book.mTitle = "ä¸­å›½è¿‘ä»£å²";
 						book.mPushCount = 37;
-						book.mIntro = "×Ô1970ÄêÃæÊÀºóÎå´ÎÐÞ¶©£¬ÏúÊÛÊýÊ®Íò²á£¬ÎªÅ·ÃÀ¼°¶«ÄÏÑÇµÈµØÖÐ¹ú½ü´úÊ·ÑÐ¾¿µÄÈ¨ÍþÖø×÷¼°×î³©ÏúµÄÑ§Êõ½Ì¿ÆÊé£¬ÊÇÒ»±¾¼«¾ßÉîÔ¶Ó°ÏìµÄ¾­µä×÷Æ·¡£Õâ²¿½ü´úÊ·×ÔÇå³¯Á¢¹úÆð£¬ÏÂÆù21ÊÀ¼Í£¬ÂÆÊöËÄ°ÙÄêÀ´ÖÐ¹ú½ü´úÉç»áÖ®¾Þ±ä¡£È»×÷ÕßÃ÷È·Ö¸³ö£¬Õâ¶Î¼èÄÑµÄÀú³Ì²¢·ÇÈç´ó¶àÎ÷·½ººÑ§¼ÒËùÑÔ£¬ÊÇÒ»¶ÎÎ÷·½ÒòËØ²»¶ÏÊäÈë¶øÖÐ¹ú½ö½ö±»¶¯»ØÓ¦µÄÀúÊ·¡£×÷ÕßÄé³ö¡°Õþ¸®µÄÕþ²ßºÍÖÆ¶È¡±¡¢¡°·´¶ÔÍâÀ´ÒòËØµÄÃñ×å»òÖÖ×å¿¹Õù¡±ÒÔ¼°¡°ÔÚÐÂµÄÌìµØÀïÑ°ÇóÒ»ÌõÇóÉúÖ®µÀ¡±ÈýÌõÏßË÷£¬×÷ÎªÍÆ¶¯½ü´úÖÐ¹ú·¢Õ¹µÄÈý¹É×îÖØÒª¶¯Á¦£¬²¢Í¨¹ý¶Ô½ü´úÖÐ¹úÄÚ²¿Éç»á¶¯µ´µÄÃèÄ¡£¬ÏòÊÀ½ç½²ÊöÁË¡°Ò»¸ö¹ÅÀÏµÄÈå¼ÒµÛ¹ú¾­ÎÞ±È¼èÄÑ£¬ÍÉ±äÎªÒ»¸ö½ü´úÃñ×å¹ú¼Ò¡±µÄÀúÊ·¡£";
+						book.mIntro = "ã€Šä¸­å›½è¿‘ä»£å²ã€‹è‡ª1970å¹´é¢ä¸–åŽäº”æ¬¡ä¿®è®¢ï¼Œé”€å”®æ•°åä¸‡å†Œï¼Œä¸ºæ¬§ç¾ŽåŠä¸œå—äºšç­‰åœ°ä¸­å›½è¿‘ä»£å²ç ”ç©¶çš„æƒå¨è‘—ä½œåŠæœ€ç•…é”€çš„å­¦æœ¯æ•™ç§‘ä¹¦ï¼Œæ˜¯ä¸€æœ¬æžå…·æ·±è¿œå½±å“çš„ç»å…¸ä½œå“ã€‚";
 						book.mCoverUrl = R.drawable.temp_1;
 						break;
 						
 					case 1:
-						book.mAuthor = "Ê·ÓñÖù¿ÚÊö ÓÅÃ×Íø±àÖø";
-						book.mTitle = "Ê·ÓñÖù×ÔÊö";
+						book.mAuthor = "å²çŽ‰æŸ±å£è¿° ä¼˜ç±³ç½‘ç¼–è‘—";
+						book.mTitle = "å²çŽ‰æŸ±è‡ªè¿°";
 						book.mPushCount = 5;
-						book.mIntro = "Ê·ÓñÖùÆù½ñÎªÖ¹Î¨Ò»¹«¿ªÖø×÷¡£Ç×¿Ú½²Êö24Äê´´ÒµÀú³ÌÓëÓªÏúÐÄµÃ¡£ÖÐ¹úÉÌÒµË¼ÏëÊ·Àï³Ì±®Ö®×÷£¡24Äêµøå´Æð·ü£¬¹¦³ÉÉíÍË£¬Ê·ÓñÖùÏòÄúæ¸æ¸µÀÀ´£¬Àú¾­Ê±¼ä³ÁµíµÄÉÌÒµÖÇ»ÛºÍÈËÉú¸ÐÎò¡£ÔÚÊéÖÐ£¬Ê·ÓñÖùºÁÎÞ±£ÁôµØ»Ø¹ËÁË´´ÒµÒÔÀ´µÄ¾­ÀúºÍ¸÷½×¶ÎµÄË¼¿¼¡£È«ÊéÃ»ÓÐÉî°ÂµÄÀíÂÛ£¬Ç¦»ªÏ´¾¡¡¢ÆÓÊµÎÞ»ª£¬ÍùÍùÔÚÇáÃèµ­Ð´Ö®¼ä£¬Ò»ÓïµÀÆÆÓªÏúµÄ±¾ÖÊ¡£¹ØÓÚ²úÆ·¿ª·¢¡¢ÓªÏú´«²¥¡¢¹ã¸æÍ¶·Å¡¢ÍÅ¶Ó¹ÜÀí¡¢´´ÒµÍ¶×ÊµÈ£¬Ê·ÓñÖù¶¼×öÁË¶ÀÌØ¶ø¸»ÓÐ¶´¼ûµÄË¼¿¼£¬ÔÚÆôµÏ¶ÁÕßµÄÍ¬Ê±£¬Ò²ÎªÖÐ¹úÉÌ½çÁôÏÂÁËÒ»·ÝÃÖ×ãÕä¹óµÄÉÌÒµË¼Ïë¼ÇÂ¼¡£";
+						book.mIntro = "å²çŽ‰æŸ±è¿„ä»Šä¸ºæ­¢å”¯ä¸€å…¬å¼€è‘—ä½œã€‚äº²å£è®²è¿°24å¹´åˆ›ä¸šåŽ†ç¨‹ä¸Žè¥é”€å¿ƒå¾—ã€‚ä¸­å›½å•†ä¸šæ€æƒ³å²é‡Œç¨‹ç¢‘ä¹‹ä½œï¼24å¹´è·Œå®•èµ·ä¼ï¼ŒåŠŸæˆèº«é€€ï¼Œå²çŽ‰æŸ±å‘æ‚¨å¨“å¨“é“æ¥ï¼ŒåŽ†ç»æ—¶é—´æ²‰æ·€çš„å•†ä¸šæ™ºæ…§å’Œäººç”Ÿæ„Ÿæ‚Ÿã€‚åœ¨ä¹¦ä¸­ï¼Œå²çŽ‰æŸ±æ¯«æ— ä¿ç•™åœ°å›žé¡¾äº†åˆ›ä¸šä»¥æ¥çš„ç»åŽ†å’Œå„é˜¶æ®µçš„æ€è€ƒã€‚å…¨ä¹¦æ²¡æœ‰æ·±å¥¥çš„ç†è®ºï¼Œé“…åŽæ´—å°½ã€æœ´å®žæ— åŽï¼Œå¾€å¾€åœ¨è½»ææ·¡å†™ä¹‹é—´ï¼Œä¸€è¯­é“ç ´è¥é”€çš„æœ¬è´¨ã€‚å…³äºŽäº§å“å¼€å‘ã€è¥é”€ä¼ æ’­ã€å¹¿å‘ŠæŠ•æ”¾ã€å›¢é˜Ÿç®¡ç†ã€åˆ›ä¸šæŠ•èµ„ç­‰ï¼Œå²çŽ‰æŸ±éƒ½åšäº†ç‹¬ç‰¹è€Œå¯Œæœ‰æ´žè§çš„æ€è€ƒï¼Œåœ¨å¯è¿ªè¯»è€…çš„åŒæ—¶ï¼Œä¹Ÿä¸ºä¸­å›½å•†ç•Œç•™ä¸‹äº†ä¸€ä»½å¼¥è¶³çè´µçš„å•†ä¸šæ€æƒ³è®°å½•ã€‚éšä¾¿ç¿»ç¿»å°±æœ‰æ”¶èŽ·ï¼Œåå¤ä½“ä¼šæ›´è§‰æ·±åˆ»ã€‚";
 						book.mCoverUrl = R.drawable.temp_2;
 						break;
 						
 					case 2:
-						book.mAuthor = "¡¾ÈÕ¡¿ËÉ±¾ÐÐºë ";
-						book.mTitle = "´úÂëµÄÎ´À´";
+						book.mAuthor = "ã€æ—¥ã€‘æ¾æœ¬è¡Œå¼˜ ";
+						book.mTitle = "ä»£ç çš„æœªæ¥";
 						book.mPushCount = 90;
-						book.mIntro = "ÊÇRubyÖ®¸¸ËÉ±¾ÐÐºëµÄÓÖÒ»Á¦×÷¡£×÷Õß¶ÔÔÆ¼ÆËã¡¢´óÊý¾ÝÊ±´úÏÂµÄ¸÷ÖÖ±à³ÌÓïÑÔÒÔ¼°Ïà¹Ø¼¼Êõ½øÐÐÁËÆÊÎö£¬²¢¶Ô±à³ÌÓïÑÔµÄÎ´À´·¢Õ¹Ç÷ÊÆ×ö³öÔ¤²â£¬ÄÚÈÝÉæ¼°Go¡¢VoltDB¡¢node.js¡¢CoffeeScript¡¢Dart¡¢MongoDB¡¢Ä¦¶û¶¨ÂÉ¡¢±à³ÌÓïÑÔ¡¢¶àºË¡¢NoSQLµÈµ±½ñ±¸ÊÜ¹Ø×¢µÄ»°Ìâ¡£";
+						book.mIntro = "ã€Šä»£ç çš„æœªæ¥ã€‹æ˜¯Rubyä¹‹çˆ¶æ¾æœ¬è¡Œå¼˜çš„åˆä¸€åŠ›ä½œã€‚ä½œè€…å¯¹äº‘è®¡ç®—ã€å¤§æ•°æ®æ—¶ä»£ä¸‹çš„å„ç§ç¼–ç¨‹è¯­è¨€ä»¥åŠç›¸å…³æŠ€æœ¯è¿›è¡Œäº†å‰–æžï¼Œå¹¶å¯¹ç¼–ç¨‹è¯­è¨€çš„æœªæ¥å‘å±•è¶‹åŠ¿åšå‡ºé¢„æµ‹ï¼Œã€‚";
 						book.mCoverUrl = R.drawable.temp_3;
 						break;
 					}

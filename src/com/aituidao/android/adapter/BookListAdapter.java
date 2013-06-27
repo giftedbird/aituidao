@@ -125,7 +125,7 @@ public class BookListAdapter extends BaseAdapter {
 			holder.mTailHandleIv.setVisibility(View.VISIBLE);
 		}
 		
-		// TODO 这里是url，要下载，现在只是临时代码
+		// TODO
 		holder.mCoverIv.setImageResource(book.mCoverUrl);
 		// TODO
 		

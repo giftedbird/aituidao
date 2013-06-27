@@ -5,7 +5,7 @@ public class Book {
 	public String mTitle;
 	public String mAuthor;
 	public String mIntro;
-	// TODO ¡Ÿ ± µ”√res ID
+	// TODO
 	public int mCoverUrl;
 	public int mPushCount;
 }
