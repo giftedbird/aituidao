@@ -19,6 +19,8 @@
             android:textStyle="bold"
             android:textColor="#CD3700"
             android:textSize="20sp"
+            android:singleLine="true"
+            android:ellipsize="end"
         />
         
         <ImageView

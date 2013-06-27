@@ -10,4 +10,15 @@
     <string name="sort_type_pull_label_for_hot">下拉获取最【热】图书…</string>
     <string name="sort_type_release_label_for_hot">放开以获取最【热】图书…</string>
     <string name="sort_type_refreshing_label_for_hot">正在获取最【热】图书…</string>
+    
+    <string name="set_push_address_activity_title">设置推送到的Kindle地址&#8230;</string>
+    <string name="set_push_address">请填写您要推送到的地址:</string>
+    <string name="set_push_address_next_step">下一步</string>
+    
+    <string-array name="push_address_tail_array">
+        <item>kindle.cn</item>
+        <item>kindle.com</item>
+        <item>free.kindle.com</item>
+        <item>iduokan.com</item>
+    </string-array>
 </resources>
