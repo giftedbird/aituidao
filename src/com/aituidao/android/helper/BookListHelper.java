@@ -2,6 +2,7 @@ package com.aituidao.android.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.aituidao.android.R;
 import com.aituidao.android.data.Book;
@@ -87,9 +88,10 @@ public class BookListHelper {
 				}
 				
 				List<Book> list = new ArrayList<Book>();
+				Random r = new Random(System.currentTimeMillis());
 				for (int i = 0; i < 20; i++) {
 					Book book = new Book();
-					switch (i % 3) {
+					switch (r.nextInt(3)) {
 					case 0:
 						book.mAuthor = "【港】徐中约";
 						book.mTitle = "中国近代史";
