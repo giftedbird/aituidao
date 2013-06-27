@@ -3,9 +3,14 @@ package com.aituidao.android.adapter;
 import java.util.List;
 
 import com.aituidao.android.R;
+import com.aituidao.android.activity.SetPushAddressActivity;
 import com.aituidao.android.data.Book;
+import com.aituidao.android.model.PushSettingModel;
+import com.aituidao.android.model.PushSettingModel.PushAddress;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.os.Handler;
@@ -27,10 +32,11 @@ import android.widget.TextView;
 public class BookListAdapter extends BaseAdapter {
 	private static final int NEED_MORE_DATA_NUM = 5;
 	
-	private Context mContext;
+	private Activity mActivity;
 	private List<Book> mList;
 	private LayoutInflater mLayoutInflater;
 	private int mLastItemPos = -1;
+	private PushSettingModel mPushSettingModel;
 	
 	public static interface NeedMoreDataCB {
 		public void onNeedMoreData();
@@ -38,11 +44,12 @@ public class BookListAdapter extends BaseAdapter {
 	
 	private NeedMoreDataCB mNeedMoreDataCB;
 	
-	public BookListAdapter(Context context, List<Book> list) {
-		mContext = context.getApplicationContext();
+	public BookListAdapter(Activity activity, List<Book> list) {
+		mActivity = activity;
 		mList = list;
-		mLayoutInflater = (LayoutInflater) mContext.getSystemService(
+		mLayoutInflater = (LayoutInflater) mActivity.getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE);
+		mPushSettingModel = PushSettingModel.getInstance(mActivity);
 	}
 	
 	@Override
@@ -111,7 +118,7 @@ public class BookListAdapter extends BaseAdapter {
 		}
 		
 		ViewHolder holder = (ViewHolder) convertView.getTag();
-		Book book = mList.get(position);
+		final Book book = mList.get(position);
 		
 		if (position == 0) {
 			holder.mHeadHandleIv.setImageResource(R.drawable.book_item_head_handle_for_first);
@@ -135,13 +142,13 @@ public class BookListAdapter extends BaseAdapter {
 		
 		holder.mIntroTv.setText(book.mIntro);
 		
-		String pushCountStrTail = mContext.getString(R.string.push_count_str_tail);
+		String pushCountStrTail = mActivity.getString(R.string.push_count_str_tail);
 		holder.mPushCountTv.setText("" + book.mPushCount + pushCountStrTail);
 		
 		holder.mContentController.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				wantToPush(book);
 			}
 		});
 		
@@ -158,6 +165,25 @@ public class BookListAdapter extends BaseAdapter {
 		}
 		
 		return convertView;
+	}
+	
+	private void wantToPush(Book book) {
+		List<PushAddress> addrList = mPushSettingModel.getPushAddressList();
+		if (addrList.size() == 0) {
+			startAddNewPushAddress(book);
+		} else {
+			showPushAddressChoiceDlg(addrList, book);
+		}
+	}
+	
+	private void startAddNewPushAddress(Book book) {
+		Intent intent = new Intent(mActivity, SetPushAddressActivity.class);
+		intent.putExtra(SetPushAddressActivity.KEY_BOOK, book);
+		mActivity.startActivity(intent);
+	}
+	
+	private void showPushAddressChoiceDlg(List<PushAddress> addrList, Book book) {
+		// TODO
 	}
 	
 	private void startItemAnim(final View view) {

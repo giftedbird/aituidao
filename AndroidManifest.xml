@@ -11,13 +11,13 @@
     <application
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/LeftOutRightInActivityAnimationNoTitleTheme" >
         
         <activity
             android:name="com.aituidao.android.activity.BookListActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:screenOrientation="portrait" >
                        
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,8 +28,7 @@
         <activity
             android:name="com.aituidao.android.activity.SetPushAddressActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:screenOrientation="portrait" >
         </activity>
         
     </application>

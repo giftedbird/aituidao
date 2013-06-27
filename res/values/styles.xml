@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" >
+    <style name="LeftOutRightInActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_slide_in_from_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_slide_out_to_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_slide_in_from_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_slide_out_to_right</item>
+    </style>
+    
+    <style name="LeftOutRightInActivityAnimationNoTitleTheme" parent="@android:style/Theme.NoTitleBar">
+        <item name="android:windowAnimationStyle">@style/LeftOutRightInActivityAnimation</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+</resources>

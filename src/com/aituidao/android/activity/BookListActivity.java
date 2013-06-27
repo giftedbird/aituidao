@@ -178,7 +178,7 @@ public class BookListActivity extends Activity {
     }
     
     private void enableSortTypeBtn() {
-    	mSortByHotBtn.setEnabled(true);
-		mSortByTimeBtn.setEnabled(true);
+        mSortByHotBtn.setEnabled(true);
+        mSortByTimeBtn.setEnabled(true);
     }
 }

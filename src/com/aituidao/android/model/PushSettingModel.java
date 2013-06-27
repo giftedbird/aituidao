@@ -1,4 +1,4 @@
-package com.aituidao.android.helper;
+package com.aituidao.android.model;
 
 import java.util.ArrayList;
 import java.util.List;
