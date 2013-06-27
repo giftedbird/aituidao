@@ -5,6 +5,7 @@ import com.aituidao.android.data.Book;
 import com.aituidao.android.model.PushSettingModel;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -41,14 +42,14 @@ public class SetPushAddressActivity extends Activity {
 	    setContentView(R.layout.activity_set_push_address);
 	    
 	    if (savedInstanceState != null) {
-	    		mBook = savedInstanceState.getParcelable(KEY_BOOK);
+	    	mBook = savedInstanceState.getParcelable(KEY_BOOK);
 	    } else {
-	    	    mBook = getIntent().getParcelableExtra(KEY_BOOK);
+	    	mBook = getIntent().getParcelableExtra(KEY_BOOK);
 	    }
 	    
 	    if (mBook == null) {
-	    		finish();
-	    		return;
+			finish();
+			return;
 	    }
 	    
 	    initUi();
@@ -132,13 +133,20 @@ public class SetPushAddressActivity extends Activity {
 					PushSettingModel.getInstance(SetPushAddressActivity.this)
 						.setNewPushAddress(addrHead, mAddrTailStr);
 					
-					startPushAddrTrustActivity(addrHead);
+					enterPushAddrTrustActivityAndFinish(addrHead, mAddrTailStr);
 				}
 			}
 		});
 	}
 	
-	private void startPushAddrTrustActivity(String addrHead) {
-		// TODO
+	private void enterPushAddrTrustActivityAndFinish(String addrHead, String addrTail) {
+		Intent intent = new Intent(this, ConfirmPushAddrTrustActivity.class);
+		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_BOOK, mBook);
+		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_HEAD, addrHead);
+		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_TAIL, addrTail);
+		
+		startActivity(intent);
+		
+		finish();
 	}
 }
