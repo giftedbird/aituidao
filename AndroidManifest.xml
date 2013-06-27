@@ -16,6 +16,7 @@
         <activity
             android:name="com.aituidao.android.activity.BookListActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
                        
             <intent-filter>
@@ -24,7 +25,12 @@
             </intent-filter>
         </activity>
         
-        
+        <activity
+            android:name="com.aituidao.android.activity.SetPushAddressActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
         
     </application>
 
