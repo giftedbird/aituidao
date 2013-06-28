@@ -3,13 +3,16 @@ package com.aituidao.android.adapter;
 import java.util.List;
 
 import com.aituidao.android.R;
+import com.aituidao.android.activity.ConfirmPushAddrTrustActivity;
 import com.aituidao.android.activity.SetPushAddressActivity;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.model.PushSettingModel;
 import com.aituidao.android.model.PushSettingModel.PushAddress;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Camera;
 import android.graphics.Matrix;
@@ -185,7 +188,49 @@ public class BookListAdapter extends BaseAdapter {
 		mActivity.startActivity(intent);
 	}
 	
-	private void showPushAddressChoiceDlg(List<PushAddress> addrList, Book book) {
+	private void showPushAddressChoiceDlg(final List<PushAddress> addrList, final Book book) {
+		CharSequence[] choice = new CharSequence[addrList.size() + 1];
+		
+		for (int i = 0; i < addrList.size(); i++) {
+			PushAddress addr = addrList.get(i);
+			String addrStr = addr.mHead + "@" + addr.mTail;
+			choice[i] = addrStr;
+		}
+		
+		choice[choice.length - 1] = mActivity.getString(R.string.push_addr_choice_dlg_new_addr);
+		
+		new AlertDialog.Builder(mActivity)
+			.setTitle(R.string.push_addr_choice_dlg_title)
+			.setSingleChoiceItems(choice, 0, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if ((which >= 0) && (which < addrList.size())) {
+						PushAddress addr = addrList.get(which);
+						if (addr.mTrusted) {
+							startToPushBook(addr.mHead, addr.mTail, book);
+						} else {
+							enterConfirmPushAddrTrustActivity(addr.mHead, addr.mTail, book);
+						}
+					} else {
+						startAddNewPushAddress(book);
+					}
+					
+					dialog.dismiss();
+				}
+			})
+		.create().show();
+	}
+	
+	private void enterConfirmPushAddrTrustActivity(String addrHead, String addrTail, Book book) {
+		Intent intent = new Intent(mActivity, ConfirmPushAddrTrustActivity.class);
+		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_BOOK, book);
+		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_HEAD, addrHead);
+		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_TAIL, addrTail);
+		
+		mActivity.startActivity(intent);
+	}
+	
+	private void startToPushBook(String addrHead, String addrTail, Book book) {
 		// TODO
 	}
 	

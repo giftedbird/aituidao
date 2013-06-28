@@ -133,13 +133,13 @@ public class SetPushAddressActivity extends Activity {
 					PushSettingModel.getInstance(SetPushAddressActivity.this)
 						.setNewPushAddress(addrHead, mAddrTailStr);
 					
-					enterPushAddrTrustActivityAndFinish(addrHead, mAddrTailStr);
+					enterConfirmPushAddrTrustActivityAndFinish(addrHead, mAddrTailStr);
 				}
 			}
 		});
 	}
 	
-	private void enterPushAddrTrustActivityAndFinish(String addrHead, String addrTail) {
+	private void enterConfirmPushAddrTrustActivityAndFinish(String addrHead, String addrTail) {
 		Intent intent = new Intent(this, ConfirmPushAddrTrustActivity.class);
 		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_BOOK, mBook);
 		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_HEAD, addrHead);

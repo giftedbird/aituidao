@@ -2,10 +2,12 @@ package com.aituidao.android.activity;
 
 import com.aituidao.android.R;
 import com.aituidao.android.data.Book;
+import com.aituidao.android.model.PushSettingModel;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 public class ConfirmPushAddrTrustActivity extends Activity {
@@ -20,7 +22,8 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	private String mAddrTail;
 	
 	private TextView mTrustSourceTv;
-	private TextView mHintTv;
+	private TextView mHasSetTrustBtn;
+	private TextView mLaterSetTrustBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +60,37 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	
 	private void initUi() {
 		mTrustSourceTv = (TextView) findViewById(R.id.trust_source_tv);
-		mHintTv = (TextView) findViewById(R.id.hint_tv);
+		mHasSetTrustBtn = (TextView) findViewById(R.id.has_set_btn);
+		mLaterSetTrustBtn = (TextView) findViewById(R.id.later_set_btn);
 		
 		String trustSourceStr = mAddrHead + TRUST_TAIL_STR;
 		mTrustSourceTv.setText(trustSourceStr);
 		
-		String pushAddr = mAddrHead + "@" + mAddrTail;
-		String hintStr = getString(R.string.set_address_trust)
-				.replace("####", pushAddr);
-		mHintTv.setText(hintStr);
+		String hasSetTrustBtnStr = getString(R.string.has_set_trust).replace(
+				"####", mBook.mTitle);
+		mHasSetTrustBtn.setText(hasSetTrustBtnStr);
+		mHasSetTrustBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PushSettingModel.getInstance(
+						ConfirmPushAddrTrustActivity.this).setPushAddressTrusted(
+								mAddrHead, mAddrTail, true);
+				
+				startToPushBook();
+				
+				finish();
+			}
+		});
 		
+		mLaterSetTrustBtn.setOnClickListener(new View.OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+	}
+	
+	private void startToPushBook() {
 		// TODO
 	}
 }

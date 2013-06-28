@@ -54,7 +54,7 @@ public class PushSettingModel {
 		List<PushAddress> addrList = getPushAddressList();
 		for (PushAddress addr : addrList) {
 			if ((head.equals(addr.mHead)) && (tail.equals(addr.mTail))) {
-				setPushAddressTrusted(false, addr.mIndex);
+				setPushAddressTrusted(truested, addr.mIndex);
 				break;
 			}
 		}
