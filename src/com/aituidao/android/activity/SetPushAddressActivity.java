@@ -115,14 +115,14 @@ public class SetPushAddressActivity extends Activity {
 		});
 		
 		// TODO
-		mBookCoverIv.setImageResource(mBook.mCoverUrl);
+		mBookCoverIv.setImageResource(mBook.coverUrl);
 		// TODO
 		
-		mBookTitleTv.setText(mBook.mTitle);
+		mBookTitleTv.setText(mBook.title);
 		
-		mBookAuthorTv.setText(mBook.mAuthor);
+		mBookAuthorTv.setText(mBook.author);
 		
-		mBookIntroTv.setText(mBook.mIntro);
+		mBookIntroTv.setText(mBook.intro);
 		
 		mNextStepBtn.setOnClickListener(new View.OnClickListener() {
 			@Override

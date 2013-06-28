@@ -65,13 +65,13 @@ public class BookListAdapter extends BaseAdapter {
 			public void bookPushSuccess(Book book) {
 				Toast.makeText(mActivity, mActivity.getString(
 						R.string.push_book_success_str).replace("####",
-								book.mTitle), Toast.LENGTH_SHORT).show();
+								book.title), Toast.LENGTH_SHORT).show();
 			}
 			@Override
 			public void bookPushError(Book book) {
 				Toast.makeText(mActivity, mActivity.getString(
 						R.string.push_book_error_str).replace("####",
-								book.mTitle), Toast.LENGTH_SHORT).show();
+								book.title), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -157,17 +157,17 @@ public class BookListAdapter extends BaseAdapter {
 		}
 		
 		// TODO
-		holder.mCoverIv.setImageResource(book.mCoverUrl);
+		holder.mCoverIv.setImageResource(book.coverUrl);
 		// TODO
 		
-		holder.mTitleTv.setText(book.mTitle);
+		holder.mTitleTv.setText(book.title);
 		
-		holder.mAuthorTv.setText(book.mAuthor);
+		holder.mAuthorTv.setText(book.author);
 		
-		holder.mIntroTv.setText(book.mIntro);
+		holder.mIntroTv.setText(book.intro);
 		
 		String pushCountStrTail = mActivity.getString(R.string.push_count_str_tail);
-		holder.mPushCountTv.setText("" + book.mPushCount + pushCountStrTail);
+		holder.mPushCountTv.setText("" + book.pushCount + pushCountStrTail);
 		
 		holder.mContentController.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -253,7 +253,7 @@ public class BookListAdapter extends BaseAdapter {
 	private void startToPushBook(String addrHead, String addrTail, Book book) {
 		Toast.makeText(mActivity, mActivity.getString(
 				R.string.start_push_book_str).replace("####",
-						book.mTitle), Toast.LENGTH_SHORT).show();
+						book.title), Toast.LENGTH_SHORT).show();
 		
 		mBookPushHelper.startToPushBook(addrHead, addrTail, book);
 	}

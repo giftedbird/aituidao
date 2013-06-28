@@ -76,13 +76,13 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 			public void bookPushSuccess(Book book) {
 				Toast.makeText(ConfirmPushAddrTrustActivity.this, getString(
 						R.string.push_book_success_str).replace("####",
-								book.mTitle), Toast.LENGTH_SHORT).show();
+								book.title), Toast.LENGTH_SHORT).show();
 			}
 			@Override
 			public void bookPushError(Book book) {
 				Toast.makeText(ConfirmPushAddrTrustActivity.this, getString(
 						R.string.push_book_error_str).replace("####",
-								book.mTitle), Toast.LENGTH_SHORT).show();
+								book.title), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -98,14 +98,14 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		mBackBtn = findViewById(R.id.back_btn);
 		
 		// TODO
-		mBookCoverIv.setImageResource(mBook.mCoverUrl);
+		mBookCoverIv.setImageResource(mBook.coverUrl);
 		// TODO
 		
-		mBookTitleTv.setText(mBook.mTitle);
+		mBookTitleTv.setText(mBook.title);
 		
-		mBookAuthorTv.setText(mBook.mAuthor);
+		mBookAuthorTv.setText(mBook.author);
 		
-		mBookIntroTv.setText(mBook.mIntro);
+		mBookIntroTv.setText(mBook.intro);
 		
 		String trustSourceStr = mAddrHead + TRUST_TAIL_STR;
 		mTrustSourceTv.setText(trustSourceStr);
@@ -141,7 +141,7 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	private void startToPushBook() {
 		Toast.makeText(this, getString(
 				R.string.start_push_book_str).replace("####",
-						mBook.mTitle), Toast.LENGTH_SHORT).show();
+						mBook.title), Toast.LENGTH_SHORT).show();
 		
 		mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, mBook);
 	}
