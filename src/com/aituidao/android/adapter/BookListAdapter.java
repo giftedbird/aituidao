@@ -65,8 +65,9 @@ public class BookListAdapter extends BaseAdapter {
 			public void bookPushSuccess(Book book) {
 				Toast.makeText(mActivity, mActivity.getString(
 						R.string.push_book_success_str).replace("####",
-								book.title), Toast.LENGTH_SHORT).show();
+								book.title), Toast.LENGTH_LONG).show();
 			}
+			
 			@Override
 			public void bookPushError(Book book) {
 				Toast.makeText(mActivity, mActivity.getString(

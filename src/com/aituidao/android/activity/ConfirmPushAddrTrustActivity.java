@@ -76,8 +76,9 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 			public void bookPushSuccess(Book book) {
 				Toast.makeText(ConfirmPushAddrTrustActivity.this, getString(
 						R.string.push_book_success_str).replace("####",
-								book.title), Toast.LENGTH_SHORT).show();
+								book.title), Toast.LENGTH_LONG).show();
 			}
+			
 			@Override
 			public void bookPushError(Book book) {
 				Toast.makeText(ConfirmPushAddrTrustActivity.this, getString(
