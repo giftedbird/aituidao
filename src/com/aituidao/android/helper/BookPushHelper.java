@@ -54,7 +54,7 @@ public class BookPushHelper {
 			public void run() {
 				// TODO demo代码开始
 				try {
-					Thread.sleep(3000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 				}
 				
