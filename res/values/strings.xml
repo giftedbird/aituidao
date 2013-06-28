@@ -17,8 +17,8 @@
     <string name="please_input_addr">还没有输入地址哦 -_-</string>
     
     <string name="push_address_trust_activity_title">加入信任列表</string>
-    <string name="set_address_trust">推送之前，您需要在Amazon网站将下面的地址加入到Kindle的信任列表中:</string>
-    <string name="has_set_trust">已设置，现在推送《####》</string>
+    <string name="set_address_trust">推送之前，您需要先登录Amazon网站并将下面的地址加入到您的Kindle信任列表中:</string>
+    <string name="has_set_trust">已去设置了，现在推送《####》</string>
     <string name="later_set_trust">稍后再设置</string>
     
     <string name="push_addr_choice_dlg_title">选择推送地址</string>
