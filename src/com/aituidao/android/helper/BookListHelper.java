@@ -1,11 +1,10 @@
 package com.aituidao.android.helper;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import com.aituidao.android.R;
+import com.aituidao.android.config.Config;
 import com.aituidao.android.data.Book;
+import com.aituidao.android.data.BookListRequest;
 import com.aituidao.android.data.BookListResponse;
 import com.alibaba.fastjson.JSON;
 
@@ -16,8 +15,8 @@ import android.os.Looper;
 import android.os.Message;
 
 public class BookListHelper {
-	public static final int SORT_TYPE_TIME = 1;
-	public static final int SORT_YYPE_HOT = 2;
+	public static final int SORT_TYPE_TIME = BookListRequest.SORT_TYPE_TIME;
+	public static final int SORT_TYPE_HOT = BookListRequest.SORT_TYPE_HOT;
 	
 	private Context mContext;
 	private BookListHelperCB mCB;
@@ -39,11 +38,11 @@ public class BookListHelper {
 				if (msg.arg1 == mBookListSortType) {
 					BookListResponse r = (BookListResponse) msg.obj;
 					
-					mPageNumber = r.nextPageNum < 0 ? 0 : r.nextPageNum;
+					mPageNumber = r.nextPageNum <= 0 ? 0 : r.nextPageNum;
 					
 					if (mCB != null) {
 						mCB.refreshBookListDataSuccess(r.bookList,
-								r.nextPageNum < 0 ? false : true);
+								r.nextPageNum <= 0 ? false : true);
 					}
 				} else {
 					if (mCB != null) {
@@ -64,11 +63,11 @@ public class BookListHelper {
 				if (msg.arg1 == mBookListSortType) {
 					BookListResponse r = (BookListResponse) msg.obj;
 					
-					mPageNumber = r.nextPageNum < 0 ? 0 : r.nextPageNum;
+					mPageNumber = r.nextPageNum <= 0 ? 0 : r.nextPageNum;
 					
 					if (mCB != null) {
 						mCB.loadMoreBookListDataSuccess(r.bookList,
-								r.nextPageNum < 0 ? false : true);
+								r.nextPageNum <= 0 ? false : true);
 					}
 				} else {
 					if (mCB != null) {
@@ -139,16 +138,13 @@ public class BookListHelper {
 
 		@Override
 		public void run() {
-			// TODO demo代码开始
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-			}
+			String postStr = JSON.toJSONString(
+					new BookListRequest(mSortType, mPageNo));
+			String responseStr = HttpClientHelper.request(
+					mContext, Config.BOOK_LIST_URL, postStr);
+			BookListResponse response = JSON.parseObject(
+					responseStr, BookListResponse.class);
 			
-			String responseStr = "{\"bookList\":[{\"author\":\"【日】松本行弘 \",\"coverUrl\":2130837531,\"id\":9748,\"intro\":\"超级书\",\"pushCount\":90,\"title\":\"代码的未来\"},{\"author\":\"【日】松本行弘 \",\"coverUrl\":2130837531,\"id\":9748,\"intro\":\"超级书\",\"pushCount\":90,\"title\":\"代码的未来\"},{\"author\":\"史玉柱口述 优米网编著\",\"coverUrl\":2130837530,\"id\":9334,\"intro\":\"牛逼书\",\"pushCount\":5,\"title\":\"史玉柱自述\"},{\"author\":\"【日】松本行弘 \",\"coverUrl\":2130837531,\"id\":9748,\"intro\":\"超级书\",\"pushCount\":90,\"title\":\"代码的未来\"},{\"author\":\"【港】许中约\",\"coverUrl\":2130837529,\"id\":9304,\"intro\":\"好书\",\"pushCount\":37,\"title\":\"中国近代史\"},{\"author\":\"【港】许中约\",\"coverUrl\":2130837529,\"id\":9304,\"intro\":\"好书\",\"pushCount\":37,\"title\":\"中国近代史\"},{\"author\":\"【日】松本行弘 \",\"coverUrl\":2130837531,\"id\":9748,\"intro\":\"超级书\",\"pushCount\":90,\"title\":\"代码的未来\"},{\"author\":\"史玉柱口述 优米网编著\",\"coverUrl\":2130837530,\"id\":9334,\"intro\":\"牛逼书\",\"pushCount\":5,\"title\":\"史玉柱自述\"},{\"author\":\"【日】松本行弘 \",\"coverUrl\":2130837531,\"id\":9748,\"intro\":\"超级书\",\"pushCount\":90,\"title\":\"代码的未来\"},{\"author\":\"【港】许中约\",\"coverUrl\":2130837529,\"id\":9304,\"intro\":\"好书\",\"pushCount\":37,\"title\":\"中国近代史\"},{\"author\":\"【港】许中约\",\"coverUrl\":2130837529,\"id\":9304,\"intro\":\"好书\",\"pushCount\":37,\"title\":\"中国近代史\"},{\"author\":\"史玉柱口述 优米网编著\",\"coverUrl\":2130837530,\"id\":9334,\"intro\":\"牛逼书\",\"pushCount\":5,\"title\":\"史玉柱自述\"},{\"author\":\"【港】许中约\",\"coverUrl\":2130837529,\"id\":9304,\"intro\":\"好书\",\"pushCount\":37,\"title\":\"中国近代史\"},{\"author\":\"【日】松本行弘 \",\"coverUrl\":2130837531,\"id\":9748,\"intro\":\"超级书\",\"pushCount\":90,\"title\":\"代码的未来\"},{\"author\":\"史玉柱口述 优米网编著\",\"coverUrl\":2130837530,\"id\":9334,\"intro\":\"牛逼书\",\"pushCount\":5,\"title\":\"史玉柱自述\"},{\"author\":\"史玉柱口述 优米网编著\",\"coverUrl\":2130837530,\"id\":9334,\"intro\":\"牛逼书\",\"pushCount\":5,\"title\":\"史玉柱自述\"},{\"author\":\"史玉柱口述 优米网编著\",\"coverUrl\":2130837530,\"id\":9334,\"intro\":\"牛逼书\",\"pushCount\":5,\"title\":\"史玉柱自述\"},{\"author\":\"【港】许中约\",\"coverUrl\":2130837529,\"id\":9304,\"intro\":\"好书\",\"pushCount\":37,\"title\":\"中国近代史\"},{\"author\":\"【港】许中约\",\"coverUrl\":2130837529,\"id\":9304,\"intro\":\"好书\",\"pushCount\":37,\"title\":\"中国近代史\"},{\"author\":\"史玉柱口述 优米网编著\",\"coverUrl\":2130837530,\"id\":9334,\"intro\":\"牛逼书\",\"pushCount\":5,\"title\":\"史玉柱自述\"}],\"nextPageNum\":1,\"status\":1}";
-			// TODO demo代码结束
-			
-			BookListResponse response = JSON.parseObject(responseStr, BookListResponse.class);
 			if (mPageNo <= 0) {
 				if (response.status == BookListResponse.OK) {
 					mHandler.sendMessage(mHandler.obtainMessage(REFRESH_BOOK_LIST_SUCCESS,

@@ -115,7 +115,7 @@ public class BookListActivity extends Activity {
 		mSortByHotBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startRefreshBySortType(BookListHelper.SORT_YYPE_HOT);
+				startRefreshBySortType(BookListHelper.SORT_TYPE_HOT);
 			}
 		});
     		
@@ -142,7 +142,7 @@ public class BookListActivity extends Activity {
 			mSortByTimeBtn.setSelected(true);
 			break;
 			
-		case BookListHelper.SORT_YYPE_HOT:
+		case BookListHelper.SORT_TYPE_HOT:
 			mSortByHotBtn.setSelected(true);
 			mSortByTimeBtn.setSelected(false);
 			break;
@@ -162,7 +162,7 @@ public class BookListActivity extends Activity {
 			releaseLabel = getString(R.string.sort_type_release_label_for_time);
 			break;
 			
-		case BookListHelper.SORT_YYPE_HOT:
+		case BookListHelper.SORT_TYPE_HOT:
 			pullLabel = getString(R.string.sort_type_pull_label_for_hot);
 			refreshingLabel = getString(R.string.sort_type_refreshing_label_for_hot);
 			releaseLabel = getString(R.string.sort_type_release_label_for_hot);

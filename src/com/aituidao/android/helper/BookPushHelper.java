@@ -6,7 +6,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.aituidao.android.config.Config;
 import com.aituidao.android.data.Book;
+import com.aituidao.android.data.BookPushRequest;
+import com.aituidao.android.data.GeneralResponse;
+import com.alibaba.fastjson.JSON;
 
 public class BookPushHelper {
 	private Context mContext;
@@ -48,18 +52,23 @@ public class BookPushHelper {
 		mCB = cb;
 	}
 	
-	public void startToPushBook(final String addrHead, final String addrTail, final Book book) {
+	public void startToPushBook(String addrHead, String addrTail, final Book book) {
+		final String addr = addrHead + "@" + addrTail;
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO demo代码开始
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-				}
+				String postStr = JSON.toJSONString(new BookPushRequest(addr, book.id));
+				String responseStr = HttpClientHelper.request(
+						mContext, Config.PUSH_BOOK_URL, postStr);
+				GeneralResponse response = JSON.parseObject(responseStr,
+						GeneralResponse.class);
 				
-				mHandler.sendMessage(mHandler.obtainMessage(PUSH_BOOK_SUCCESS, book));
-				// TODO demo代码结束
+				if (response.status == GeneralResponse.OK) {
+					mHandler.sendMessage(mHandler.obtainMessage(PUSH_BOOK_SUCCESS, book));
+				} else {
+					mHandler.sendMessage(mHandler.obtainMessage(PUSH_BOOK_ERROR, book));
+				}
 			}
 		}).start();
 	}
