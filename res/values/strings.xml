@@ -24,6 +24,10 @@
     <string name="push_addr_choice_dlg_title">选择推送地址</string>
     <string name="push_addr_choice_dlg_new_addr">其它推送地址&#8230;</string>
     
+    <string name="start_push_book_str">正在推送《####》&#8230;</string>
+    <string name="push_book_success_str">《####》推送成功 ^_^</string>
+    <string name="push_book_error_str">《####》推送失败 o_o</string>
+    
     <string-array name="push_address_tail_array">
         <item>kindle.cn</item>
         <item>kindle.com</item>

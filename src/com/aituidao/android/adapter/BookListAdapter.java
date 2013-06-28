@@ -6,6 +6,7 @@ import com.aituidao.android.R;
 import com.aituidao.android.activity.ConfirmPushAddrTrustActivity;
 import com.aituidao.android.activity.SetPushAddressActivity;
 import com.aituidao.android.data.Book;
+import com.aituidao.android.helper.BookPushHelper;
 import com.aituidao.android.model.PushSettingModel;
 import com.aituidao.android.model.PushSettingModel.PushAddress;
 
@@ -32,6 +33,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BookListAdapter extends BaseAdapter {
 	private static final int NEED_MORE_DATA_NUM = 5;
@@ -48,12 +50,30 @@ public class BookListAdapter extends BaseAdapter {
 	
 	private NeedMoreDataCB mNeedMoreDataCB;
 	
+	private BookPushHelper mBookPushHelper;
+	
 	public BookListAdapter(Activity activity, List<Book> list) {
 		mActivity = activity;
 		mList = list;
 		mLayoutInflater = (LayoutInflater) mActivity.getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE);
 		mPushSettingModel = PushSettingModel.getInstance(mActivity);
+		
+		mBookPushHelper = new BookPushHelper(mActivity);
+		mBookPushHelper.setBookPushHelperCB(new BookPushHelper.BookPushHelperCB() {
+			@Override
+			public void bookPushSuccess(Book book) {
+				Toast.makeText(mActivity, mActivity.getString(
+						R.string.push_book_success_str).replace("####",
+								book.mTitle), Toast.LENGTH_SHORT).show();
+			}
+			@Override
+			public void bookPushError(Book book) {
+				Toast.makeText(mActivity, mActivity.getString(
+						R.string.push_book_error_str).replace("####",
+								book.mTitle), Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	@Override
@@ -231,7 +251,11 @@ public class BookListAdapter extends BaseAdapter {
 	}
 	
 	private void startToPushBook(String addrHead, String addrTail, Book book) {
-		// TODO
+		Toast.makeText(mActivity, mActivity.getString(
+				R.string.start_push_book_str).replace("####",
+						book.mTitle), Toast.LENGTH_SHORT).show();
+		
+		mBookPushHelper.startToPushBook(addrHead, addrTail, book);
 	}
 	
 	private void startItemAnim(final View view) {

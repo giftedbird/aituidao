@@ -2,6 +2,7 @@ package com.aituidao.android.activity;
 
 import com.aituidao.android.R;
 import com.aituidao.android.data.Book;
+import com.aituidao.android.helper.BookPushHelper;
 import com.aituidao.android.model.PushSettingModel;
 
 import android.app.Activity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ConfirmPushAddrTrustActivity extends Activity {
 	public static final String KEY_BOOK = "key_book";
@@ -25,19 +27,21 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	private TextView mHasSetTrustBtn;
 	private TextView mLaterSetTrustBtn;
 	
+	private BookPushHelper mBookPushHelper;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_confirm_push_addr_trust);
 	    
 	    if (savedInstanceState != null) {
-    		mBook = savedInstanceState.getParcelable(KEY_BOOK);
-    		mAddrHead = savedInstanceState.getString(KEY_ADDR_HEAD);
-    		mAddrTail = savedInstanceState.getString(KEY_ADDR_TAIL);
+			mBook = savedInstanceState.getParcelable(KEY_BOOK);
+			mAddrHead = savedInstanceState.getString(KEY_ADDR_HEAD);
+			mAddrTail = savedInstanceState.getString(KEY_ADDR_TAIL);
 	    } else {
-	    	mBook = getIntent().getParcelableExtra(KEY_BOOK);
-	    	mAddrHead = getIntent().getStringExtra(KEY_ADDR_HEAD);
-	    	mAddrTail = getIntent().getStringExtra(KEY_ADDR_TAIL);
+			mBook = getIntent().getParcelableExtra(KEY_BOOK);
+			mAddrHead = getIntent().getStringExtra(KEY_ADDR_HEAD);
+			mAddrTail = getIntent().getStringExtra(KEY_ADDR_TAIL);
 	    }
 	    
 	    if ((mBook == null)
@@ -47,6 +51,7 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 			return;
 	    }
 	    
+	    initData();
 	    initUi();
 	}
 
@@ -56,6 +61,24 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		outState.putString(KEY_ADDR_HEAD, mAddrHead);
 		outState.putString(KEY_ADDR_TAIL, mAddrTail);
 		super.onSaveInstanceState(outState);
+	}
+	
+	private void initData() {
+		mBookPushHelper = new BookPushHelper(this);
+		mBookPushHelper.setBookPushHelperCB(new BookPushHelper.BookPushHelperCB() {
+			@Override
+			public void bookPushSuccess(Book book) {
+				Toast.makeText(ConfirmPushAddrTrustActivity.this, getString(
+						R.string.push_book_success_str).replace("####",
+								book.mTitle), Toast.LENGTH_SHORT).show();
+			}
+			@Override
+			public void bookPushError(Book book) {
+				Toast.makeText(ConfirmPushAddrTrustActivity.this, getString(
+						R.string.push_book_error_str).replace("####",
+								book.mTitle), Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	private void initUi() {
@@ -91,6 +114,10 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	}
 	
 	private void startToPushBook() {
-		// TODO
+		Toast.makeText(this, getString(
+				R.string.start_push_book_str).replace("####",
+						mBook.mTitle), Toast.LENGTH_SHORT).show();
+		
+		mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, mBook);
 	}
 }
