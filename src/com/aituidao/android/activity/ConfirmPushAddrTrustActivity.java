@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +25,12 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	private String mAddrTail;
 	
 	private TextView mTrustSourceTv;
-	private TextView mHasSetTrustBtn;
-	private TextView mLaterSetTrustBtn;
+	private View mHasSetTrustBtn;
+	private View mLaterSetTrustBtn;
+	private ImageView mBookCoverIv;
+	private TextView mBookTitleTv;
+	private TextView mBookAuthorTv;
+	private TextView mBookIntroTv;
 	
 	private BookPushHelper mBookPushHelper;
 	
@@ -83,15 +88,26 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	
 	private void initUi() {
 		mTrustSourceTv = (TextView) findViewById(R.id.trust_source_tv);
-		mHasSetTrustBtn = (TextView) findViewById(R.id.has_set_btn);
-		mLaterSetTrustBtn = (TextView) findViewById(R.id.later_set_btn);
+		mHasSetTrustBtn = findViewById(R.id.has_set_btn);
+		mLaterSetTrustBtn = findViewById(R.id.later_set_btn);
+		mBookCoverIv = (ImageView) findViewById(R.id.item_cover_iv);
+		mBookTitleTv = (TextView) findViewById(R.id.item_title_tv);
+		mBookAuthorTv = (TextView) findViewById(R.id.item_author_tv);
+		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
+		
+		// TODO
+		mBookCoverIv.setImageResource(mBook.mCoverUrl);
+		// TODO
+		
+		mBookTitleTv.setText(mBook.mTitle);
+		
+		mBookAuthorTv.setText(mBook.mAuthor);
+		
+		mBookIntroTv.setText(mBook.mIntro);
 		
 		String trustSourceStr = mAddrHead + TRUST_TAIL_STR;
 		mTrustSourceTv.setText(trustSourceStr);
 		
-		String hasSetTrustBtnStr = getString(R.string.has_set_trust).replace(
-				"####", mBook.mTitle);
-		mHasSetTrustBtn.setText(hasSetTrustBtnStr);
 		mHasSetTrustBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
