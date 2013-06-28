@@ -10,11 +10,22 @@
         android:layout_height="48dp"
         android:background="@drawable/title_bar_bg" >
         
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/title_bar_back"
+            android:background="@drawable/title_bar_controller_bg"
+            android:clickable="true"
+            android:scaleType="center"
+        />
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/back_btn"
             android:layout_centerVertical="true"
             android:text="@string/push_address_trust_activity_title"
             android:textStyle="bold"

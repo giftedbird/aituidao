@@ -30,6 +30,7 @@ public class SetPushAddressActivity extends Activity {
 	private TextView mBookAuthorTv;
 	private TextView mBookIntroTv;
 	private TextView mAddrHintTv;
+	private View mBackBtn;
 	
 	private ArrayAdapter<CharSequence> mSpinnerAdapter;
 	
@@ -70,6 +71,7 @@ public class SetPushAddressActivity extends Activity {
 		mBookAuthorTv = (TextView) findViewById(R.id.item_author_tv);
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
 		mAddrHintTv = (TextView) findViewById(R.id.addr_hint_tv);
+		mBackBtn = findViewById(R.id.back_btn);
 		
 		mAddrTailSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -135,6 +137,13 @@ public class SetPushAddressActivity extends Activity {
 					
 					enterConfirmPushAddrTrustActivityAndFinish(addrHead, mAddrTailStr);
 				}
+			}
+		});
+		
+		mBackBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
 			}
 		});
 	}

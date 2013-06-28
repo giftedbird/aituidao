@@ -31,6 +31,7 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	private TextView mBookTitleTv;
 	private TextView mBookAuthorTv;
 	private TextView mBookIntroTv;
+	private View mBackBtn;
 	
 	private BookPushHelper mBookPushHelper;
 	
@@ -94,6 +95,7 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		mBookTitleTv = (TextView) findViewById(R.id.item_title_tv);
 		mBookAuthorTv = (TextView) findViewById(R.id.item_author_tv);
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
+		mBackBtn = findViewById(R.id.back_btn);
 		
 		// TODO
 		mBookCoverIv.setImageResource(mBook.mCoverUrl);
@@ -122,6 +124,13 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		});
 		
 		mLaterSetTrustBtn.setOnClickListener(new View.OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		
+		mBackBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();
