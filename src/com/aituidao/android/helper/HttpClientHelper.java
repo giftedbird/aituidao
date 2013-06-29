@@ -4,7 +4,7 @@ import android.content.Context;
 
 public class HttpClientHelper {
 
-	public static String request(Context context, String url, String postStr) {
+	public static String requestJson(Context context, String url, String postStr) {
 		String result = "{}";
 
 		try {

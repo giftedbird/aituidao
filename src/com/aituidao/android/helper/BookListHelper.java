@@ -2,17 +2,17 @@ package com.aituidao.android.helper;
 
 import java.util.List;
 
-import com.aituidao.android.config.Config;
-import com.aituidao.android.data.Book;
-import com.aituidao.android.data.BookListRequest;
-import com.aituidao.android.data.BookListResponse;
-import com.alibaba.fastjson.JSON;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
+import com.aituidao.android.config.Config;
+import com.aituidao.android.data.Book;
+import com.aituidao.android.data.BookListRequest;
+import com.aituidao.android.data.BookListResponse;
+import com.alibaba.fastjson.JSON;
 
 public class BookListHelper {
 	public static final int SORT_TYPE_TIME = BookListRequest.SORT_TYPE_TIME;
@@ -145,7 +145,7 @@ public class BookListHelper {
 		public void run() {
 			String postStr = JSON.toJSONString(new BookListRequest(mSortType,
 					mPageNo));
-			String responseStr = HttpClientHelper.request(mContext,
+			String responseStr = HttpClientHelper.requestJson(mContext,
 					Config.BOOK_LIST_URL, postStr);
 			BookListResponse response = JSON.parseObject(responseStr,
 					BookListResponse.class);
