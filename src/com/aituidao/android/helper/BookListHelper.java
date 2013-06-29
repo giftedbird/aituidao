@@ -145,13 +145,19 @@ public class BookListHelper {
 		public void run() {
 			String postStr = JSON.toJSONString(new BookListRequest(mSortType,
 					mPageNo));
-			String responseStr = HttpClientHelper.requestJson(mContext,
+			String responseStr = HttpClientHelper.request(mContext,
 					Config.BOOK_LIST_URL, postStr);
-			BookListResponse response = JSON.parseObject(responseStr,
-					BookListResponse.class);
+
+			BookListResponse response = null;
+			try {
+				response = JSON
+						.parseObject(responseStr, BookListResponse.class);
+			} catch (Exception e) {
+			}
 
 			if (mPageNo <= 0) {
-				if (response.status == BookListResponse.OK) {
+				if ((response != null)
+						&& (response.status == BookListResponse.OK)) {
 					mHandler.sendMessage(mHandler.obtainMessage(
 							REFRESH_BOOK_LIST_SUCCESS, mSortType, 0, response));
 				} else {
@@ -159,7 +165,8 @@ public class BookListHelper {
 							.obtainMessage(REFRESH_BOOK_LIST_ERROR));
 				}
 			} else {
-				if (response.status == BookListResponse.OK) {
+				if ((response != null)
+						&& (response.status == BookListResponse.OK)) {
 					mHandler.sendMessage(mHandler
 							.obtainMessage(LOAD_MORE_BOOK_LIST_SUCCESS,
 									mSortType, 0, response));

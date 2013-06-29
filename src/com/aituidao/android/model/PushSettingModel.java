@@ -60,6 +60,12 @@ public class PushSettingModel {
 		}
 	}
 
+	public void clearAllPushAddressTrusted() {
+		for (int i = 0; i < MAX_PUSH_ADDRESS_COUNT; i++) {
+			setPushAddressTrusted(false, i);
+		}
+	}
+
 	public List<PushAddress> getPushAddressList() {
 		List<PushAddress> result = new ArrayList<PushAddress>();
 

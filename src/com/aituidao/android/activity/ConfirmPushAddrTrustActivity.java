@@ -1,10 +1,5 @@
 package com.aituidao.android.activity;
 
-import com.aituidao.android.R;
-import com.aituidao.android.data.Book;
-import com.aituidao.android.helper.BookPushHelper;
-import com.aituidao.android.model.PushSettingModel;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,12 +8,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aituidao.android.R;
+import com.aituidao.android.data.Book;
+import com.aituidao.android.helper.BookPushHelper;
+import com.aituidao.android.model.PushSettingModel;
+import com.aituidao.android.model.SrcAddrTailModel;
+
 public class ConfirmPushAddrTrustActivity extends Activity {
 	public static final String KEY_BOOK = "key_book";
 	public static final String KEY_ADDR_HEAD = "key_addr_head";
 	public static final String KEY_ADDR_TAIL = "key_addr_tail";
-
-	private static final String TRUST_TAIL_STR = ".guoyong@yuanzhe.com";
 
 	private Book mBook;
 	private String mAddrHead;
@@ -112,7 +111,8 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 
 		mBookIntroTv.setText(mBook.intro);
 
-		String trustSourceStr = mAddrHead + TRUST_TAIL_STR;
+		String trustSourceStr = mAddrHead
+				+ SrcAddrTailModel.getInstance(this).getSrcAddrTail();
 		mTrustSourceTv.setText(trustSourceStr);
 
 		mHasSetTrustBtn.setOnClickListener(new View.OnClickListener() {

@@ -62,12 +62,18 @@ public class BookPushHelper {
 			public void run() {
 				String postStr = JSON.toJSONString(new BookPushRequest(addr,
 						book.id));
-				String responseStr = HttpClientHelper.requestJson(mContext,
+				String responseStr = HttpClientHelper.request(mContext,
 						Config.PUSH_BOOK_URL, postStr);
-				GeneralResponse response = JSON.parseObject(responseStr,
-						GeneralResponse.class);
 
-				if (response.status == GeneralResponse.OK) {
+				GeneralResponse response = null;
+				try {
+					response = JSON.parseObject(responseStr,
+							GeneralResponse.class);
+				} catch (Exception e) {
+				}
+
+				if ((response != null)
+						&& (response.status == GeneralResponse.OK)) {
 					mHandler.sendMessage(mHandler.obtainMessage(
 							PUSH_BOOK_SUCCESS, book));
 				} else {

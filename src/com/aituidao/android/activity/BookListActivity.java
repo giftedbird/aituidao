@@ -3,17 +3,18 @@ package com.aituidao.android.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+
 import com.aituidao.android.R;
 import com.aituidao.android.adapter.BookListAdapter;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
+import com.aituidao.android.model.SrcAddrTailModel;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
-import android.os.Bundle;
-import android.view.View;
-import android.app.Activity;
 
 public class BookListActivity extends Activity {
 	private PullToRefreshListView mBookListView;
@@ -40,6 +41,8 @@ public class BookListActivity extends Activity {
 				startRefreshBySortType(mSortType);
 			}
 		}, 600);
+
+		SrcAddrTailModel.getInstance(this).checkNewSrcAddrSilently();
 	}
 
 	private void initData() {
