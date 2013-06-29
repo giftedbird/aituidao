@@ -11,10 +11,10 @@ public class Book implements Parcelable {
 	// TODO
 	public int coverUrl;
 	public int pushCount;
-	
+
 	public Book() {
 	}
-	
+
 	public Book(Parcel source) {
 		id = source.readLong();
 		title = source.readString();
@@ -24,12 +24,12 @@ public class Book implements Parcelable {
 		coverUrl = source.readInt();
 		pushCount = source.readInt();
 	}
-	
+
 	@Override
 	public int describeContents() {
 		return 0;
 	}
-	
+
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(id);
@@ -40,7 +40,7 @@ public class Book implements Parcelable {
 		dest.writeInt(coverUrl);
 		dest.writeInt(pushCount);
 	}
-	
+
 	public static final Parcelable.Creator<Book> CREATOR = new Parcelable.Creator<Book>() {
 		@Override
 		public Book createFromParcel(Parcel source) {

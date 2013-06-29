@@ -3,10 +3,10 @@ package com.aituidao.android.helper;
 import android.content.Context;
 
 public class HttpClientHelper {
-	
+
 	public static String request(Context context, String url, String postStr) {
 		String result = "{}";
-		
+
 		try {
 			// TODO
 			if (url.equals("1")) {
@@ -19,7 +19,7 @@ public class HttpClientHelper {
 		} catch (Exception e) {
 			// do nothing
 		}
-		
+
 		return result;
 	}
 }

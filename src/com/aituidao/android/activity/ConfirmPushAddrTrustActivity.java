@@ -17,13 +17,13 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	public static final String KEY_BOOK = "key_book";
 	public static final String KEY_ADDR_HEAD = "key_addr_head";
 	public static final String KEY_ADDR_TAIL = "key_addr_tail";
-	
+
 	private static final String TRUST_TAIL_STR = ".guoyong@yuanzhe.com";
-	
+
 	private Book mBook;
 	private String mAddrHead;
 	private String mAddrTail;
-	
+
 	private TextView mTrustSourceTv;
 	private View mHasSetTrustBtn;
 	private View mLaterSetTrustBtn;
@@ -32,33 +32,32 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	private TextView mBookAuthorTv;
 	private TextView mBookIntroTv;
 	private View mBackBtn;
-	
+
 	private BookPushHelper mBookPushHelper;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.activity_confirm_push_addr_trust);
-	    
-	    if (savedInstanceState != null) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_confirm_push_addr_trust);
+
+		if (savedInstanceState != null) {
 			mBook = savedInstanceState.getParcelable(KEY_BOOK);
 			mAddrHead = savedInstanceState.getString(KEY_ADDR_HEAD);
 			mAddrTail = savedInstanceState.getString(KEY_ADDR_TAIL);
-	    } else {
+		} else {
 			mBook = getIntent().getParcelableExtra(KEY_BOOK);
 			mAddrHead = getIntent().getStringExtra(KEY_ADDR_HEAD);
 			mAddrTail = getIntent().getStringExtra(KEY_ADDR_TAIL);
-	    }
-	    
-	    if ((mBook == null)
-	    		|| (TextUtils.isEmpty(mAddrHead))
-	    		|| (TextUtils.isEmpty(mAddrTail))) {
+		}
+
+		if ((mBook == null) || (TextUtils.isEmpty(mAddrHead))
+				|| (TextUtils.isEmpty(mAddrTail))) {
 			finish();
 			return;
-	    }
-	    
-	    initData();
-	    initUi();
+		}
+
+		initData();
+		initUi();
 	}
 
 	@Override
@@ -68,26 +67,31 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		outState.putString(KEY_ADDR_TAIL, mAddrTail);
 		super.onSaveInstanceState(outState);
 	}
-	
+
 	private void initData() {
 		mBookPushHelper = new BookPushHelper(this);
-		mBookPushHelper.setBookPushHelperCB(new BookPushHelper.BookPushHelperCB() {
-			@Override
-			public void bookPushSuccess(Book book) {
-				Toast.makeText(ConfirmPushAddrTrustActivity.this, getString(
-						R.string.push_book_success_str).replace("####",
-								book.title), Toast.LENGTH_LONG).show();
-			}
-			
-			@Override
-			public void bookPushError(Book book) {
-				Toast.makeText(ConfirmPushAddrTrustActivity.this, getString(
-						R.string.push_book_error_str).replace("####",
-								book.title), Toast.LENGTH_SHORT).show();
-			}
-		});
+		mBookPushHelper
+				.setBookPushHelperCB(new BookPushHelper.BookPushHelperCB() {
+					@Override
+					public void bookPushSuccess(Book book) {
+						Toast.makeText(
+								ConfirmPushAddrTrustActivity.this,
+								getString(R.string.push_book_success_str)
+										.replace("####", book.title),
+								Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void bookPushError(Book book) {
+						Toast.makeText(
+								ConfirmPushAddrTrustActivity.this,
+								getString(R.string.push_book_error_str)
+										.replace("####", book.title),
+								Toast.LENGTH_SHORT).show();
+					}
+				});
 	}
-	
+
 	private void initUi() {
 		mTrustSourceTv = (TextView) findViewById(R.id.trust_source_tv);
 		mHasSetTrustBtn = findViewById(R.id.has_set_btn);
@@ -97,40 +101,39 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		mBookAuthorTv = (TextView) findViewById(R.id.item_author_tv);
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
 		mBackBtn = findViewById(R.id.back_btn);
-		
+
 		// TODO
 		mBookCoverIv.setImageResource(mBook.coverUrl);
 		// TODO
-		
+
 		mBookTitleTv.setText(mBook.title);
-		
+
 		mBookAuthorTv.setText(mBook.author);
-		
+
 		mBookIntroTv.setText(mBook.intro);
-		
+
 		String trustSourceStr = mAddrHead + TRUST_TAIL_STR;
 		mTrustSourceTv.setText(trustSourceStr);
-		
+
 		mHasSetTrustBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				PushSettingModel.getInstance(
-						ConfirmPushAddrTrustActivity.this).setPushAddressTrusted(
-								mAddrHead, mAddrTail, true);
-				
+				PushSettingModel.getInstance(ConfirmPushAddrTrustActivity.this)
+						.setPushAddressTrusted(mAddrHead, mAddrTail, true);
+
 				startToPushBook();
-				
+
 				finish();
 			}
 		});
-		
-		mLaterSetTrustBtn.setOnClickListener(new View.OnClickListener() {	
+
+		mLaterSetTrustBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
-		
+
 		mBackBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -138,12 +141,13 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 			}
 		});
 	}
-	
+
 	private void startToPushBook() {
-		Toast.makeText(this, getString(
-				R.string.start_push_book_str).replace("####",
+		Toast.makeText(
+				this,
+				getString(R.string.start_push_book_str).replace("####",
 						mBook.title), Toast.LENGTH_SHORT).show();
-		
+
 		mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, mBook);
 	}
 }

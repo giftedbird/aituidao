@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 public class SetPushAddressActivity extends Activity {
 	public static final String KEY_BOOK = "key_book";
-	
+
 	private EditText mAddrHeadEt;
 	private Spinner mAddrTailSpinner;
 	private View mNextStepBtn;
@@ -31,29 +31,29 @@ public class SetPushAddressActivity extends Activity {
 	private TextView mBookIntroTv;
 	private TextView mAddrHintTv;
 	private View mBackBtn;
-	
+
 	private ArrayAdapter<CharSequence> mSpinnerAdapter;
-	
+
 	private Book mBook;
 	private String mAddrTailStr = "";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.activity_set_push_address);
-	    
-	    if (savedInstanceState != null) {
-	    	mBook = savedInstanceState.getParcelable(KEY_BOOK);
-	    } else {
-	    	mBook = getIntent().getParcelableExtra(KEY_BOOK);
-	    }
-	    
-	    if (mBook == null) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_set_push_address);
+
+		if (savedInstanceState != null) {
+			mBook = savedInstanceState.getParcelable(KEY_BOOK);
+		} else {
+			mBook = getIntent().getParcelableExtra(KEY_BOOK);
+		}
+
+		if (mBook == null) {
 			finish();
 			return;
-	    }
-	    
-	    initUi();
+		}
+
+		initUi();
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class SetPushAddressActivity extends Activity {
 		outState.putParcelable(KEY_BOOK, mBook);
 		super.onSaveInstanceState(outState);
 	}
-	
+
 	private void initUi() {
 		mAddrHeadEt = (EditText) findViewById(R.id.addr_head_et);
 		mAddrTailSpinner = (Spinner) findViewById(R.id.addr_tail_spinner);
@@ -72,28 +72,31 @@ public class SetPushAddressActivity extends Activity {
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
 		mAddrHintTv = (TextView) findViewById(R.id.addr_hint_tv);
 		mBackBtn = findViewById(R.id.back_btn);
-		
-		mAddrTailSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, 
-		            int pos, long id) {
-				mAddrTailStr = mSpinnerAdapter.getItem(pos).toString();
-				
-				mAddrHintTv.setText(mAddrHeadEt.getEditableText().toString()
-						+ "@" + mAddrTailStr);
-			}
 
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// do nothing
-			}
-		});
-		
+		mAddrTailSpinner
+				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					@Override
+					public void onItemSelected(AdapterView<?> parent,
+							View view, int pos, long id) {
+						mAddrTailStr = mSpinnerAdapter.getItem(pos).toString();
+
+						mAddrHintTv.setText(mAddrHeadEt.getEditableText()
+								.toString() + "@" + mAddrTailStr);
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+						// do nothing
+					}
+				});
+
 		mSpinnerAdapter = ArrayAdapter.createFromResource(this,
-		        R.array.push_address_tail_array, android.R.layout.simple_spinner_item);
-		mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				R.array.push_address_tail_array,
+				android.R.layout.simple_spinner_item);
+		mSpinnerAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mAddrTailSpinner.setAdapter(mSpinnerAdapter);
-		
+
 		mAddrHeadEt.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {
@@ -113,33 +116,35 @@ public class SetPushAddressActivity extends Activity {
 						+ "@" + mAddrTailStr);
 			}
 		});
-		
+
 		// TODO
 		mBookCoverIv.setImageResource(mBook.coverUrl);
 		// TODO
-		
+
 		mBookTitleTv.setText(mBook.title);
-		
+
 		mBookAuthorTv.setText(mBook.author);
-		
+
 		mBookIntroTv.setText(mBook.intro);
-		
+
 		mNextStepBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				String addrHead = mAddrHeadEt.getEditableText().toString();
 				if (TextUtils.isEmpty(addrHead)) {
 					Toast.makeText(SetPushAddressActivity.this,
-							R.string.please_input_addr, Toast.LENGTH_SHORT).show();
+							R.string.please_input_addr, Toast.LENGTH_SHORT)
+							.show();
 				} else {
 					PushSettingModel.getInstance(SetPushAddressActivity.this)
-						.setNewPushAddress(addrHead, mAddrTailStr);
-					
-					enterConfirmPushAddrTrustActivityAndFinish(addrHead, mAddrTailStr);
+							.setNewPushAddress(addrHead, mAddrTailStr);
+
+					enterConfirmPushAddrTrustActivityAndFinish(addrHead,
+							mAddrTailStr);
 				}
 			}
 		});
-		
+
 		mBackBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -147,15 +152,16 @@ public class SetPushAddressActivity extends Activity {
 			}
 		});
 	}
-	
-	private void enterConfirmPushAddrTrustActivityAndFinish(String addrHead, String addrTail) {
+
+	private void enterConfirmPushAddrTrustActivityAndFinish(String addrHead,
+			String addrTail) {
 		Intent intent = new Intent(this, ConfirmPushAddrTrustActivity.class);
 		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_BOOK, mBook);
 		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_HEAD, addrHead);
 		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_TAIL, addrTail);
-		
+
 		startActivity(intent);
-		
+
 		finish();
 	}
 }
