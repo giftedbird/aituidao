@@ -144,7 +144,7 @@ public class BookListHelper {
 		@Override
 		public void run() {
 			String postStr = JSON.toJSONString(new BookListRequest(mSortType,
-					mPageNo));
+					mPageNo, Config.BOOK_LIST_COUNT));
 			String responseStr = HttpClientHelper.requestStr(mContext,
 					Config.BOOK_LIST_URL, postStr);
 

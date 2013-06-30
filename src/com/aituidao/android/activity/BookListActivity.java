@@ -11,6 +11,7 @@ import com.aituidao.android.R;
 import com.aituidao.android.adapter.BookListAdapter;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
+import com.aituidao.android.helper.NewUrlAccessHelper;
 import com.aituidao.android.model.SrcAddrTailModel;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -43,6 +44,8 @@ public class BookListActivity extends Activity {
 		}, 600);
 
 		SrcAddrTailModel.getInstance(this).checkNewSrcAddrSilently();
+
+		new NewUrlAccessHelper(this).checkAndStartNewUrlAccess();
 	}
 
 	private void initData() {

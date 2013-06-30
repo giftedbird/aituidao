@@ -91,14 +91,12 @@ public class SrcAddrTailModel {
 
 				if (response != null) {
 					if (response.status == SrcAddrTailCheckResponse.OK) {
-						if (response.hasNew == SrcAddrTailCheckResponse.HAS_NEW) {
-							String newTail = response.newTail;
+						String newTail = response.newTail;
 
-							if ((newTail != null) && (!newTail.equals(tail))) {
-								if (newTail.contains("@")) {
-									mHandler.sendMessage(mHandler
-											.obtainMessage(NEW_TAIL, newTail));
-								}
+						if ((newTail != null) && (!newTail.equals(tail))) {
+							if (newTail.contains("@")) {
+								mHandler.sendMessage(mHandler.obtainMessage(
+										NEW_TAIL, newTail));
 							}
 						}
 					}

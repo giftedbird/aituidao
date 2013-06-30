@@ -6,12 +6,14 @@ public class BookListRequest {
 
 	public int sortType;
 	public long pageNo;
+	public int count;
 
 	public BookListRequest() {
 	}
 
-	public BookListRequest(int sortType, long pageNo) {
+	public BookListRequest(int sortType, long pageNo, int count) {
 		this.sortType = sortType;
 		this.pageNo = pageNo;
+		this.count = count;
 	}
 }

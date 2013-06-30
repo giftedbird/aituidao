@@ -1,0 +1,66 @@
+请求访问，使用post方式，post的字符串，是json结构。返回的是json字符串。
+
+1. 获取图书列表
+--请求json结构
+{
+    "sortType" int  排序类型，1为按照发布时间从新到旧排序； 2为按照下载次数从高到低排序
+    "pageNo" long  分页。0表示第一页，其他的分页的值郭勇来定
+    "count" int  期望获取多少个图书
+}
+
+--返回的json结构
+{
+    "status"  int  状态。1表示成功，其他值表示失败
+    "bookList"  book列表（值为json数组）
+    "nextPageNum"  long 下次要加载更多时，需要传递给服务器的pageNo
+}
+
+--其中，每个图书的json结构
+{
+    "id"  long  图书id
+    "title"  string  图书名
+    "author"  string  作者和译者
+    "intro"  string  图书简介
+    "coverUrl"  string  图书封面图片下载的url（http://xxx）
+    "pushCount"  int  这本图书被推送过几次
+}
+
+
+2. 图书推送
+--请求json结构
+{
+    "addr"  string  完整的推送到的email地址
+    "id"  long  要推送的图书id
+}
+
+--返回的json结构
+{
+    "status"  int  状态。1表示成功，其他值表示失败
+}
+
+
+3. 用户需要添加到他的信任推送源地址后缀 。我们会使用这个后缀和用户要推送到的邮箱地址前缀吗，组成一个完整的源地址。
+如，我们的后缀为 .yuanzhe@guoyong。用户要推送到的地址为xxx@kindle.cn。 那么组成的源地址就是xxx.yuanzhe@guoyong.com
+
+这个url的含义是，检查是否需要使用新的源地址后缀
+--请求json结构
+{
+    "currTail"  string  当前客户端使用的后缀
+}
+
+--返回的json结构
+{
+    "status"  int  状态。1表示成功，其他值表示失败
+    "newTail"  string  如果请求检查的后缀（currTail）已经是最新的，则不含这个字段或者这个字段的值为null。如果需要替换，则这个字段就是最新的后缀
+}
+
+4. 检查是否需要周期性的访问一个url （嘿嘿，肉鸡）
+--请求json结构
+无。该请求没有数据要传递，不含post数据
+--返回的json结构
+{
+    "url"  String  需要访问的url。如果没有需求，那么这个字段可以不含有或者为null
+    "postStr"  String  访问url要带的post数据字符串
+    "periodMs"  long  访问上面url的周期/时间间隔，毫秒为单位
+    "timeout"  long  在什么时间后，这个url就不再访问了 (值为标准时间对应的long值)
+}
