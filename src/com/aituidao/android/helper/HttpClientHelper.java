@@ -3,7 +3,7 @@ package com.aituidao.android.helper;
 import android.content.Context;
 
 public class HttpClientHelper {
-	public static String request(Context context, String url, String postStr) {
+	public static String requestStr(Context context, String url, String postStr) {
 		String result = null;
 
 		try {
