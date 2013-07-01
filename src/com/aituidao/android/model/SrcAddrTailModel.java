@@ -80,6 +80,7 @@ public class SrcAddrTailModel {
 				String postStr = JSON.toJSONString(new SrcAddrTailCheckRequest(
 						tail));
 				String responseStr = HttpClientHelper.requestStr(mContext,
+						Config.DEFAULT_USER_AGENT,
 						Config.SRC_ADDR_TAIL_CHECK_URL, postStr);
 
 				SrcAddrTailCheckResponse response = null;

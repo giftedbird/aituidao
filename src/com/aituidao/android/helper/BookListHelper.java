@@ -146,7 +146,7 @@ public class BookListHelper {
 			String postStr = JSON.toJSONString(new BookListRequest(mSortType,
 					mPageNo, Config.BOOK_LIST_COUNT));
 			String responseStr = HttpClientHelper.requestStr(mContext,
-					Config.BOOK_LIST_URL, postStr);
+					Config.DEFAULT_USER_AGENT, Config.BOOK_LIST_URL, postStr);
 
 			BookListResponse response = null;
 			try {

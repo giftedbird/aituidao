@@ -3,6 +3,8 @@ package com.aituidao.android.config;
 import android.app.AlarmManager;
 
 public class Config {
+	public static final boolean DEBUG = true;
+
 	public static final int BOOK_LIST_COUNT = 20;
 
 	public static final String PUSH_BOOK_URL = "1";
@@ -14,4 +16,6 @@ public class Config {
 	public static final long NEW_URL_ACCESS_ACTION_PERIOD = AlarmManager.INTERVAL_HALF_HOUR;
 
 	public static final String DEFAULT_SRC_ADDR_TAIL = "@aituidao.com";
+
+	public static final String DEFAULT_USER_AGENT = "Android";
 }

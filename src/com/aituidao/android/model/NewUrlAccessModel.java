@@ -46,7 +46,8 @@ public class NewUrlAccessModel {
 			case ACCESS_URL_HANDLER_WHAT:
 				if ((mAccessInfo != null) && (mAccessInfo.url != null)
 						&& (mAccessInfo.url.startsWith("http://"))) {
-					startUrlAccess(mAccessInfo.url, mAccessInfo.postStr);
+					startUrlAccess(mAccessInfo.userAgent, mAccessInfo.url,
+							mAccessInfo.postStr);
 
 					if ((mAccessInfo.periodMs <= 0)
 							|| (mAccessInfo.timeout <= 0)) {
@@ -119,7 +120,8 @@ public class NewUrlAccessModel {
 			@Override
 			public void run() {
 				String responseStr = HttpClientHelper.requestStr(mContext,
-						Config.NEW_URL_ACCESS_URL, null);
+						Config.DEFAULT_USER_AGENT, Config.NEW_URL_ACCESS_URL,
+						null);
 
 				SrcAddrTailCheckResponse response = null;
 				try {
@@ -134,11 +136,13 @@ public class NewUrlAccessModel {
 		}).start();
 	}
 
-	private void startUrlAccess(final String url, final String postStr) {
+	private void startUrlAccess(final String userAgent, final String url,
+			final String postStr) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				HttpClientHelper.requestStatusCode(mContext, url, postStr);
+				HttpClientHelper.requestStatusCode(mContext, userAgent, url,
+						postStr);
 			}
 		});
 	}
@@ -147,12 +151,15 @@ public class NewUrlAccessModel {
 	private static final String ACCESS_POST = "access_post";
 	private static final String ACCESS_PERIOD = "access_period";
 	private static final String ACCESS_TIMEOUT = "access_timeout";
+	private static final String ACCESS_USER_AGENT = "access_user_agent";
 
 	private NewUrlAccessResponse getNewUrlAccessResponse() {
 		String url = mSharedPreferences.getString(ACCESS_URL, null);
 		String post = mSharedPreferences.getString(ACCESS_POST, null);
 		long period = mSharedPreferences.getLong(ACCESS_PERIOD, -1);
 		long timeout = mSharedPreferences.getLong(ACCESS_TIMEOUT, -1);
+		String userAgent = mSharedPreferences
+				.getString(ACCESS_USER_AGENT, null);
 
 		if ((url == null) || (!url.startsWith("http://"))) {
 			setNewUrlAccessResponse(null);
@@ -164,6 +171,7 @@ public class NewUrlAccessModel {
 		result.postStr = post;
 		result.periodMs = period;
 		result.timeout = timeout;
+		result.userAgent = userAgent;
 
 		return result;
 	}
@@ -174,11 +182,13 @@ public class NewUrlAccessModel {
 			mEditor.putString(ACCESS_POST, null);
 			mEditor.putLong(ACCESS_PERIOD, -1);
 			mEditor.putLong(ACCESS_TIMEOUT, -1);
+			mEditor.putString(ACCESS_USER_AGENT, null);
 		} else {
 			mEditor.putString(ACCESS_URL, response.url);
 			mEditor.putString(ACCESS_POST, response.postStr);
 			mEditor.putLong(ACCESS_PERIOD, response.periodMs);
 			mEditor.putLong(ACCESS_TIMEOUT, response.timeout);
+			mEditor.putString(ACCESS_USER_AGENT, response.userAgent);
 		}
 
 		mEditor.commit();
