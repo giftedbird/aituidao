@@ -14,7 +14,6 @@ import android.preference.PreferenceManager;
 
 import com.aituidao.android.config.Config;
 import com.aituidao.android.data.NewUrlAccessResponse;
-import com.aituidao.android.data.SrcAddrTailCheckResponse;
 import com.aituidao.android.helper.HttpClientHelper;
 import com.aituidao.android.receiver.NewUrlAccessReceiver;
 import com.alibaba.fastjson.JSON;
@@ -123,10 +122,10 @@ public class NewUrlAccessModel {
 						Config.DEFAULT_USER_AGENT, Config.NEW_URL_ACCESS_URL,
 						null);
 
-				SrcAddrTailCheckResponse response = null;
+				NewUrlAccessResponse response = null;
 				try {
 					response = JSON.parseObject(responseStr,
-							SrcAddrTailCheckResponse.class);
+							NewUrlAccessResponse.class);
 				} catch (Exception e) {
 				}
 
@@ -144,7 +143,7 @@ public class NewUrlAccessModel {
 				HttpClientHelper.requestStatusCode(mContext, userAgent, url,
 						postStr);
 			}
-		});
+		}).start();
 	}
 
 	private static final String ACCESS_URL = "access_url";
