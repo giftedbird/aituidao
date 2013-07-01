@@ -49,7 +49,7 @@ public class BookListActivity extends Activity {
 	}
 
 	private void initData() {
-		mBookListHelper = new BookListHelper(this);
+		mBookListHelper = new BookListHelper();
 		mBookListHelper
 				.setBookListHelperCB(new BookListHelper.BookListHelperCB() {
 					@Override

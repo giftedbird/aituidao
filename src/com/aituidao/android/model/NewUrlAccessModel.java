@@ -118,7 +118,7 @@ public class NewUrlAccessModel {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				String responseStr = HttpClientHelper.requestStr(mContext,
+				String responseStr = HttpClientHelper.requestStr(
 						Config.DEFAULT_USER_AGENT, Config.NEW_URL_ACCESS_URL,
 						null);
 
@@ -140,8 +140,7 @@ public class NewUrlAccessModel {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				HttpClientHelper.requestStatusCode(mContext, userAgent, url,
-						postStr);
+				HttpClientHelper.requestStatusCode(userAgent, url, postStr);
 			}
 		}).start();
 	}

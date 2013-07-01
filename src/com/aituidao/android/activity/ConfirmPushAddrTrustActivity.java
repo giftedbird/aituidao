@@ -68,7 +68,7 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	}
 
 	private void initData() {
-		mBookPushHelper = new BookPushHelper(this);
+		mBookPushHelper = new BookPushHelper();
 		mBookPushHelper
 				.setBookPushHelperCB(new BookPushHelper.BookPushHelperCB() {
 					@Override

@@ -3,7 +3,6 @@ package com.aituidao.android.helper;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -18,7 +17,6 @@ public class BookListHelper {
 	public static final int SORT_TYPE_TIME = BookListRequest.SORT_TYPE_TIME;
 	public static final int SORT_TYPE_HOT = BookListRequest.SORT_TYPE_HOT;
 
-	private Context mContext;
 	private BookListHelperCB mCB;
 	private int mBookListSortType = SORT_TYPE_TIME;
 	private long mPageNumber = 0;
@@ -97,10 +95,6 @@ public class BookListHelper {
 		public void loadMoreBookListDataError();
 	}
 
-	public BookListHelper(Context context) {
-		mContext = context.getApplicationContext();
-	}
-
 	public void setBookListHelperCB(BookListHelperCB cb) {
 		mCB = cb;
 	}
@@ -145,7 +139,7 @@ public class BookListHelper {
 		public void run() {
 			String postStr = JSON.toJSONString(new BookListRequest(mSortType,
 					mPageNo, Config.BOOK_LIST_COUNT));
-			String responseStr = HttpClientHelper.requestStr(mContext,
+			String responseStr = HttpClientHelper.requestStr(
 					Config.DEFAULT_USER_AGENT, Config.BOOK_LIST_URL, postStr);
 
 			BookListResponse response = null;

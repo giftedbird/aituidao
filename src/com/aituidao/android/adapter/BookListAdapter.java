@@ -60,7 +60,7 @@ public class BookListAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mPushSettingModel = PushSettingModel.getInstance(mActivity);
 
-		mBookPushHelper = new BookPushHelper(mActivity);
+		mBookPushHelper = new BookPushHelper();
 		mBookPushHelper
 				.setBookPushHelperCB(new BookPushHelper.BookPushHelperCB() {
 					@Override

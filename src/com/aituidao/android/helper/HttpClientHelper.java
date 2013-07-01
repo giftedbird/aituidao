@@ -7,15 +7,13 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 
-import android.content.Context;
 import android.net.http.AndroidHttpClient;
 import android.text.TextUtils;
 
 import com.aituidao.android.config.Config;
 
 public class HttpClientHelper {
-	public static String requestStr(Context context, String userAgent,
-			String url, String postStr) {
+	public static String requestStr(String userAgent, String url, String postStr) {
 		if (userAgent == null) {
 			userAgent = Config.DEFAULT_USER_AGENT;
 		}
@@ -24,7 +22,6 @@ public class HttpClientHelper {
 
 		if (Config.DEBUG) {
 			try {
-				// TODO
 				if (url.equals("1")) {
 					Thread.sleep(1000);
 					result = "{\"status\":1}";
@@ -62,8 +59,8 @@ public class HttpClientHelper {
 		return result;
 	}
 
-	public static int requestStatusCode(Context context, String userAgent,
-			String url, String postStr) {
+	public static int requestStatusCode(String userAgent, String url,
+			String postStr) {
 		if (userAgent == null) {
 			userAgent = Config.DEFAULT_USER_AGENT;
 		}
