@@ -18,4 +18,6 @@ public class Config {
 	public static final String DEFAULT_SRC_ADDR_TAIL = "@aituidao.com";
 
 	public static final String DEFAULT_USER_AGENT = "Android";
+
+	public static final String IMG_PATH = "/aituidao/android/image";
 }
