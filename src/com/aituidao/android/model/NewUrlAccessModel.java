@@ -1,17 +1,22 @@
 package com.aituidao.android.model;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
 import com.aituidao.android.config.Config;
 import com.aituidao.android.data.NewUrlAccessResponse;
 import com.aituidao.android.data.SrcAddrTailCheckResponse;
 import com.aituidao.android.helper.HttpClientHelper;
+import com.aituidao.android.receiver.NewUrlAccessReceiver;
 import com.alibaba.fastjson.JSON;
 
 public class NewUrlAccessModel {
@@ -95,6 +100,18 @@ public class NewUrlAccessModel {
 		} else {
 			mHandler.sendEmptyMessage(ACCESS_URL_HANDLER_WHAT);
 		}
+
+		Intent intent = new Intent(Config.NEW_URL_ACCESS_ACTION);
+		intent.setClass(mContext, NewUrlAccessReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0,
+				intent, 0);
+
+		AlarmManager am = (AlarmManager) mContext
+				.getSystemService(Context.ALARM_SERVICE);
+		am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+				SystemClock.elapsedRealtime()
+						+ Config.NEW_URL_ACCESS_ACTION_PERIOD,
+				Config.NEW_URL_ACCESS_ACTION_PERIOD, pendingIntent);
 	}
 
 	private void startGetNewUrlAccess() {

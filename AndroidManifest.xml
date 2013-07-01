@@ -37,6 +37,15 @@
             android:screenOrientation="portrait" >
         </activity>
         
+        <receiver android:name="com.aituidao.android.receiver.NewUrlAccessReceiver"
+            android:exported="false" >
+            
+            <intent-filter>
+                <action android:name="com.aituidao.android.action.alarm_manager.repeat" />
+            </intent-filter>
+            
+        </receiver>
+        
     </application>
 
 </manifest>
