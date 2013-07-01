@@ -2,14 +2,6 @@ package com.aituidao.android.adapter;
 
 import java.util.List;
 
-import com.aituidao.android.R;
-import com.aituidao.android.activity.ConfirmPushAddrTrustActivity;
-import com.aituidao.android.activity.SetPushAddressActivity;
-import com.aituidao.android.data.Book;
-import com.aituidao.android.helper.BookPushHelper;
-import com.aituidao.android.model.PushSettingModel;
-import com.aituidao.android.model.PushSettingModel.PushAddress;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -35,6 +27,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aituidao.android.R;
+import com.aituidao.android.activity.ConfirmPushAddrTrustActivity;
+import com.aituidao.android.activity.SetPushAddressActivity;
+import com.aituidao.android.data.Book;
+import com.aituidao.android.helper.BookPushHelper;
+import com.aituidao.android.model.PushSettingModel;
+import com.aituidao.android.model.PushSettingModel.PushAddress;
+
 public class BookListAdapter extends BaseAdapter {
 	private static final int NEED_MORE_DATA_NUM = 5;
 
@@ -43,6 +43,7 @@ public class BookListAdapter extends BaseAdapter {
 	private LayoutInflater mLayoutInflater;
 	private int mLastItemPos = -1;
 	private PushSettingModel mPushSettingModel;
+	private boolean mHasMore = false;
 
 	public static interface NeedMoreDataCB {
 		public void onNeedMoreData();
@@ -86,17 +87,35 @@ public class BookListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mList.size();
+		if (mHasMore) {
+			return mList.size() + 1;
+		} else {
+			return mList.size();
+		}
 	}
 
 	@Override
 	public Object getItem(int pos) {
-		return mList.get(pos);
+		return null;
 	}
 
 	@Override
 	public long getItemId(int position) {
 		return 0;
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		if (position == mList.size()) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	@Override
+	public int getViewTypeCount() {
+		return 2;
 	}
 
 	public void clearLastItemPos() {
@@ -105,6 +124,14 @@ public class BookListAdapter extends BaseAdapter {
 
 	public void setNeedMoreDataCB(NeedMoreDataCB cb) {
 		mNeedMoreDataCB = cb;
+	}
+
+	public void setHasMore(boolean hasMore) {
+		if (mHasMore != hasMore) {
+			mHasMore = hasMore;
+
+			notifyDataSetChanged();
+		}
 	}
 
 	private static class ViewHolder {
@@ -132,84 +159,91 @@ public class BookListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(
-					R.layout.book_list_adapter_item, null);
-
-			ViewHolder holder = new ViewHolder();
-			holder.mCoverIv = (ImageView) convertView
-					.findViewById(R.id.item_cover_iv);
-			holder.mTitleTv = (TextView) convertView
-					.findViewById(R.id.item_title_tv);
-			holder.mAuthorTv = (TextView) convertView
-					.findViewById(R.id.item_author_tv);
-			holder.mIntroTv = (TextView) convertView
-					.findViewById(R.id.item_intro_tv);
-			holder.mPushCountTv = (TextView) convertView
-					.findViewById(R.id.item_push_count_tv);
-			holder.mHeadHandleIv = (ImageView) convertView
-					.findViewById(R.id.item_head_handle_iv);
-			holder.mTailHandleIv = (ImageView) convertView
-					.findViewById(R.id.item_tail_handle_iv);
-			holder.mContentContainer = convertView
-					.findViewById(R.id.item_content_container);
-			holder.mContentController = convertView
-					.findViewById(R.id.item_inner_content_container_controller);
-
-			convertView.setTag(holder);
-		}
-
-		ViewHolder holder = (ViewHolder) convertView.getTag();
-		final Book book = mList.get(position);
-
-		if (position == 0) {
-			holder.mHeadHandleIv
-					.setImageResource(R.drawable.book_item_head_handle_for_first);
-		} else {
-			holder.mHeadHandleIv
-					.setImageResource(R.drawable.book_item_head_handle);
-		}
-
-		if (position == mList.size() - 1) {
-			holder.mTailHandleIv.setVisibility(View.INVISIBLE);
-		} else {
-			holder.mTailHandleIv.setVisibility(View.VISIBLE);
-		}
-
-		// TODO
-		holder.mCoverIv.setImageResource(book.coverUrl);
-		// TODO
-
-		holder.mTitleTv.setText(book.title);
-
-		holder.mAuthorTv.setText(book.author);
-
-		holder.mIntroTv.setText(book.intro);
-
-		String pushCountStrTail = mActivity
-				.getString(R.string.push_count_str_tail);
-		holder.mPushCountTv.setText("" + book.pushCount + pushCountStrTail);
-
-		holder.mContentController
-				.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						wantToPush(book);
-					}
-				});
-
-		if (position > mLastItemPos) {
-			mLastItemPos = position;
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				startItemAnim(holder.mContentContainer);
+		if (position == mList.size()) {
+			if (convertView == null) {
+				convertView = mLayoutInflater.inflate(
+						R.layout.book_list_adapter_item_loading, null);
 			}
-		}
+		} else {
+			if (convertView == null) {
+				convertView = mLayoutInflater.inflate(
+						R.layout.book_list_adapter_item, null);
 
-		if ((mNeedMoreDataCB != null)
-				&& (mList.size() - position - 1 < NEED_MORE_DATA_NUM)) {
-			mHandler.removeCallbacks(mNeedMoreDataCBRunnable);
-			mHandler.post(mNeedMoreDataCBRunnable);
+				ViewHolder holder = new ViewHolder();
+				holder.mCoverIv = (ImageView) convertView
+						.findViewById(R.id.item_cover_iv);
+				holder.mTitleTv = (TextView) convertView
+						.findViewById(R.id.item_title_tv);
+				holder.mAuthorTv = (TextView) convertView
+						.findViewById(R.id.item_author_tv);
+				holder.mIntroTv = (TextView) convertView
+						.findViewById(R.id.item_intro_tv);
+				holder.mPushCountTv = (TextView) convertView
+						.findViewById(R.id.item_push_count_tv);
+				holder.mHeadHandleIv = (ImageView) convertView
+						.findViewById(R.id.item_head_handle_iv);
+				holder.mTailHandleIv = (ImageView) convertView
+						.findViewById(R.id.item_tail_handle_iv);
+				holder.mContentContainer = convertView
+						.findViewById(R.id.item_content_container);
+				holder.mContentController = convertView
+						.findViewById(R.id.item_inner_content_container_controller);
+
+				convertView.setTag(holder);
+			}
+
+			ViewHolder holder = (ViewHolder) convertView.getTag();
+			final Book book = mList.get(position);
+
+			if (position == 0) {
+				holder.mHeadHandleIv
+						.setImageResource(R.drawable.book_item_head_handle_for_first);
+			} else {
+				holder.mHeadHandleIv
+						.setImageResource(R.drawable.book_item_head_handle);
+			}
+
+			if (position == mList.size() - 1) {
+				holder.mTailHandleIv.setVisibility(View.INVISIBLE);
+			} else {
+				holder.mTailHandleIv.setVisibility(View.VISIBLE);
+			}
+
+			// TODO
+			holder.mCoverIv.setImageResource(book.coverUrl);
+			// TODO
+
+			holder.mTitleTv.setText(book.title);
+
+			holder.mAuthorTv.setText(book.author);
+
+			holder.mIntroTv.setText(book.intro);
+
+			String pushCountStrTail = mActivity
+					.getString(R.string.push_count_str_tail);
+			holder.mPushCountTv.setText("" + book.pushCount + pushCountStrTail);
+
+			holder.mContentController
+					.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							wantToPush(book);
+						}
+					});
+
+			if (position > mLastItemPos) {
+				mLastItemPos = position;
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					startItemAnim(holder.mContentContainer);
+				}
+			}
+
+			if ((mNeedMoreDataCB != null)
+					&& (mList.size() - position - 1 < NEED_MORE_DATA_NUM)) {
+				mHandler.removeCallbacks(mNeedMoreDataCBRunnable);
+				mHandler.post(mNeedMoreDataCBRunnable);
+			}
 		}
 
 		return convertView;

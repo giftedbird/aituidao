@@ -11,6 +11,8 @@
     <string name="sort_type_release_label_for_hot">放开以获取最【热】图书…</string>
     <string name="sort_type_refreshing_label_for_hot">正在获取最【热】图书…</string>
     
+    <string name="book_list_getting_more">正在获取更多…</string>
+    
     <string name="set_push_address_activity_title">设置推送地址</string>
     <string name="set_push_address">请填写推送到的地址:</string>
     <string name="set_push_address_next_step">下一步</string>

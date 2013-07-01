@@ -66,6 +66,8 @@ public class BookListActivity extends Activity {
 
 						mListAdapter.clearLastItemPos();
 						mListAdapter.notifyDataSetChanged();
+
+						mListAdapter.setHasMore(mHasMore);
 					}
 
 					@Override
@@ -86,6 +88,8 @@ public class BookListActivity extends Activity {
 						mBookListData.addAll(data);
 
 						mListAdapter.notifyDataSetChanged();
+
+						mListAdapter.setHasMore(mHasMore);
 					}
 
 					@Override
@@ -116,6 +120,7 @@ public class BookListActivity extends Activity {
 				}
 			}
 		});
+		mListAdapter.setHasMore(mHasMore);
 
 		mBookListView.setAdapter(mListAdapter);
 
@@ -142,6 +147,8 @@ public class BookListActivity extends Activity {
 			mHasMore = false;
 			mBookListData.clear();
 			mListAdapter.notifyDataSetChanged();
+
+			mListAdapter.setHasMore(mHasMore);
 		}
 
 		mSortType = type;
