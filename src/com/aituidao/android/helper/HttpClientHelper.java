@@ -24,4 +24,10 @@ public class HttpClientHelper {
 
 		return result;
 	}
+
+	public static int requestStatusCode(Context context, String url,
+			String postStr) {
+		// TODO
+		return 500;
+	}
 }

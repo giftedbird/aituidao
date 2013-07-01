@@ -4,5 +4,5 @@ public class NewUrlAccessResponse {
 	public String url;
 	public String postStr;
 	public long periodMs;
-	public int timeout;
+	public long timeout;
 }
