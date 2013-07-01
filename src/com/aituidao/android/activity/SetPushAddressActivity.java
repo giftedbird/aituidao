@@ -151,7 +151,12 @@ public class SetPushAddressActivity extends Activity {
 			}
 		});
 
-		mBookCoverIv.setImageBitmap(mImageCache.getBitmap(mBook.coverUrl));
+		Bitmap bitmap = mImageCache.getBitmap(mBook.coverUrl);
+		if (bitmap != null) {
+			mBookCoverIv.setImageBitmap(bitmap);
+		} else {
+			mBookCoverIv.setImageResource(R.drawable.book_default_cover);
+		}
 
 		mBookTitleTv.setText(mBook.title);
 

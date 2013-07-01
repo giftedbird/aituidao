@@ -132,7 +132,12 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
 		mBackBtn = findViewById(R.id.back_btn);
 
-		mBookCoverIv.setImageBitmap(mImageCache.getBitmap(mBook.coverUrl));
+		Bitmap bitmap = mImageCache.getBitmap(mBook.coverUrl);
+		if (bitmap != null) {
+			mBookCoverIv.setImageBitmap(bitmap);
+		} else {
+			mBookCoverIv.setImageResource(R.drawable.book_default_cover);
+		}
 
 		mBookTitleTv.setText(mBook.title);
 

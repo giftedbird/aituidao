@@ -249,8 +249,12 @@ public class BookListAdapter extends BaseAdapter {
 				holder.mTailHandleIv.setVisibility(View.VISIBLE);
 			}
 
-			holder.mCoverIv
-					.setImageBitmap(mImageCache.getBitmap(book.coverUrl));
+			Bitmap bitmap = mImageCache.getBitmap(book.coverUrl);
+			if (bitmap != null) {
+				holder.mCoverIv.setImageBitmap(bitmap);
+			} else {
+				holder.mCoverIv.setImageResource(R.drawable.book_default_cover);
+			}
 
 			holder.mTitleTv.setText(book.title);
 
