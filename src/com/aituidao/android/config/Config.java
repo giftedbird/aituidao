@@ -20,4 +20,6 @@ public class Config {
 	public static final String DEFAULT_USER_AGENT = "Android";
 
 	public static final String IMG_PATH = "/aituidao/android/image";
+
+	public static final int IMG_DOWNLOAD_BUF_SIZE = 512;
 }
