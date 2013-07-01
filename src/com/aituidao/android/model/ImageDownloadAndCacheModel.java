@@ -153,6 +153,10 @@ public class ImageDownloadAndCacheModel {
 	}
 
 	public Bitmap getBitmapFromMem(String url) {
+		if (url == null) {
+			return null;
+		}
+
 		BitmapInfo info = mCache.get(url);
 		if (info == null) {
 			return null;
@@ -162,6 +166,10 @@ public class ImageDownloadAndCacheModel {
 	}
 
 	public Bitmap getBitmap(String url) {
+		if (url == null) {
+			return null;
+		}
+
 		Bitmap bitmap = getBitmapFromMem(url);
 		if (bitmap != null) {
 			return bitmap;

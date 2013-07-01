@@ -1,11 +1,8 @@
 package com.aituidao.android.activity;
 
-import com.aituidao.android.R;
-import com.aituidao.android.data.Book;
-import com.aituidao.android.model.PushSettingModel;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,6 +15,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.aituidao.android.R;
+import com.aituidao.android.data.Book;
+import com.aituidao.android.model.ImageDownloadAndCacheModel;
+import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
+import com.aituidao.android.model.PushSettingModel;
 
 public class SetPushAddressActivity extends Activity {
 	public static final String KEY_BOOK = "key_book";
@@ -37,6 +40,24 @@ public class SetPushAddressActivity extends Activity {
 	private Book mBook;
 	private String mAddrTailStr = "";
 
+	private ImageDownloadAndCacheModel mImageCache;
+
+	private GetBitmapCB mGetBitmapCB = new GetBitmapCB() {
+		@Override
+		public void onGetBitmapSuccess(String url, Bitmap bitmap) {
+			if (url.equals(mBook.coverUrl)) {
+				mBookCoverIv.setImageBitmap(bitmap);
+			}
+		}
+
+		@Override
+		public void onGetBitmapError(String url) {
+			if (url.equals(mBook.coverUrl)) {
+				mImageCache.getBitmap(mBook.coverUrl);
+			}
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +74,7 @@ public class SetPushAddressActivity extends Activity {
 			return;
 		}
 
+		initData();
 		initUi();
 	}
 
@@ -60,6 +82,18 @@ public class SetPushAddressActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putParcelable(KEY_BOOK, mBook);
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		mImageCache.removeGetBitmapCB(mGetBitmapCB);
+	}
+
+	private void initData() {
+		mImageCache = ImageDownloadAndCacheModel.getInstance(this);
+		mImageCache.addGetBitmapCB(mGetBitmapCB);
 	}
 
 	private void initUi() {
@@ -117,9 +151,7 @@ public class SetPushAddressActivity extends Activity {
 			}
 		});
 
-		// TODO
-		mBookCoverIv.setImageResource(mBook.coverUrl);
-		// TODO
+		mBookCoverIv.setImageBitmap(mImageCache.getBitmap(mBook.coverUrl));
 
 		mBookTitleTv.setText(mBook.title);
 

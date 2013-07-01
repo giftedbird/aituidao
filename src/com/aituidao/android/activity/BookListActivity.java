@@ -48,6 +48,13 @@ public class BookListActivity extends Activity {
 		NewUrlAccessModel.getInstance(this).checkAndStartNewUrlAccess();
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		mListAdapter.onDestroy();
+	}
+
 	private void initData() {
 		mBookListHelper = new BookListHelper();
 		mBookListHelper

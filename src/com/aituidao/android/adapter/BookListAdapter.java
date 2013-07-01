@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.os.Build;
@@ -32,6 +33,8 @@ import com.aituidao.android.activity.ConfirmPushAddrTrustActivity;
 import com.aituidao.android.activity.SetPushAddressActivity;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookPushHelper;
+import com.aituidao.android.model.ImageDownloadAndCacheModel;
+import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
 import com.aituidao.android.model.PushSettingModel;
 import com.aituidao.android.model.PushSettingModel.PushAddress;
 
@@ -52,6 +55,22 @@ public class BookListAdapter extends BaseAdapter {
 	private NeedMoreDataCB mNeedMoreDataCB;
 
 	private BookPushHelper mBookPushHelper;
+
+	private ImageDownloadAndCacheModel mImageCache;
+
+	private GetBitmapCB mGetBitmapCB = new GetBitmapCB() {
+		@Override
+		public void onGetBitmapSuccess(String url, Bitmap bitmap) {
+			if (containUrl(url)) {
+				BookListAdapter.this.notifyDataSetChanged();
+			}
+		}
+
+		@Override
+		public void onGetBitmapError(String url) {
+			// do nothing
+		}
+	};
 
 	public BookListAdapter(Activity activity, List<Book> list) {
 		mActivity = activity;
@@ -83,6 +102,9 @@ public class BookListAdapter extends BaseAdapter {
 								.show();
 					}
 				});
+
+		mImageCache = ImageDownloadAndCacheModel.getInstance(mActivity);
+		mImageCache.addGetBitmapCB(mGetBitmapCB);
 	}
 
 	@Override
@@ -118,6 +140,10 @@ public class BookListAdapter extends BaseAdapter {
 		return 2;
 	}
 
+	public void onDestroy() {
+		mImageCache.removeGetBitmapCB(mGetBitmapCB);
+	}
+
 	public void clearLastItemPos() {
 		mLastItemPos = -1;
 	}
@@ -132,6 +158,20 @@ public class BookListAdapter extends BaseAdapter {
 
 			notifyDataSetChanged();
 		}
+	}
+
+	private boolean containUrl(String url) {
+		if (url == null) {
+			return false;
+		}
+
+		for (Book book : mList) {
+			if (url.equals(book.coverUrl)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private static class ViewHolder {
@@ -209,9 +249,8 @@ public class BookListAdapter extends BaseAdapter {
 				holder.mTailHandleIv.setVisibility(View.VISIBLE);
 			}
 
-			// TODO
-			holder.mCoverIv.setImageResource(book.coverUrl);
-			// TODO
+			holder.mCoverIv
+					.setImageBitmap(mImageCache.getBitmap(book.coverUrl));
 
 			holder.mTitleTv.setText(book.title);
 

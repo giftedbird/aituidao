@@ -1,6 +1,7 @@
 package com.aituidao.android.activity;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import com.aituidao.android.R;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookPushHelper;
+import com.aituidao.android.model.ImageDownloadAndCacheModel;
+import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
 import com.aituidao.android.model.PushSettingModel;
 import com.aituidao.android.model.SrcAddrTailModel;
 
@@ -33,6 +36,24 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 	private View mBackBtn;
 
 	private BookPushHelper mBookPushHelper;
+
+	private ImageDownloadAndCacheModel mImageCache;
+
+	private GetBitmapCB mGetBitmapCB = new GetBitmapCB() {
+		@Override
+		public void onGetBitmapSuccess(String url, Bitmap bitmap) {
+			if (url.equals(mBook.coverUrl)) {
+				mBookCoverIv.setImageBitmap(bitmap);
+			}
+		}
+
+		@Override
+		public void onGetBitmapError(String url) {
+			if (url.equals(mBook.coverUrl)) {
+				mImageCache.getBitmap(mBook.coverUrl);
+			}
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +110,16 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 								Toast.LENGTH_SHORT).show();
 					}
 				});
+
+		mImageCache = ImageDownloadAndCacheModel.getInstance(this);
+		mImageCache.addGetBitmapCB(mGetBitmapCB);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		mImageCache.removeGetBitmapCB(mGetBitmapCB);
 	}
 
 	private void initUi() {
@@ -101,9 +132,7 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
 		mBackBtn = findViewById(R.id.back_btn);
 
-		// TODO
-		mBookCoverIv.setImageResource(mBook.coverUrl);
-		// TODO
+		mBookCoverIv.setImageBitmap(mImageCache.getBitmap(mBook.coverUrl));
 
 		mBookTitleTv.setText(mBook.title);
 

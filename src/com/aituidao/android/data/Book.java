@@ -8,8 +8,7 @@ public class Book implements Parcelable {
 	public String title;
 	public String author;
 	public String intro;
-	// TODO
-	public int coverUrl;
+	public String coverUrl;
 	public int pushCount;
 
 	public Book() {
@@ -20,8 +19,7 @@ public class Book implements Parcelable {
 		title = source.readString();
 		author = source.readString();
 		intro = source.readString();
-		// TODO
-		coverUrl = source.readInt();
+		coverUrl = source.readString();
 		pushCount = source.readInt();
 	}
 
@@ -36,8 +34,7 @@ public class Book implements Parcelable {
 		dest.writeString(title);
 		dest.writeString(author);
 		dest.writeString(intro);
-		// TODO
-		dest.writeInt(coverUrl);
+		dest.writeString(coverUrl);
 		dest.writeInt(pushCount);
 	}
 
