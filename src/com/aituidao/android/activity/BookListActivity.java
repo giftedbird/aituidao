@@ -67,7 +67,7 @@ public class BookListActivity extends BaseActivity {
 	}
 
 	private void initData() {
-		mBookListHelper = new BookListHelper();
+		mBookListHelper = new BookListHelper(this);
 		mBookListHelper
 				.setBookListHelperCB(new BookListHelper.BookListHelperCB() {
 					@Override
@@ -126,9 +126,6 @@ public class BookListActivity extends BaseActivity {
 					@Override
 					public void onRefresh(PullToRefreshBase refreshView) {
 						mBookListHelper.startRefreshBookListData(mSortType);
-
-						MobclickAgent.onEvent(BookListActivity.this,
-								"refreshBookList");
 					}
 				});
 
@@ -137,8 +134,7 @@ public class BookListActivity extends BaseActivity {
 			@Override
 			public void onNeedMoreData() {
 				if (mHasMore) {
-					mBookListHelper
-							.startLoadMoreBookListData(BookListActivity.this);
+					mBookListHelper.startLoadMoreBookListData();
 				}
 			}
 		});

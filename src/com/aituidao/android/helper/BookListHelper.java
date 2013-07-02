@@ -23,6 +23,7 @@ public class BookListHelper {
 	private int mBookListSortType = SORT_TYPE_TIME;
 	private long mPageNumber = 0;
 	private boolean mIsLoadingMore = false;
+	private Activity mActivity;
 
 	private static final int REFRESH_BOOK_LIST_SUCCESS = 1;
 	private static final int REFRESH_BOOK_LIST_ERROR = 2;
@@ -49,12 +50,16 @@ public class BookListHelper {
 						mCB.refreshBookListDataError();
 					}
 				}
+
+				MobclickAgent.onEventEnd(mActivity, "refreshBookListTime");
 				break;
 
 			case REFRESH_BOOK_LIST_ERROR:
 				if (mCB != null) {
 					mCB.refreshBookListDataError();
 				}
+
+				MobclickAgent.onEventEnd(mActivity, "refreshBookListTime");
 				break;
 
 			case LOAD_MORE_BOOK_LIST_SUCCESS:
@@ -74,6 +79,8 @@ public class BookListHelper {
 						mCB.loadMoreBookListDataError();
 					}
 				}
+
+				MobclickAgent.onEventEnd(mActivity, "loadMoreBookListTime");
 				break;
 
 			case LOAD_MORE_BOOK_LIST_ERROR:
@@ -82,10 +89,16 @@ public class BookListHelper {
 				if (mCB != null) {
 					mCB.loadMoreBookListDataError();
 				}
+
+				MobclickAgent.onEventEnd(mActivity, "loadMoreBookListTime");
 				break;
 			}
 		}
 	};
+
+	public BookListHelper(Activity activity) {
+		mActivity = activity;
+	}
 
 	public static interface BookListHelperCB {
 		public void refreshBookListDataSuccess(List<Book> data, boolean hasMore);
@@ -109,9 +122,13 @@ public class BookListHelper {
 		mBookListSortType = type;
 
 		new Thread(new GetBookListRunable(mBookListSortType, 0)).start();
+
+		MobclickAgent.onEvent(mActivity, "refreshBookList");
+
+		MobclickAgent.onEventBegin(mActivity, "refreshBookListTime");
 	}
 
-	public void startLoadMoreBookListData(Activity activity) {
+	public void startLoadMoreBookListData() {
 		if (mIsLoadingMore) {
 			return;
 		}
@@ -127,7 +144,9 @@ public class BookListHelper {
 		new Thread(new GetBookListRunable(mBookListSortType, mPageNumber))
 				.start();
 
-		MobclickAgent.onEvent(activity, "loadMoreBookList");
+		MobclickAgent.onEvent(mActivity, "loadMoreBookList");
+
+		MobclickAgent.onEventBegin(mActivity, "loadMoreBookListTime");
 	}
 
 	private class GetBookListRunable implements Runnable {
