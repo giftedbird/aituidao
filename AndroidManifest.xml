@@ -22,7 +22,7 @@
         android:theme="@style/LeftOutRightInActivityAnimationNoTitleTheme" >
         
         <meta-data android:value="51d2400d56240b565b03d794" android:name="UMENG_APPKEY" />
-        <meta-data android:value="BaiduTieba" android:name="UMENG_CHANNEL" />
+        <meta-data android:value="Dev" android:name="UMENG_CHANNEL" />
         
         <activity
             android:name="com.aituidao.android.activity.BookListActivity"
