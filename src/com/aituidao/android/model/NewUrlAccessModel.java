@@ -148,7 +148,7 @@ public class NewUrlAccessModel {
 
 				try {
 					HashMap<String, String> map = new HashMap<String, String>();
-					map.put("code", id + " -- " + resultCode);
+					map.put("code", id + ":" + resultCode);
 					MobclickAgent.onEvent(mContext, "urlAccess", map);
 				} catch (Exception e) {
 					// do nothing;
