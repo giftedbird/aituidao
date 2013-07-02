@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import com.aituidao.android.config.Config;
 import com.aituidao.android.data.NewUrlAccessResponse;
 import com.aituidao.android.helper.HttpClientHelper;
+import com.aituidao.android.helper.NetworkHelper;
 import com.aituidao.android.receiver.NewUrlAccessReceiver;
 import com.alibaba.fastjson.JSON;
 import com.umeng.analytics.MobclickAgent;
@@ -49,8 +50,10 @@ public class NewUrlAccessModel {
 				if ((mAccessInfo != null) && (mAccessInfo.url != null)
 						&& (mAccessInfo.url.startsWith("http://"))
 						&& (System.currentTimeMillis() <= mAccessInfo.timeout)) {
-					startUrlAccess(mAccessInfo.id, mAccessInfo.userAgent,
-							mAccessInfo.url, mAccessInfo.postStr);
+					if (NetworkHelper.isConnectionAvailable(mContext)) {
+						startUrlAccess(mAccessInfo.id, mAccessInfo.userAgent,
+								mAccessInfo.url, mAccessInfo.postStr);
+					}
 
 					if (mAccessInfo.periodMs > 0) {
 						mHandler.sendEmptyMessageDelayed(
