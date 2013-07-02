@@ -11,6 +11,7 @@ import android.widget.AbsListView.OnScrollListener;
 
 import com.aituidao.android.R;
 import com.aituidao.android.adapter.BookListAdapter;
+import com.aituidao.android.config.Config;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
 import com.aituidao.android.model.NewUrlAccessModel;
@@ -61,9 +62,11 @@ public class BookListActivity extends BaseActivity {
 	}
 
 	private void initMeng() {
-		com.umeng.common.Log.LOG = false;
-		MobclickAgent.setDebugMode(false);
+		com.umeng.common.Log.LOG = Config.DEBUG;
+		MobclickAgent.setDebugMode(Config.DEBUG);
 		MobclickAgent.setSessionContinueMillis(10000);
+
+		MobclickAgent.updateOnlineConfig(this);
 	}
 
 	private void initData() {
