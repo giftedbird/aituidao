@@ -37,7 +37,7 @@ public class BookListActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book_list);
 
-		initMeng();
+		initUMeng();
 
 		initData();
 		initUi();
@@ -61,7 +61,7 @@ public class BookListActivity extends BaseActivity {
 		mListAdapter.onDestroy();
 	}
 
-	private void initMeng() {
+	private void initUMeng() {
 		com.umeng.common.Log.LOG = Config.DEBUG;
 		MobclickAgent.setDebugMode(Config.DEBUG);
 		MobclickAgent.setSessionContinueMillis(10000);
