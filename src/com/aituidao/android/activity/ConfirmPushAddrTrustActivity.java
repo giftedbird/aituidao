@@ -1,6 +1,7 @@
 package com.aituidao.android.activity;
 
-import android.app.Activity;
+import java.util.HashMap;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,8 +17,9 @@ import com.aituidao.android.model.ImageDownloadAndCacheModel;
 import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
 import com.aituidao.android.model.PushSettingModel;
 import com.aituidao.android.model.SrcAddrTailModel;
+import com.umeng.analytics.MobclickAgent;
 
-public class ConfirmPushAddrTrustActivity extends Activity {
+public class ConfirmPushAddrTrustActivity extends BaseActivity {
 	public static final String KEY_BOOK = "key_book";
 	public static final String KEY_ADDR_HEAD = "key_addr_head";
 	public static final String KEY_ADDR_TAIL = "key_addr_tail";
@@ -157,6 +159,11 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 
 				startToPushBook();
 
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("dest", "push");
+				MobclickAgent.onEvent(ConfirmPushAddrTrustActivity.this,
+						"confirmSourceForward", map);
+
 				finish();
 			}
 		});
@@ -164,6 +171,11 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		mLaterSetTrustBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("dest", "delay");
+				MobclickAgent.onEvent(ConfirmPushAddrTrustActivity.this,
+						"confirmSourceForward", map);
+
 				finish();
 			}
 		});
@@ -171,6 +183,11 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 		mBackBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("dest", "delay");
+				MobclickAgent.onEvent(ConfirmPushAddrTrustActivity.this,
+						"confirmSourceForward", map);
+
 				finish();
 			}
 		});
@@ -183,5 +200,7 @@ public class ConfirmPushAddrTrustActivity extends Activity {
 						mBook.title), Toast.LENGTH_SHORT).show();
 
 		mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, mBook);
+
+		MobclickAgent.onEvent(this, "pushCount");
 	}
 }

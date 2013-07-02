@@ -3,6 +3,7 @@ package com.aituidao.android.helper;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -12,6 +13,7 @@ import com.aituidao.android.data.Book;
 import com.aituidao.android.data.BookListRequest;
 import com.aituidao.android.data.BookListResponse;
 import com.alibaba.fastjson.JSON;
+import com.umeng.analytics.MobclickAgent;
 
 public class BookListHelper {
 	public static final int SORT_TYPE_TIME = BookListRequest.SORT_TYPE_TIME;
@@ -109,7 +111,7 @@ public class BookListHelper {
 		new Thread(new GetBookListRunable(mBookListSortType, 0)).start();
 	}
 
-	public void startLoadMoreBookListData() {
+	public void startLoadMoreBookListData(Activity activity) {
 		if (mIsLoadingMore) {
 			return;
 		}
@@ -124,6 +126,8 @@ public class BookListHelper {
 
 		new Thread(new GetBookListRunable(mBookListSortType, mPageNumber))
 				.start();
+
+		MobclickAgent.onEvent(activity, "loadMoreBookList");
 	}
 
 	private class GetBookListRunable implements Runnable {

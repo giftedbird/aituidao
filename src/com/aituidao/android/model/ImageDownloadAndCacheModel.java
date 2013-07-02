@@ -55,7 +55,7 @@ public class ImageDownloadAndCacheModel {
 	private String mImageFolderPath;
 
 	private ExecutorService mLoadingEs = Executors.newSingleThreadExecutor();
-	private ExecutorService mDownloadingEs = Executors.newCachedThreadPool();
+	private ExecutorService mDownloadingEs = Executors.newFixedThreadPool(3);
 
 	private static final int GOT_FROM_NETWORK = 1;
 	private static final int GOT_FROM_LOCAL = 2;

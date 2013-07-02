@@ -1,9 +1,9 @@
 package com.aituidao.android.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
@@ -18,8 +18,9 @@ import com.aituidao.android.model.SrcAddrTailModel;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.umeng.analytics.MobclickAgent;
 
-public class BookListActivity extends Activity {
+public class BookListActivity extends BaseActivity {
 	private PullToRefreshListView mBookListView;
 	private BookListHelper mBookListHelper;
 	private List<Book> mBookListData = new ArrayList<Book>();
@@ -34,6 +35,8 @@ public class BookListActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book_list);
+
+		initMeng();
 
 		initData();
 		initUi();
@@ -55,6 +58,12 @@ public class BookListActivity extends Activity {
 		super.onDestroy();
 
 		mListAdapter.onDestroy();
+	}
+
+	private void initMeng() {
+		com.umeng.common.Log.LOG = false;
+		MobclickAgent.setDebugMode(false);
+		MobclickAgent.setSessionContinueMillis(10000);
 	}
 
 	private void initData() {
@@ -117,6 +126,9 @@ public class BookListActivity extends Activity {
 					@Override
 					public void onRefresh(PullToRefreshBase refreshView) {
 						mBookListHelper.startRefreshBookListData(mSortType);
+
+						MobclickAgent.onEvent(BookListActivity.this,
+								"refreshBookList");
 					}
 				});
 
@@ -125,7 +137,8 @@ public class BookListActivity extends Activity {
 			@Override
 			public void onNeedMoreData() {
 				if (mHasMore) {
-					mBookListHelper.startLoadMoreBookListData();
+					mBookListHelper
+							.startLoadMoreBookListData(BookListActivity.this);
 				}
 			}
 		});
@@ -164,6 +177,11 @@ public class BookListActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				startRefreshBySortType(BookListHelper.SORT_TYPE_HOT);
+
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("sortType", "hot");
+				MobclickAgent.onEvent(BookListActivity.this, "switchSortType",
+						map);
 			}
 		});
 
@@ -171,6 +189,11 @@ public class BookListActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				startRefreshBySortType(BookListHelper.SORT_TYPE_TIME);
+
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("sortType", "time");
+				MobclickAgent.onEvent(BookListActivity.this, "switchSortType",
+						map);
 			}
 		});
 	}

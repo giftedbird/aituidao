@@ -37,6 +37,7 @@ import com.aituidao.android.model.ImageDownloadAndCacheModel;
 import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
 import com.aituidao.android.model.PushSettingModel;
 import com.aituidao.android.model.PushSettingModel.PushAddress;
+import com.umeng.analytics.MobclickAgent;
 
 public class BookListAdapter extends BaseAdapter {
 	private static final int NEED_MORE_DATA_NUM = 5;
@@ -352,6 +353,9 @@ public class BookListAdapter extends BaseAdapter {
 									}
 								} else {
 									startAddNewPushAddress(book);
+
+									MobclickAgent.onEvent(mActivity,
+											"otherAccount");
 								}
 
 								dialog.dismiss();
@@ -377,6 +381,8 @@ public class BookListAdapter extends BaseAdapter {
 						"####", book.title), Toast.LENGTH_SHORT).show();
 
 		mBookPushHelper.startToPushBook(addrHead, addrTail, book);
+
+		MobclickAgent.onEvent(mActivity, "pushCount");
 	}
 
 	private void startItemAnim(final View view) {

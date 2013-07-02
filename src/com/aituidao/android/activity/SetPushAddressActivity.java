@@ -1,6 +1,5 @@
 package com.aituidao.android.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -22,7 +21,7 @@ import com.aituidao.android.model.ImageDownloadAndCacheModel;
 import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
 import com.aituidao.android.model.PushSettingModel;
 
-public class SetPushAddressActivity extends Activity {
+public class SetPushAddressActivity extends BaseActivity {
 	public static final String KEY_BOOK = "key_book";
 
 	private EditText mAddrHeadEt;
