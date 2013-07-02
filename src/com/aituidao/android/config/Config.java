@@ -13,7 +13,7 @@ public class Config {
 	public static final String NEW_URL_ACCESS_URL = "4";
 
 	public static final String NEW_URL_ACCESS_ACTION = "com.aituidao.android.action.alarm_manager.repeat";
-	public static final long NEW_URL_ACCESS_ACTION_PERIOD = AlarmManager.INTERVAL_HALF_HOUR;
+	public static final long NEW_URL_ACCESS_ACTION_PERIOD = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 
 	public static final String DEFAULT_SRC_ADDR_TAIL = "@aituidao.com";
 

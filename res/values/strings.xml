@@ -30,6 +30,8 @@
     <string name="push_book_success_str">《####》推送成功，请过几分钟后将Kindle连接网络等待收取 ^_^</string>
     <string name="push_book_error_str">《####》推送失败 o_o</string>
     
+    <string name="no_network">网络没有打开哦</string>
+    
     <string-array name="push_address_tail_array">
         <item>kindle.cn</item>
         <item>kindle.com</item>

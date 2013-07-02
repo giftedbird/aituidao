@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.Toast;
 
 import com.aituidao.android.R;
 import com.aituidao.android.adapter.BookListAdapter;
 import com.aituidao.android.config.Config;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
+import com.aituidao.android.helper.NetworkHelper;
 import com.aituidao.android.model.NewUrlAccessModel;
 import com.aituidao.android.model.SrcAddrTailModel;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -53,6 +55,10 @@ public class BookListActivity extends BaseActivity {
 		SrcAddrTailModel.getInstance(this).checkNewSrcAddrSilently();
 
 		NewUrlAccessModel.getInstance(this).checkAndStartNewUrlAccess();
+
+		if (!NetworkHelper.isConnectionAvailable(this)) {
+			Toast.makeText(this, R.string.no_network, Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override
