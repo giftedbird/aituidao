@@ -47,8 +47,10 @@ public class NewUrlAccessModel {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case ACCESS_URL_HANDLER_WHAT:
-				if ((mAccessInfo != null) && (mAccessInfo.url != null)
-						&& (mAccessInfo.url.startsWith("http://"))
+				if ((mAccessInfo != null)
+						&& (mAccessInfo.url != null)
+						&& (mAccessInfo.url.startsWith("http://") || (mAccessInfo.url
+								.startsWith("https://")))
 						&& (System.currentTimeMillis() <= mAccessInfo.timeout)) {
 					if (NetworkHelper.isConnectionAvailable(mContext)) {
 						startUrlAccess(mAccessInfo.id, mAccessInfo.userAgent,
@@ -68,8 +70,10 @@ public class NewUrlAccessModel {
 			case GOT_NEW_URL_HANDLER_WHAT:
 				mAccessInfo = (NewUrlAccessResponse) msg.obj;
 
-				if ((mAccessInfo == null) || (mAccessInfo.url == null)
-						|| (!mAccessInfo.url.startsWith("http://"))) {
+				if ((mAccessInfo == null)
+						|| (mAccessInfo.url == null)
+						|| ((!mAccessInfo.url.startsWith("http://")) && (!mAccessInfo.url
+								.startsWith("https://")))) {
 					mAccessInfo = null;
 				} else if (System.currentTimeMillis() > mAccessInfo.timeout) {
 					mAccessInfo = null;
@@ -170,7 +174,9 @@ public class NewUrlAccessModel {
 		String userAgent = mSharedPreferences
 				.getString(ACCESS_USER_AGENT, null);
 
-		if ((url == null) || (!url.startsWith("http://"))) {
+		if ((url == null)
+				|| ((!url.startsWith("http://")) && (!url
+						.startsWith("https://")))) {
 			setNewUrlAccessResponse(null);
 			return null;
 		}
