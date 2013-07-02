@@ -22,4 +22,8 @@ public class Config {
 	public static final String IMG_PATH = "/aituidao/android/image";
 
 	public static final int IMG_DOWNLOAD_BUF_SIZE = 512;
+
+	public static final String WHY_NEED_PUSH_ADDR_URL = "http://www.amazon.cn/gp/help/customer/display.html?nodeId=200843440#s2kemail";
+
+	public static final String WHY_NEED_TRUST_ADDR_URL = "http://www.amazon.cn/gp/help/customer/display.html?nodeId=200843440#approvefrom";
 }
