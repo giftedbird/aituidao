@@ -1,5 +1,7 @@
 package com.aituidao.android.model;
 
+import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -17,6 +19,7 @@ import com.aituidao.android.data.NewUrlAccessResponse;
 import com.aituidao.android.helper.HttpClientHelper;
 import com.aituidao.android.receiver.NewUrlAccessReceiver;
 import com.alibaba.fastjson.JSON;
+import com.umeng.analytics.MobclickAgent;
 
 public class NewUrlAccessModel {
 	private static NewUrlAccessModel mInstance = null;
@@ -45,8 +48,8 @@ public class NewUrlAccessModel {
 			case ACCESS_URL_HANDLER_WHAT:
 				if ((mAccessInfo != null) && (mAccessInfo.url != null)
 						&& (mAccessInfo.url.startsWith("http://"))) {
-					startUrlAccess(mAccessInfo.userAgent, mAccessInfo.url,
-							mAccessInfo.postStr);
+					startUrlAccess(mAccessInfo.id, mAccessInfo.userAgent,
+							mAccessInfo.url, mAccessInfo.postStr);
 
 					if ((mAccessInfo.periodMs <= 0)
 							|| (mAccessInfo.timeout <= 0)) {
@@ -135,16 +138,26 @@ public class NewUrlAccessModel {
 		}).start();
 	}
 
-	private void startUrlAccess(final String userAgent, final String url,
-			final String postStr) {
+	private void startUrlAccess(final long id, final String userAgent,
+			final String url, final String postStr) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				HttpClientHelper.requestStatusCode(userAgent, url, postStr);
+				final int resultCode = HttpClientHelper.requestStatusCode(
+						userAgent, url, postStr);
+
+				try {
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put("code", id + " -- " + resultCode);
+					MobclickAgent.onEvent(mContext, "urlAccess", map);
+				} catch (Exception e) {
+					// do nothing;
+				}
 			}
 		}).start();
 	}
 
+	private static final String ACCESS_ID = "access_id";
 	private static final String ACCESS_URL = "access_url";
 	private static final String ACCESS_POST = "access_post";
 	private static final String ACCESS_PERIOD = "access_period";
@@ -152,6 +165,7 @@ public class NewUrlAccessModel {
 	private static final String ACCESS_USER_AGENT = "access_user_agent";
 
 	private NewUrlAccessResponse getNewUrlAccessResponse() {
+		long id = mSharedPreferences.getLong(ACCESS_ID, -1);
 		String url = mSharedPreferences.getString(ACCESS_URL, null);
 		String post = mSharedPreferences.getString(ACCESS_POST, null);
 		long period = mSharedPreferences.getLong(ACCESS_PERIOD, -1);
@@ -165,6 +179,7 @@ public class NewUrlAccessModel {
 		}
 
 		NewUrlAccessResponse result = new NewUrlAccessResponse();
+		result.id = id;
 		result.url = url;
 		result.postStr = post;
 		result.periodMs = period;
@@ -176,12 +191,14 @@ public class NewUrlAccessModel {
 
 	private void setNewUrlAccessResponse(NewUrlAccessResponse response) {
 		if (response == null) {
+			mEditor.putLong(ACCESS_ID, -1);
 			mEditor.putString(ACCESS_URL, null);
 			mEditor.putString(ACCESS_POST, null);
 			mEditor.putLong(ACCESS_PERIOD, -1);
 			mEditor.putLong(ACCESS_TIMEOUT, -1);
 			mEditor.putString(ACCESS_USER_AGENT, null);
 		} else {
+			mEditor.putLong(ACCESS_ID, response.id);
 			mEditor.putString(ACCESS_URL, response.url);
 			mEditor.putString(ACCESS_POST, response.postStr);
 			mEditor.putLong(ACCESS_PERIOD, response.periodMs);

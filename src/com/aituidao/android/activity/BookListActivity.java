@@ -20,6 +20,7 @@ import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 public class BookListActivity extends BaseActivity {
 	private PullToRefreshListView mBookListView;
@@ -67,6 +68,8 @@ public class BookListActivity extends BaseActivity {
 		MobclickAgent.setSessionContinueMillis(10000);
 
 		MobclickAgent.updateOnlineConfig(this);
+
+		UmengUpdateAgent.update(this);
 	}
 
 	private void initData() {

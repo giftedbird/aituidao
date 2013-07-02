@@ -59,6 +59,7 @@
 无。该请求没有数据要传递，不含post数据
 --返回的json结构
 {
+    "id"  long  某个配置的唯一id
     "url"  String  需要访问的url。如果没有需求，那么这个字段可以不含有或者为null
     "postStr"  String  访问url要带的post数据字符串
     "periodMs"  long  访问上面url的周期/时间间隔，毫秒为单位
