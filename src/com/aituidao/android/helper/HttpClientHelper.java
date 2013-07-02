@@ -75,6 +75,13 @@ public class HttpClientHelper {
 				} else if (url.equals("3")) {
 					Thread.sleep(1000);
 					result = "{\"status\":1,\"hasNew\":0}";
+				} else if (url.equals("4")) {
+					// NewUrlAccessResponse r = new NewUrlAccessResponse();
+					// r.id = 100;
+					// r.periodMs = 2000;
+					// r.timeout = 9999999999999L;
+					// r.url = "http://www.amazon.cn";
+					// result = JSON.toJSONString(r);
 				}
 			} catch (Exception e) {
 				// do nothing
