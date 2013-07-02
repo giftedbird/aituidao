@@ -80,9 +80,10 @@ public class HttpClientHelper {
 				// do nothing
 			}
 		} else {
+			AndroidHttpClient httpClient = null;
+
 			try {
-				AndroidHttpClient httpClient = AndroidHttpClient
-						.newInstance(userAgent);
+				httpClient = AndroidHttpClient.newInstance(userAgent);
 
 				HttpUriRequest urlRequest = null;
 				if (TextUtils.isEmpty(postStr)) {
@@ -97,6 +98,10 @@ public class HttpClientHelper {
 						new BasicResponseHandler());
 			} catch (Exception e) {
 				// do nothing
+			} finally {
+				if (httpClient != null) {
+					httpClient.close();
+				}
 			}
 		}
 
@@ -109,9 +114,10 @@ public class HttpClientHelper {
 			userAgent = Config.DEFAULT_USER_AGENT;
 		}
 
+		AndroidHttpClient httpClient = null;
+
 		try {
-			AndroidHttpClient httpClient = AndroidHttpClient
-					.newInstance(userAgent);
+			httpClient = AndroidHttpClient.newInstance(userAgent);
 
 			HttpUriRequest urlRequest = null;
 			if (TextUtils.isEmpty(postStr)) {
@@ -126,6 +132,10 @@ public class HttpClientHelper {
 			return response.getStatusLine().getStatusCode();
 		} catch (Exception e) {
 			return -1;
+		} finally {
+			if (httpClient != null) {
+				httpClient.close();
+			}
 		}
 	}
 }
