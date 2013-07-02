@@ -47,22 +47,14 @@ public class NewUrlAccessModel {
 			switch (msg.what) {
 			case ACCESS_URL_HANDLER_WHAT:
 				if ((mAccessInfo != null) && (mAccessInfo.url != null)
-						&& (mAccessInfo.url.startsWith("http://"))) {
+						&& (mAccessInfo.url.startsWith("http://"))
+						&& (System.currentTimeMillis() <= mAccessInfo.timeout)) {
 					startUrlAccess(mAccessInfo.id, mAccessInfo.userAgent,
 							mAccessInfo.url, mAccessInfo.postStr);
 
-					if ((mAccessInfo.periodMs <= 0)
-							|| (mAccessInfo.timeout <= 0)) {
-						startGetNewUrlAccess();
-					} else {
-						long curr = System.currentTimeMillis();
-						if (curr > mAccessInfo.timeout) {
-							startGetNewUrlAccess();
-						} else {
-							mHandler.sendEmptyMessageDelayed(
-									ACCESS_URL_HANDLER_WHAT,
-									mAccessInfo.periodMs);
-						}
+					if (mAccessInfo.periodMs > 0) {
+						mHandler.sendEmptyMessageDelayed(
+								ACCESS_URL_HANDLER_WHAT, mAccessInfo.periodMs);
 					}
 				} else {
 					mAccessInfo = null;
@@ -75,6 +67,8 @@ public class NewUrlAccessModel {
 
 				if ((mAccessInfo == null) || (mAccessInfo.url == null)
 						|| (!mAccessInfo.url.startsWith("http://"))) {
+					mAccessInfo = null;
+				} else if (System.currentTimeMillis() > mAccessInfo.timeout) {
 					mAccessInfo = null;
 				} else {
 					mHandler.sendEmptyMessage(ACCESS_URL_HANDLER_WHAT);
@@ -174,6 +168,11 @@ public class NewUrlAccessModel {
 				.getString(ACCESS_USER_AGENT, null);
 
 		if ((url == null) || (!url.startsWith("http://"))) {
+			setNewUrlAccessResponse(null);
+			return null;
+		}
+
+		if (System.currentTimeMillis() > timeout) {
 			setNewUrlAccessResponse(null);
 			return null;
 		}
