@@ -47,6 +47,7 @@ public class BookListAdapter extends BaseAdapter {
 	private int mLastItemPos = -1;
 	private PushSettingModel mPushSettingModel;
 	private boolean mHasMore = false;
+	private boolean mIsFling = false;
 
 	public static interface NeedMoreDataCB {
 		public void onNeedMoreData();
@@ -160,6 +161,13 @@ public class BookListAdapter extends BaseAdapter {
 		}
 	}
 
+	public void setIsFling(boolean isFling) {
+		if (mIsFling != isFling) {
+			mIsFling = isFling;
+			notifyDataSetChanged();
+		}
+	}
+
 	private boolean containUrl(String url) {
 		if (url == null) {
 			return false;
@@ -249,7 +257,13 @@ public class BookListAdapter extends BaseAdapter {
 				holder.mTailHandleIv.setVisibility(View.VISIBLE);
 			}
 
-			Bitmap bitmap = mImageCache.getBitmap(book.coverUrl);
+			Bitmap bitmap;
+			if (mIsFling) {
+				bitmap = mImageCache.getBitmapFromMem(book.coverUrl);
+			} else {
+				bitmap = mImageCache.getBitmap(book.coverUrl);
+			}
+
 			if (bitmap != null) {
 				holder.mCoverIv.setImageBitmap(bitmap);
 			} else {

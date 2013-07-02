@@ -6,6 +6,8 @@ import java.util.List;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.aituidao.android.R;
 import com.aituidao.android.adapter.BookListAdapter;
@@ -130,6 +132,30 @@ public class BookListActivity extends Activity {
 		mListAdapter.setHasMore(mHasMore);
 
 		mBookListView.setAdapter(mListAdapter);
+		mBookListView.setOnScrollListener(new OnScrollListener() {
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// do nothing
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				switch (scrollState) {
+				case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
+					mListAdapter.setIsFling(true);
+					break;
+
+				case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+					mListAdapter.setIsFling(false);
+					break;
+
+				case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+					mListAdapter.setIsFling(true);
+					break;
+				}
+			}
+		});
 
 		mSortByHotBtn = findViewById(R.id.book_sort_by_hot_iv);
 		mSortByTimeBtn = findViewById(R.id.book_sort_by_time_iv);
