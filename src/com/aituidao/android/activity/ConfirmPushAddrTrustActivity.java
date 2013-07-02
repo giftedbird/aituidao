@@ -2,7 +2,9 @@ package com.aituidao.android.activity;
 
 import java.util.HashMap;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aituidao.android.R;
+import com.aituidao.android.config.Config;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookPushHelper;
 import com.aituidao.android.model.ImageDownloadAndCacheModel;
@@ -36,6 +39,7 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 	private TextView mBookAuthorTv;
 	private TextView mBookIntroTv;
 	private View mBackBtn;
+	private View mWhyBtn;
 
 	private BookPushHelper mBookPushHelper;
 
@@ -133,6 +137,7 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 		mBookAuthorTv = (TextView) findViewById(R.id.item_author_tv);
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
 		mBackBtn = findViewById(R.id.back_btn);
+		mWhyBtn = findViewById(R.id.why_need_trust_addr_btn);
 
 		Bitmap bitmap = mImageCache.getBitmap(mBook.coverUrl);
 		if (bitmap != null) {
@@ -189,6 +194,25 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 						"confirmSourceForward", map);
 
 				finish();
+			}
+		});
+
+		mWhyBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(Config.WHY_NEED_TRUST_ADDR_URL));
+				try {
+					startActivity(Intent.createChooser(intent,
+							getString(R.string.which_app_open_help_doc)));
+				} catch (Exception e) {
+					// do nothing
+				}
+
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("what", "add trust list");
+				MobclickAgent.onEvent(ConfirmPushAddrTrustActivity.this,
+						"needHelp", map);
 			}
 		});
 	}

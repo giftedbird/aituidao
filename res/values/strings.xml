@@ -17,13 +17,13 @@
     <string name="set_push_address">请填写推送到的地址:</string>
     <string name="set_push_address_next_step">下一步</string>
     <string name="please_input_addr">还没有输入地址哦 -_-</string>
-    <string name="why_need_push_addr"><u>什么是推送地址</u></string>
+    <string name="why_need_push_addr"><u>什么是推送地址？</u></string>
     
     <string name="push_address_trust_activity_title">加入信任列表</string>
     <string name="set_address_trust">推送之前，您需要先登录Amazon网站并将下面的地址加入到您的Kindle信任列表中:</string>
     <string name="has_set_trust">已去设置了，现在推送</string>
     <string name="later_set_trust">稍后再设置</string>
-    <string name="why_need_trust_addr"><u>什么是信任列表</u></string>
+    <string name="why_need_trust_addr"><u>什么是信任列表？</u></string>
     
     <string name="push_addr_choice_dlg_title">选择推送地址</string>
     <string name="push_addr_choice_dlg_new_addr">其它推送地址&#8230;</string>
@@ -33,6 +33,8 @@
     <string name="push_book_error_str">《####》推送失败 o_o</string>
     
     <string name="no_network">网络没有打开哦</string>
+    
+    <string name="which_app_open_help_doc">使用哪个应用打开帮助文档？</string>
     
     <string-array name="push_address_tail_array">
         <item>kindle.cn</item>

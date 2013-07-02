@@ -1,7 +1,10 @@
 package com.aituidao.android.activity;
 
+import java.util.HashMap;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,10 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aituidao.android.R;
+import com.aituidao.android.config.Config;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.model.ImageDownloadAndCacheModel;
 import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
 import com.aituidao.android.model.PushSettingModel;
+import com.umeng.analytics.MobclickAgent;
 
 public class SetPushAddressActivity extends BaseActivity {
 	public static final String KEY_BOOK = "key_book";
@@ -33,6 +38,7 @@ public class SetPushAddressActivity extends BaseActivity {
 	private TextView mBookIntroTv;
 	private TextView mAddrHintTv;
 	private View mBackBtn;
+	private View mWhyBtn;
 
 	private ArrayAdapter<CharSequence> mSpinnerAdapter;
 
@@ -105,6 +111,7 @@ public class SetPushAddressActivity extends BaseActivity {
 		mBookIntroTv = (TextView) findViewById(R.id.item_intro_tv);
 		mAddrHintTv = (TextView) findViewById(R.id.addr_hint_tv);
 		mBackBtn = findViewById(R.id.back_btn);
+		mWhyBtn = findViewById(R.id.why_need_push_addr_btn);
 
 		mAddrTailSpinner
 				.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -185,6 +192,25 @@ public class SetPushAddressActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				finish();
+			}
+		});
+
+		mWhyBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(Config.WHY_NEED_PUSH_ADDR_URL));
+				try {
+					startActivity(Intent.createChooser(intent,
+							getString(R.string.which_app_open_help_doc)));
+				} catch (Exception e) {
+					// do nothing
+				}
+
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("what", "set push address");
+				MobclickAgent.onEvent(SetPushAddressActivity.this, "needHelp",
+						map);
 			}
 		});
 	}
