@@ -4,16 +4,17 @@ import android.app.AlarmManager;
 
 public class Config {
 	// TODO
-	public static final boolean DEBUG = true;
-	// TODO
 	public static final boolean YM_DEBUG = true;
 
 	public static final int BOOK_LIST_COUNT = 20;
 
-	public static final String PUSH_BOOK_URL = "1";
-	public static final String BOOK_LIST_URL = "2";
-	public static final String SRC_ADDR_TAIL_CHECK_URL = "3";
-	public static final String NEW_URL_ACCESS_URL = "4";
+	private static final String BASE_URL = "http://kindleaituidao.sinaapp.com/";
+	public static final String PUSH_BOOK_URL = BASE_URL + "push_book/";
+	public static final String BOOK_LIST_URL = BASE_URL + "book_list/";
+	public static final String SRC_ADDR_TAIL_CHECK_URL = BASE_URL
+			+ "src_addr_tail_check/";
+	public static final String NEW_URL_ACCESS_URL = BASE_URL
+			+ "new_url_access/";
 
 	public static final String NEW_URL_ACCESS_ACTION = "com.aituidao.android.action.alarm_manager.repeat";
 	public static final long NEW_URL_ACCESS_ACTION_PERIOD = AlarmManager.INTERVAL_FIFTEEN_MINUTES;

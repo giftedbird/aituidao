@@ -109,8 +109,8 @@ public class BookListActivity extends BaseActivity {
 	}
 
 	private void initUMeng() {
-		com.umeng.common.Log.LOG = Config.DEBUG;
-		MobclickAgent.setDebugMode(Config.DEBUG);
+		com.umeng.common.Log.LOG = false;
+		MobclickAgent.setDebugMode(false);
 		MobclickAgent.setSessionContinueMillis(10000);
 
 		MobclickAgent.updateOnlineConfig(this);
