@@ -35,7 +35,11 @@ public class HttpClientHelper {
 					Thread.sleep(2500);
 					BookListResponse response = new BookListResponse();
 					response.status = 1;
-					response.nextPageNum = 1;
+					if (postStr.contains("\"pageNo\":0")) {
+						response.nextPageNum = 1;
+					} else {
+						response.nextPageNum = -1;
+					}
 					response.bookList = new ArrayList<Book>();
 					Random random = new Random(System.currentTimeMillis());
 					for (int i = 0; i < 20; i++) {

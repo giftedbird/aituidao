@@ -11,6 +11,7 @@
         android:background="@drawable/title_bar_bg" >
         
         <TextView
+            android:id="@+id/title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -20,6 +21,19 @@
             android:textStyle="bold"
             android:textColor="#CD3700"
             android:textSize="20sp"
+            android:singleLine="true"
+            android:ellipsize="end"
+        />
+        
+        <TextView
+            android:id="@+id/curr_point_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/title_tv"
+            android:layout_marginLeft="4dp"
+            android:gravity="center"
+            android:textColor="#b4b4b4"
+            android:textSize="16sp"
             android:singleLine="true"
             android:ellipsize="end"
         />
@@ -64,6 +78,15 @@
         android:listSelector="#00000000"
         android:alwaysDrawnWithCache="true"
         android:scrollingCache="true"
+    />
+    
+    <!-- ad -->
+    <RelativeLayout
+        android:id="@+id/offers_ad_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
     />
     
     <ImageView

@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.offers.OffersAdSize;
+import net.youmi.android.offers.OffersBanner;
+import net.youmi.android.offers.OffersManager;
+import net.youmi.android.offers.PointsChangeNotify;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aituidao.android.R;
@@ -17,6 +24,7 @@ import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
 import com.aituidao.android.helper.NetworkHelper;
 import com.aituidao.android.model.NewUrlAccessModel;
+import com.aituidao.android.model.PointModel;
 import com.aituidao.android.model.SrcAddrTailModel;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -31,16 +39,24 @@ public class BookListActivity extends BaseActivity {
 	private BookListAdapter mListAdapter;
 	private View mSortByHotBtn;
 	private View mSortByTimeBtn;
+	private PointModel mPointModel;
+	private TextView mPointTv;
 	private boolean mHasMore = false;
 
 	private int mSortType = BookListHelper.SORT_TYPE_TIME;
+
+	private PointsChangeNotify mPointsChangeNotify = new PointsChangeNotify() {
+		@Override
+		public void onPointBalanceChange(int points) {
+			mPointTv.setText(getString(R.string.curr_point).replace("####",
+					mPointModel.getCurrPoint() + ""));
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book_list);
-
-		initUMeng();
 
 		initData();
 		initUi();
@@ -59,6 +75,9 @@ public class BookListActivity extends BaseActivity {
 		if (!NetworkHelper.isConnectionAvailable(this)) {
 			Toast.makeText(this, R.string.no_network, Toast.LENGTH_LONG).show();
 		}
+
+		initUMeng();
+		initYM();
 	}
 
 	@Override
@@ -66,6 +85,27 @@ public class BookListActivity extends BaseActivity {
 		super.onDestroy();
 
 		mListAdapter.onDestroy();
+
+		destroyUM();
+	}
+
+	private void initYM() {
+		AdManager.getInstance(this).init("0265039b7cc5f658",
+				"17d2f810b0297482", Config.YM_DEBUG);
+		OffersManager.getInstance(this).onAppLaunch();
+
+		RelativeLayout adLayout = (RelativeLayout) findViewById(R.id.offers_ad_layout);
+		OffersBanner banner = new OffersBanner(this,
+				OffersAdSize.SIZE_MATCH_SCREENx60);
+		adLayout.addView(banner);
+
+		mPointModel.registerNotify(mPointsChangeNotify);
+	}
+
+	private void destroyUM() {
+		mPointModel.unRegisterNotify(mPointsChangeNotify);
+
+		OffersManager.getInstance(this).onAppExit();
 	}
 
 	private void initUMeng() {
@@ -127,6 +167,8 @@ public class BookListActivity extends BaseActivity {
 						// do nothing
 					}
 				});
+
+		mPointModel = PointModel.getInstance(this);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -204,6 +246,10 @@ public class BookListActivity extends BaseActivity {
 						map);
 			}
 		});
+
+		mPointTv = (TextView) findViewById(R.id.curr_point_tv);
+		mPointTv.setText(getString(R.string.curr_point).replace("####",
+				mPointModel.getCurrPoint() + ""));
 	}
 
 	private void startRefreshBySortType(int type) {

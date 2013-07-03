@@ -2,6 +2,8 @@ package com.aituidao.android.activity;
 
 import java.util.HashMap;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookPushHelper;
 import com.aituidao.android.model.ImageDownloadAndCacheModel;
 import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
+import com.aituidao.android.model.PointModel;
 import com.aituidao.android.model.PushSettingModel;
 import com.aituidao.android.model.SrcAddrTailModel;
 import com.umeng.analytics.MobclickAgent;
@@ -95,7 +98,7 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 	}
 
 	private void initData() {
-		mBookPushHelper = new BookPushHelper();
+		mBookPushHelper = new BookPushHelper(this);
 		mBookPushHelper
 				.setBookPushHelperCB(new BookPushHelper.BookPushHelperCB() {
 					@Override
@@ -162,14 +165,14 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 				PushSettingModel.getInstance(ConfirmPushAddrTrustActivity.this)
 						.setPushAddressTrusted(mAddrHead, mAddrTail, true);
 
-				startToPushBook();
-
 				HashMap<String, String> map = new HashMap<String, String>();
 				map.put("dest", "push");
 				MobclickAgent.onEvent(ConfirmPushAddrTrustActivity.this,
 						"confirmSourceForward", map);
 
-				finish();
+				if (startToPushBook()) {
+					finish();
+				}
 			}
 		});
 
@@ -217,14 +220,58 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 		});
 	}
 
-	private void startToPushBook() {
-		Toast.makeText(
-				this,
-				getString(R.string.start_push_book_str).replace("####",
-						mBook.title), Toast.LENGTH_SHORT).show();
+	private boolean startToPushBook() {
+		boolean result;
 
-		mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, mBook);
+		if (mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, mBook)) {
+			Toast.makeText(
+					this,
+					getString(R.string.start_push_book_str).replace("####",
+							mBook.title), Toast.LENGTH_SHORT).show();
+
+			result = true;
+		} else {
+			new AlertDialog.Builder(this)
+					.setTitle(
+							getString(R.string.less_point_dialog_title)
+									.replace("####", "" + Config.EACH_POINT))
+					.setMessage(R.string.less_point_dialog_content)
+					.setCancelable(false)
+					.setPositiveButton(R.string.less_point_dialog_ok,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									PointModel
+											.getInstance(
+													ConfirmPushAddrTrustActivity.this)
+											.startLaunchPoint(
+													ConfirmPushAddrTrustActivity.this);
+
+									HashMap<String, String> map = new HashMap<String, String>();
+									map.put("dest", "get more");
+									MobclickAgent.onEvent(
+											ConfirmPushAddrTrustActivity.this,
+											"needMorePoint", map);
+								}
+							})
+					.setNegativeButton(R.string.less_point_dialog_cancel,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									HashMap<String, String> map = new HashMap<String, String>();
+									map.put("dest", "later");
+									MobclickAgent.onEvent(
+											ConfirmPushAddrTrustActivity.this,
+											"needMorePoint", map);
+								}
+							}).show();
+			result = false;
+		}
 
 		MobclickAgent.onEvent(this, "pushCount");
+
+		return result;
 	}
 }

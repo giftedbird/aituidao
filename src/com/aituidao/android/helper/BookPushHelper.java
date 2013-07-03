@@ -1,6 +1,7 @@
 package com.aituidao.android.helper;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -9,10 +10,12 @@ import com.aituidao.android.config.Config;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.data.BookPushRequest;
 import com.aituidao.android.data.GeneralResponse;
+import com.aituidao.android.model.PointModel;
 import com.alibaba.fastjson.JSON;
 
 public class BookPushHelper {
 	private BookPushHelperCB mCB;
+	private PointModel mPointModel;
 
 	private static final int PUSH_BOOK_SUCCESS = 1;
 	private static final int PUSH_BOOK_ERROR = 2;
@@ -29,6 +32,8 @@ public class BookPushHelper {
 				break;
 
 			case PUSH_BOOK_ERROR:
+				mPointModel.awardPoint(Config.EACH_POINT);
+
 				if (mCB != null) {
 					mCB.bookPushError((Book) msg.obj);
 				}
@@ -36,6 +41,10 @@ public class BookPushHelper {
 			}
 		}
 	};
+
+	public BookPushHelper(Context context) {
+		mPointModel = PointModel.getInstance(context);
+	}
 
 	public static interface BookPushHelperCB {
 		public void bookPushSuccess(Book book);
@@ -47,8 +56,12 @@ public class BookPushHelper {
 		mCB = cb;
 	}
 
-	public void startToPushBook(String addrHead, String addrTail,
+	public boolean startToPushBook(String addrHead, String addrTail,
 			final Book book) {
+		if (!mPointModel.spendPoint(Config.EACH_POINT)) {
+			return false;
+		}
+
 		final String addr = addrHead + "@" + addrTail;
 
 		new Thread(new Runnable() {
@@ -77,5 +90,7 @@ public class BookPushHelper {
 				}
 			}
 		}).start();
+
+		return true;
 	}
 }

@@ -12,6 +12,7 @@
     <string name="sort_type_refreshing_label_for_hot">正在获取最【热】图书…</string>
     
     <string name="book_list_getting_more">正在获取更多…</string>
+    <string name="book_list_no_getting_more">没有更多</string>
     
     <string name="set_push_address_activity_title">设置推送地址</string>
     <string name="set_push_address">请填写推送到的地址:</string>
@@ -35,6 +36,13 @@
     <string name="no_network">网络没有打开哦</string>
     
     <string name="which_app_open_help_doc">使用哪个应用打开帮助文档？</string>
+    
+    <string name="curr_point">(####积分)</string>
+    
+    <string name="less_point_dialog_title">您的积分不足（每次推送会消费您####个积分）</string>
+    <string name="less_point_dialog_content">通过完成一些任务（这些任务都很简单哦 ^_^），您可以赚取积分。\n\n赚取的积分会在您完成任务后自动充值到您的帐户</string>
+    <string name="less_point_dialog_ok">去赚积分</string>
+    <string name="less_point_dialog_cancel">先不了</string>
     
     <string-array name="push_address_tail_array">
         <item>kindle.cn</item>

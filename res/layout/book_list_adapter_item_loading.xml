@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="4dp"
-    android:paddingBottom="8dp"
+    android:paddingBottom="64dp"
     android:gravity="center"
     android:singleLine="true"
     android:text="@string/book_list_getting_more"

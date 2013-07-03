@@ -1,5 +1,6 @@
 package com.aituidao.android.adapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -31,10 +32,12 @@ import android.widget.Toast;
 import com.aituidao.android.R;
 import com.aituidao.android.activity.ConfirmPushAddrTrustActivity;
 import com.aituidao.android.activity.SetPushAddressActivity;
+import com.aituidao.android.config.Config;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookPushHelper;
 import com.aituidao.android.model.ImageDownloadAndCacheModel;
 import com.aituidao.android.model.ImageDownloadAndCacheModel.GetBitmapCB;
+import com.aituidao.android.model.PointModel;
 import com.aituidao.android.model.PushSettingModel;
 import com.aituidao.android.model.PushSettingModel.PushAddress;
 import com.umeng.analytics.MobclickAgent;
@@ -81,7 +84,7 @@ public class BookListAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mPushSettingModel = PushSettingModel.getInstance(mActivity);
 
-		mBookPushHelper = new BookPushHelper();
+		mBookPushHelper = new BookPushHelper(mActivity);
 		mBookPushHelper
 				.setBookPushHelperCB(new BookPushHelper.BookPushHelperCB() {
 					@Override
@@ -111,11 +114,7 @@ public class BookListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		if (mHasMore) {
-			return mList.size() + 1;
-		} else {
-			return mList.size();
-		}
+		return mList.size() + 1;
 	}
 
 	@Override
@@ -212,6 +211,14 @@ public class BookListAdapter extends BaseAdapter {
 			if (convertView == null) {
 				convertView = mLayoutInflater.inflate(
 						R.layout.book_list_adapter_item_loading, null);
+			}
+
+			if (mHasMore) {
+				((TextView) convertView)
+						.setText(R.string.book_list_getting_more);
+			} else {
+				((TextView) convertView)
+						.setText(R.string.book_list_no_getting_more);
 			}
 		} else {
 			if (convertView == null) {
@@ -375,12 +382,45 @@ public class BookListAdapter extends BaseAdapter {
 	}
 
 	private void startToPushBook(String addrHead, String addrTail, Book book) {
-		Toast.makeText(
-				mActivity,
-				mActivity.getString(R.string.start_push_book_str).replace(
-						"####", book.title), Toast.LENGTH_SHORT).show();
+		if (mBookPushHelper.startToPushBook(addrHead, addrTail, book)) {
+			Toast.makeText(
+					mActivity,
+					mActivity.getString(R.string.start_push_book_str).replace(
+							"####", book.title), Toast.LENGTH_SHORT).show();
+		} else {
+			new AlertDialog.Builder(mActivity)
+					.setTitle(
+							mActivity.getString(
+									R.string.less_point_dialog_title).replace(
+									"####", "" + Config.EACH_POINT))
+					.setMessage(R.string.less_point_dialog_content)
+					.setCancelable(false)
+					.setPositiveButton(R.string.less_point_dialog_ok,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									PointModel.getInstance(mActivity)
+											.startLaunchPoint(mActivity);
 
-		mBookPushHelper.startToPushBook(addrHead, addrTail, book);
+									HashMap<String, String> map = new HashMap<String, String>();
+									map.put("dest", "get more");
+									MobclickAgent.onEvent(mActivity,
+											"needMorePoint", map);
+								}
+							})
+					.setNegativeButton(R.string.less_point_dialog_cancel,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									HashMap<String, String> map = new HashMap<String, String>();
+									map.put("dest", "later");
+									MobclickAgent.onEvent(mActivity,
+											"needMorePoint", map);
+								}
+							}).show();
+		}
 
 		MobclickAgent.onEvent(mActivity, "pushCount");
 	}

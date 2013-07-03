@@ -3,7 +3,10 @@ package com.aituidao.android.config;
 import android.app.AlarmManager;
 
 public class Config {
+	// TODO
 	public static final boolean DEBUG = true;
+	// TODO
+	public static final boolean YM_DEBUG = true;
 
 	public static final int BOOK_LIST_COUNT = 20;
 
@@ -26,4 +29,8 @@ public class Config {
 	public static final String WHY_NEED_PUSH_ADDR_URL = "http://www.amazon.cn/gp/help/customer/display.html?nodeId=200843440#s2kemail";
 
 	public static final String WHY_NEED_TRUST_ADDR_URL = "http://www.amazon.cn/gp/help/customer/display.html?nodeId=200843440#approvefrom";
+
+	public static final int INITIAL_POINT = 99;
+	// TODO
+	public static final int EACH_POINT = 50;
 }
