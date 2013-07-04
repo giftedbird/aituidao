@@ -16,6 +16,8 @@ public class Config {
 	public static final String NEW_URL_ACCESS_URL = BASE_URL
 			+ "new_url_access/";
 
+	public static final String POST_KEY = "data";
+
 	public static final String NEW_URL_ACCESS_ACTION = "com.aituidao.android.action.alarm_manager.repeat";
 	public static final long NEW_URL_ACCESS_ACTION_PERIOD = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 

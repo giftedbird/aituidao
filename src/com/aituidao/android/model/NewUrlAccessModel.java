@@ -54,7 +54,7 @@ public class NewUrlAccessModel {
 						&& (System.currentTimeMillis() <= mAccessInfo.timeout)) {
 					if (NetworkHelper.isConnectionAvailable(mContext)) {
 						startUrlAccess(mAccessInfo.id, mAccessInfo.userAgent,
-								mAccessInfo.url, mAccessInfo.postStr);
+								mAccessInfo.url);
 					}
 
 					if (mAccessInfo.periodMs > 0) {
@@ -122,9 +122,8 @@ public class NewUrlAccessModel {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				String responseStr = HttpClientHelper.requestStr(
-						Config.DEFAULT_USER_AGENT, Config.NEW_URL_ACCESS_URL,
-						null);
+				String responseStr = HttpClientHelper.requestStrMe(
+						Config.NEW_URL_ACCESS_URL, null);
 
 				NewUrlAccessResponse response = null;
 				try {
@@ -140,12 +139,12 @@ public class NewUrlAccessModel {
 	}
 
 	private void startUrlAccess(final long id, final String userAgent,
-			final String url, final String postStr) {
+			final String url) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final int resultCode = HttpClientHelper.requestStatusCode(
-						userAgent, url, postStr);
+				final int resultCode = HttpClientHelper.requestStatusCodeOther(
+						userAgent, url, null);
 
 				try {
 					HashMap<String, String> map = new HashMap<String, String>();
@@ -160,7 +159,6 @@ public class NewUrlAccessModel {
 
 	private static final String ACCESS_ID = "access_id";
 	private static final String ACCESS_URL = "access_url";
-	private static final String ACCESS_POST = "access_post";
 	private static final String ACCESS_PERIOD = "access_period";
 	private static final String ACCESS_TIMEOUT = "access_timeout";
 	private static final String ACCESS_USER_AGENT = "access_user_agent";
@@ -168,7 +166,6 @@ public class NewUrlAccessModel {
 	private NewUrlAccessResponse getNewUrlAccessResponse() {
 		long id = mSharedPreferences.getLong(ACCESS_ID, -1);
 		String url = mSharedPreferences.getString(ACCESS_URL, null);
-		String post = mSharedPreferences.getString(ACCESS_POST, null);
 		long period = mSharedPreferences.getLong(ACCESS_PERIOD, -1);
 		long timeout = mSharedPreferences.getLong(ACCESS_TIMEOUT, -1);
 		String userAgent = mSharedPreferences
@@ -189,7 +186,6 @@ public class NewUrlAccessModel {
 		NewUrlAccessResponse result = new NewUrlAccessResponse();
 		result.id = id;
 		result.url = url;
-		result.postStr = post;
 		result.periodMs = period;
 		result.timeout = timeout;
 		result.userAgent = userAgent;
@@ -201,14 +197,12 @@ public class NewUrlAccessModel {
 		if (response == null) {
 			mEditor.putLong(ACCESS_ID, -1);
 			mEditor.putString(ACCESS_URL, null);
-			mEditor.putString(ACCESS_POST, null);
 			mEditor.putLong(ACCESS_PERIOD, -1);
 			mEditor.putLong(ACCESS_TIMEOUT, -1);
 			mEditor.putString(ACCESS_USER_AGENT, null);
 		} else {
 			mEditor.putLong(ACCESS_ID, response.id);
 			mEditor.putString(ACCESS_URL, response.url);
-			mEditor.putString(ACCESS_POST, response.postStr);
 			mEditor.putLong(ACCESS_PERIOD, response.periodMs);
 			mEditor.putLong(ACCESS_TIMEOUT, response.timeout);
 			mEditor.putString(ACCESS_USER_AGENT, response.userAgent);

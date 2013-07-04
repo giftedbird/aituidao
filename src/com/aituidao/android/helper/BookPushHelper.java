@@ -69,9 +69,8 @@ public class BookPushHelper {
 			public void run() {
 				String postStr = JSON.toJSONString(new BookPushRequest(addr,
 						book.id));
-				String responseStr = HttpClientHelper.requestStr(
-						Config.DEFAULT_USER_AGENT, Config.PUSH_BOOK_URL,
-						postStr);
+				String responseStr = HttpClientHelper.requestStrMe(
+						Config.PUSH_BOOK_URL, postStr);
 
 				GeneralResponse response = null;
 				try {

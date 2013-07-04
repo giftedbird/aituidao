@@ -79,8 +79,7 @@ public class SrcAddrTailModel {
 			public void run() {
 				String postStr = JSON.toJSONString(new SrcAddrTailCheckRequest(
 						tail));
-				String responseStr = HttpClientHelper.requestStr(
-						Config.DEFAULT_USER_AGENT,
+				String responseStr = HttpClientHelper.requestStrMe(
 						Config.SRC_ADDR_TAIL_CHECK_URL, postStr);
 
 				SrcAddrTailCheckResponse response = null;
