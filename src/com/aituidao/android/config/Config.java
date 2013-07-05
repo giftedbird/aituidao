@@ -35,5 +35,5 @@ public class Config {
 
 	public static final int INITIAL_POINT = 99;
 	// TODO
-	public static final int EACH_POINT = 50;
+	public static final int EACH_POINT = 1;
 }
