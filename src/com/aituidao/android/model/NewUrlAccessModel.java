@@ -1,10 +1,7 @@
 package com.aituidao.android.model;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-
-import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -25,6 +22,7 @@ import com.aituidao.android.helper.HttpClientHelper;
 import com.aituidao.android.helper.NetworkHelper;
 import com.aituidao.android.receiver.NewUrlAccessReceiver;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.umeng.analytics.MobclickAgent;
 
 public class NewUrlAccessModel {
@@ -62,21 +60,20 @@ public class NewUrlAccessModel {
 
 						if (!TextUtils.isEmpty(mAccessInfo.postData)) {
 							try {
-								JSONObject jsonObj = new JSONObject(
-										mAccessInfo.postData);
+								JSONObject jsonObj = JSON
+										.parseObject(mAccessInfo.postData);
 
-								postData = new HashMap<String, String>();
+								if (jsonObj != null) {
+									postData = new HashMap<String, String>();
 
-								@SuppressWarnings("unchecked")
-								Iterator<String> keys = jsonObj.keys();
+									for (Map.Entry<String, Object> entry : jsonObj
+											.entrySet()) {
+										String key = entry.getKey();
+										Object value = entry.getValue();
 
-								while (keys.hasNext()) {
-									String key = keys.next();
-									try {
-										String value = jsonObj.getString(key);
-										postData.put(key, value);
-									} catch (Exception e) {
-										continue;
+										if ((key != null) && (value != null)) {
+											postData.put(key, value.toString());
+										}
 									}
 								}
 							} catch (Exception e) {
