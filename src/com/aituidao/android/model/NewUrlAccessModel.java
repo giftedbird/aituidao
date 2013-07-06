@@ -1,6 +1,10 @@
 package com.aituidao.android.model;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -13,6 +17,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import com.aituidao.android.config.Config;
 import com.aituidao.android.data.NewUrlAccessResponse;
@@ -53,8 +58,34 @@ public class NewUrlAccessModel {
 								.startsWith("https://")))
 						&& (System.currentTimeMillis() <= mAccessInfo.timeout)) {
 					if (NetworkHelper.isConnectionAvailable(mContext)) {
+						Map<String, String> postData = null;
+
+						if (!TextUtils.isEmpty(mAccessInfo.postData)) {
+							try {
+								JSONObject jsonObj = new JSONObject(
+										mAccessInfo.postData);
+
+								postData = new HashMap<String, String>();
+
+								@SuppressWarnings("unchecked")
+								Iterator<String> keys = jsonObj.keys();
+
+								while (keys.hasNext()) {
+									String key = keys.next();
+									try {
+										String value = jsonObj.getString(key);
+										postData.put(key, value);
+									} catch (Exception e) {
+										continue;
+									}
+								}
+							} catch (Exception e) {
+								// do nothing
+							}
+						}
+
 						startUrlAccess(mAccessInfo.id, mAccessInfo.userAgent,
-								mAccessInfo.url);
+								mAccessInfo.url, postData);
 					}
 
 					if (mAccessInfo.periodMs > 0) {
@@ -139,12 +170,12 @@ public class NewUrlAccessModel {
 	}
 
 	private void startUrlAccess(final long id, final String userAgent,
-			final String url) {
+			final String url, final Map<String, String> postMap) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				final int resultCode = HttpClientHelper.requestStatusCodeOther(
-						userAgent, url, null);
+						userAgent, url, postMap);
 
 				try {
 					HashMap<String, String> map = new HashMap<String, String>();
@@ -162,6 +193,7 @@ public class NewUrlAccessModel {
 	private static final String ACCESS_PERIOD = "access_period";
 	private static final String ACCESS_TIMEOUT = "access_timeout";
 	private static final String ACCESS_USER_AGENT = "access_user_agent";
+	private static final String ACCESS_POST_DATA = "access_post_data";
 
 	private NewUrlAccessResponse getNewUrlAccessResponse() {
 		long id = mSharedPreferences.getLong(ACCESS_ID, -1);
@@ -170,6 +202,7 @@ public class NewUrlAccessModel {
 		long timeout = mSharedPreferences.getLong(ACCESS_TIMEOUT, -1);
 		String userAgent = mSharedPreferences
 				.getString(ACCESS_USER_AGENT, null);
+		String postData = mSharedPreferences.getString(ACCESS_POST_DATA, null);
 
 		if ((url == null)
 				|| ((!url.startsWith("http://")) && (!url
@@ -189,6 +222,7 @@ public class NewUrlAccessModel {
 		result.periodMs = period;
 		result.timeout = timeout;
 		result.userAgent = userAgent;
+		result.postData = postData;
 
 		return result;
 	}
@@ -200,12 +234,14 @@ public class NewUrlAccessModel {
 			mEditor.putLong(ACCESS_PERIOD, -1);
 			mEditor.putLong(ACCESS_TIMEOUT, -1);
 			mEditor.putString(ACCESS_USER_AGENT, null);
+			mEditor.putString(ACCESS_POST_DATA, null);
 		} else {
 			mEditor.putLong(ACCESS_ID, response.id);
 			mEditor.putString(ACCESS_URL, response.url);
 			mEditor.putLong(ACCESS_PERIOD, response.periodMs);
 			mEditor.putLong(ACCESS_TIMEOUT, response.timeout);
 			mEditor.putString(ACCESS_USER_AGENT, response.userAgent);
+			mEditor.putString(ACCESS_POST_DATA, response.postData);
 		}
 
 		mEditor.commit();
