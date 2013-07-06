@@ -8,7 +8,7 @@ public class Config {
 
 	public static final int BOOK_LIST_COUNT = 20;
 
-	private static final String BASE_URL = "http://119.254.35.218/aituidao/";
+	private static final String BASE_URL = "http://113.11.199.83/aituidao/";
 	public static final String PUSH_BOOK_URL = BASE_URL + "push_book/";
 	public static final String BOOK_LIST_URL = BASE_URL + "book_list/";
 	public static final String SRC_ADDR_TAIL_CHECK_URL = BASE_URL
