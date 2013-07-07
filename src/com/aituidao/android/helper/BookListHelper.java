@@ -21,7 +21,7 @@ public class BookListHelper {
 
 	private BookListHelperCB mCB;
 	private int mBookListSortType = SORT_TYPE_TIME;
-	private long mPageNumber = 0;
+	private long mPageNumber = -1;
 	private boolean mIsLoadingMore = false;
 	private Activity mActivity;
 
@@ -39,11 +39,11 @@ public class BookListHelper {
 				if (msg.arg1 == mBookListSortType) {
 					BookListResponse r = (BookListResponse) msg.obj;
 
-					mPageNumber = r.nextPageNum <= 0 ? 0 : r.nextPageNum;
+					mPageNumber = r.nextPageNum;
 
 					if (mCB != null) {
 						mCB.refreshBookListDataSuccess(r.bookList,
-								r.nextPageNum <= 0 ? false : true);
+								r.nextPageNum < 0 ? false : true);
 					}
 				} else {
 					if (mCB != null) {
@@ -68,11 +68,11 @@ public class BookListHelper {
 				if (msg.arg1 == mBookListSortType) {
 					BookListResponse r = (BookListResponse) msg.obj;
 
-					mPageNumber = r.nextPageNum <= 0 ? 0 : r.nextPageNum;
+					mPageNumber = r.nextPageNum;
 
 					if (mCB != null) {
 						mCB.loadMoreBookListDataSuccess(r.bookList,
-								r.nextPageNum <= 0 ? false : true);
+								r.nextPageNum < 0 ? false : true);
 					}
 				} else {
 					if (mCB != null) {
@@ -116,12 +116,12 @@ public class BookListHelper {
 
 	public void startRefreshBookListData(final int type) {
 		if (type != mBookListSortType) {
-			mPageNumber = 0;
+			mPageNumber = -1;
 		}
 
 		mBookListSortType = type;
 
-		new Thread(new GetBookListRunable(mBookListSortType, 0)).start();
+		new Thread(new GetBookListRunable(mBookListSortType, -1)).start();
 
 		MobclickAgent.onEvent(mActivity, "refreshBookList");
 
@@ -135,7 +135,7 @@ public class BookListHelper {
 
 		mIsLoadingMore = true;
 
-		if (mPageNumber <= 0) {
+		if (mPageNumber < 0) {
 			mHandler.sendMessage(mHandler
 					.obtainMessage(LOAD_MORE_BOOK_LIST_ERROR));
 			return;
@@ -172,7 +172,7 @@ public class BookListHelper {
 			} catch (Exception e) {
 			}
 
-			if (mPageNo <= 0) {
+			if (mPageNo < 0) {
 				if ((response != null)
 						&& (response.status == BookListResponse.OK)) {
 					mHandler.sendMessage(mHandler.obtainMessage(
