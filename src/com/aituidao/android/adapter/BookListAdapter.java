@@ -192,6 +192,7 @@ public class BookListAdapter extends BaseAdapter {
 		private ImageView mTailHandleIv;
 		private View mContentContainer;
 		private View mContentController;
+		private TextView mDoubanRateTv;
 	}
 
 	private Runnable mNeedMoreDataCBRunnable = new Runnable() {
@@ -244,6 +245,8 @@ public class BookListAdapter extends BaseAdapter {
 						.findViewById(R.id.item_content_container);
 				holder.mContentController = convertView
 						.findViewById(R.id.item_inner_content_container_controller);
+				holder.mDoubanRateTv = (TextView) convertView
+						.findViewById(R.id.douban_rate_tv);
 
 				convertView.setTag(holder);
 			}
@@ -277,6 +280,12 @@ public class BookListAdapter extends BaseAdapter {
 			} else {
 				holder.mCoverIv.setImageResource(R.drawable.book_default_cover);
 			}
+
+			int rate = book.doubanRate > 0 ? book.doubanRate : 0;
+			String doubanRateStr = mActivity
+					.getString(R.string.douban_rate_str).replace("####",
+							"" + rate / 10 + "." + rate % 10);
+			holder.mDoubanRateTv.setText(doubanRateStr);
 
 			holder.mTitleTv.setText(book.title);
 

@@ -44,6 +44,8 @@
     <string name="less_point_dialog_ok">去赚积分</string>
     <string name="less_point_dialog_cancel">先不了</string>
     
+    <string name="douban_rate_str">豆瓣评分:####</string>
+    
     <string-array name="push_address_tail_array">
         <item>kindle.cn</item>
         <item>kindle.com</item>
