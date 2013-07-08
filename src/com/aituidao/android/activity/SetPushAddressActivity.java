@@ -173,17 +173,27 @@ public class SetPushAddressActivity extends BaseActivity {
 		mNextStepBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String addrHead = mAddrHeadEt.getEditableText().toString();
+				String addrHead = mAddrHeadEt.getEditableText().toString()
+						.trim();
 				if (TextUtils.isEmpty(addrHead)) {
 					Toast.makeText(SetPushAddressActivity.this,
 							R.string.please_input_addr, Toast.LENGTH_SHORT)
 							.show();
 				} else {
-					PushSettingModel.getInstance(SetPushAddressActivity.this)
-							.setNewPushAddress(addrHead, mAddrTailStr);
+					String emailAddr = (addrHead + "@" + mAddrTailStr).trim();
+					if (validateEmailAddr(emailAddr)) {
+						PushSettingModel.getInstance(
+								SetPushAddressActivity.this).setNewPushAddress(
+								addrHead, mAddrTailStr);
 
-					enterConfirmPushAddrTrustActivityAndFinish(addrHead,
-							mAddrTailStr);
+						enterConfirmPushAddrTrustActivityAndFinish(addrHead,
+								mAddrTailStr);
+					} else {
+						Toast.makeText(SetPushAddressActivity.this,
+								R.string.please_input_valid_addr,
+								Toast.LENGTH_SHORT).show();
+						mAddrHeadEt.setText("");
+					}
 				}
 			}
 		});
@@ -225,5 +235,15 @@ public class SetPushAddressActivity extends BaseActivity {
 		startActivity(intent);
 
 		finish();
+	}
+
+	private boolean validateEmailAddr(String addr) {
+		addr = addr.trim();
+		if (TextUtils.isEmpty(addr)) {
+			return false;
+		}
+
+		return addr
+				.matches("^[a-zA-Z0-9]+([\\_|\\-|\\.]?[a-zA-Z0-9])*\\@[a-zA-Z0-9]+([\\_|\\-|\\.]?[a-zA-Z0-9])*\\.[a-zA-Z]{2,3}$");
 	}
 }

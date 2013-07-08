@@ -18,6 +18,7 @@
     <string name="set_push_address">请填写推送到的地址:</string>
     <string name="set_push_address_next_step">下一步</string>
     <string name="please_input_addr">还没有输入地址哦 -_-</string>
+    <string name="please_input_valid_addr">地址格式不对呀，请重新输入</string>
     <string name="why_need_push_addr"><u>什么是推送地址？</u></string>
     
     <string name="push_address_trust_activity_title">加入认可列表</string>
