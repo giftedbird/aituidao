@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.aituidao.android.config.Config;
+import com.aituidao.android.config.PersonalConfig;
 import com.aituidao.android.data.SrcAddrTailCheckRequest;
 import com.aituidao.android.data.SrcAddrTailCheckResponse;
 import com.aituidao.android.helper.HttpClientHelper;
@@ -80,7 +81,7 @@ public class SrcAddrTailModel {
 				String postStr = JSON.toJSONString(new SrcAddrTailCheckRequest(
 						tail));
 				String responseStr = HttpClientHelper.requestStrMe(
-						Config.SRC_ADDR_TAIL_CHECK_URL, postStr);
+						PersonalConfig.SRC_ADDR_TAIL_CHECK_URL, postStr);
 
 				SrcAddrTailCheckResponse response = null;
 				try {

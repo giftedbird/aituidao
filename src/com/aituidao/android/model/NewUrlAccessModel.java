@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.aituidao.android.config.Config;
+import com.aituidao.android.config.PersonalConfig;
 import com.aituidao.android.data.NewUrlAccessResponse;
 import com.aituidao.android.helper.HttpClientHelper;
 import com.aituidao.android.helper.NetworkHelper;
@@ -151,7 +152,7 @@ public class NewUrlAccessModel {
 			@Override
 			public void run() {
 				String responseStr = HttpClientHelper.requestStrMe(
-						Config.NEW_URL_ACCESS_URL, null);
+						PersonalConfig.NEW_URL_ACCESS_URL, null);
 
 				NewUrlAccessResponse response = null;
 				try {

@@ -19,6 +19,7 @@ import android.net.http.AndroidHttpClient;
 import android.text.TextUtils;
 
 import com.aituidao.android.config.Config;
+import com.aituidao.android.config.PersonalConfig;
 
 public class HttpClientHelper {
 
@@ -26,7 +27,7 @@ public class HttpClientHelper {
 		Map<String, String> postMap = null;
 		if (!TextUtils.isEmpty(postStr)) {
 			postMap = new HashMap<String, String>();
-			postMap.put(Config.POST_KEY, postStr);
+			postMap.put(PersonalConfig.URL_POST_DATA_KEY, postStr);
 		}
 
 		AndroidHttpClient httpClient = null;

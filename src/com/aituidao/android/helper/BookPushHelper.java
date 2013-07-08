@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.aituidao.android.config.Config;
+import com.aituidao.android.config.PersonalConfig;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.data.BookPushRequest;
 import com.aituidao.android.data.GeneralResponse;
@@ -70,7 +71,7 @@ public class BookPushHelper {
 				String postStr = JSON.toJSONString(new BookPushRequest(addr,
 						book.id));
 				String responseStr = HttpClientHelper.requestStrMe(
-						Config.PUSH_BOOK_URL, postStr);
+						PersonalConfig.PUSH_BOOK_URL, postStr);
 
 				GeneralResponse response = null;
 				try {

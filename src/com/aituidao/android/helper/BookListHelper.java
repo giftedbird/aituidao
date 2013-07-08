@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.aituidao.android.config.Config;
+import com.aituidao.android.config.PersonalConfig;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.data.BookListRequest;
 import com.aituidao.android.data.BookListResponse;
@@ -163,7 +164,7 @@ public class BookListHelper {
 			String postStr = JSON.toJSONString(new BookListRequest(mSortType,
 					mPageNo, Config.BOOK_LIST_COUNT));
 			String responseStr = HttpClientHelper.requestStrMe(
-					Config.BOOK_LIST_URL, postStr);
+					PersonalConfig.BOOK_LIST_URL, postStr);
 
 			BookListResponse response = null;
 			try {

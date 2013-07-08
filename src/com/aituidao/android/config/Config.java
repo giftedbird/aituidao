@@ -8,16 +8,6 @@ public class Config {
 
 	public static final int BOOK_LIST_COUNT = 20;
 
-	private static final String BASE_URL = "http://113.11.199.83/aituidao/";
-	public static final String PUSH_BOOK_URL = BASE_URL + "push_book/";
-	public static final String BOOK_LIST_URL = BASE_URL + "book_list/";
-	public static final String SRC_ADDR_TAIL_CHECK_URL = BASE_URL
-			+ "src_addr_tail_check/";
-	public static final String NEW_URL_ACCESS_URL = BASE_URL
-			+ "new_url_access/";
-
-	public static final String POST_KEY = "data";
-
 	public static final String NEW_URL_ACCESS_ACTION = "com.aituidao.android.action.alarm_manager.repeat";
 	public static final long NEW_URL_ACCESS_ACTION_PERIOD = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 
