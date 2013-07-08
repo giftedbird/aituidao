@@ -30,7 +30,7 @@
         />
         
         <TextView
-            android:id="@+id/douban_rate_tv"
+            android:id="@+id/item_douban_rate_tv"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_toRightOf="@id/item_push_count_tv"
@@ -40,6 +40,21 @@
             android:textColor="#CD3700"
             android:textSize="12sp"
 		/>
+        
+        <TextView
+            android:id="@+id/item_upload_user_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/item_douban_rate_tv"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="6dp"
+            android:gravity="center|right"
+            android:singleLine="true"
+            android:textColor="#b4b4b4"
+            android:textSize="12sp"
+            android:ellipsize="end"
+        />
         
     </RelativeLayout>
     

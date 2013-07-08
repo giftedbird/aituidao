@@ -193,6 +193,7 @@ public class BookListAdapter extends BaseAdapter {
 		private View mContentContainer;
 		private View mContentController;
 		private TextView mDoubanRateTv;
+		private TextView mUploadUserTv;
 	}
 
 	private Runnable mNeedMoreDataCBRunnable = new Runnable() {
@@ -246,7 +247,9 @@ public class BookListAdapter extends BaseAdapter {
 				holder.mContentController = convertView
 						.findViewById(R.id.item_inner_content_container_controller);
 				holder.mDoubanRateTv = (TextView) convertView
-						.findViewById(R.id.douban_rate_tv);
+						.findViewById(R.id.item_douban_rate_tv);
+				holder.mUploadUserTv = (TextView) convertView
+						.findViewById(R.id.item_upload_user_tv);
 
 				convertView.setTag(holder);
 			}
@@ -286,6 +289,11 @@ public class BookListAdapter extends BaseAdapter {
 					.getString(R.string.douban_rate_str).replace("####",
 							"" + rate / 10 + "." + rate % 10);
 			holder.mDoubanRateTv.setText(doubanRateStr);
+
+			String uploadUserStr = mActivity
+					.getString(R.string.upload_user_str).replace("####",
+							book.uploadUserName);
+			holder.mUploadUserTv.setText(uploadUserStr);
 
 			holder.mTitleTv.setText(book.title);
 

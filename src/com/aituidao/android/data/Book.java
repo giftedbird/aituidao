@@ -11,6 +11,7 @@ public class Book implements Parcelable {
 	public String coverUrl;
 	public int pushCount;
 	public int doubanRate;
+	public String uploadUserName;
 
 	public Book() {
 	}
@@ -23,6 +24,7 @@ public class Book implements Parcelable {
 		coverUrl = source.readString();
 		pushCount = source.readInt();
 		doubanRate = source.readInt();
+		uploadUserName = source.readString();
 	}
 
 	@Override
@@ -39,6 +41,7 @@ public class Book implements Parcelable {
 		dest.writeString(coverUrl);
 		dest.writeInt(pushCount);
 		dest.writeInt(doubanRate);
+		dest.writeString(uploadUserName);
 	}
 
 	public static final Parcelable.Creator<Book> CREATOR = new Parcelable.Creator<Book>() {
