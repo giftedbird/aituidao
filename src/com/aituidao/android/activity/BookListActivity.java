@@ -93,7 +93,7 @@ public class BookListActivity extends BaseActivity {
 				"17d2f810b0297482", false);
 		OffersManager.getInstance(this).onAppLaunch();
 
-		AdManager.getInstance(this).setEnableDebugLog(true);
+		AdManager.getInstance(this).setEnableDebugLog(false);
 
 		RelativeLayout adLayout = (RelativeLayout) findViewById(R.id.offers_ad_layout);
 		OffersBanner banner = new OffersBanner(this,
