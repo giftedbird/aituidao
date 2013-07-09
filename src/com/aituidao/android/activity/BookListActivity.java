@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.aituidao.android.R;
 import com.aituidao.android.adapter.BookListAdapter;
+import com.aituidao.android.config.PersonalConfig;
 import com.aituidao.android.data.Book;
 import com.aituidao.android.helper.BookListHelper;
 import com.aituidao.android.helper.NetworkHelper;
@@ -89,8 +90,8 @@ public class BookListActivity extends BaseActivity {
 	}
 
 	private void initYM() {
-		AdManager.getInstance(this).init("0265039b7cc5f658",
-				"17d2f810b0297482", false);
+		AdManager.getInstance(this).init(PersonalConfig.YOUMI_KEY,
+				PersonalConfig.YOUMI_PASSWD, false);
 		OffersManager.getInstance(this).onAppLaunch();
 
 		AdManager.getInstance(this).setEnableDebugLog(false);
