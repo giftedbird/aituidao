@@ -87,7 +87,7 @@ public class BookListActivity extends BaseActivity {
 
 		mListAdapter.onDestroy();
 
-		destroyUM();
+		destroyYM();
 	}
 
 	private void initYM() {
@@ -105,7 +105,7 @@ public class BookListActivity extends BaseActivity {
 		mPointModel.registerNotify(mPointsChangeNotify);
 	}
 
-	private void destroyUM() {
+	private void destroyYM() {
 		mPointModel.unRegisterNotify(mPointsChangeNotify);
 
 		OffersManager.getInstance(this).onAppExit();
