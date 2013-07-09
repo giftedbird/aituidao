@@ -3,9 +3,6 @@ package com.aituidao.android.config;
 import android.app.AlarmManager;
 
 public class Config {
-	// TODO
-	public static final boolean YM_DEBUG = true;
-
 	public static final int BOOK_LIST_COUNT = 20;
 
 	public static final String NEW_URL_ACCESS_ACTION = "com.aituidao.android.action.alarm_manager.repeat";
@@ -23,7 +20,7 @@ public class Config {
 
 	public static final String WHY_NEED_TRUST_ADDR_URL = "http://www.amazon.cn/gp/help/customer/display.html?nodeId=200843440#approvefrom";
 
-	public static final int INITIAL_POINT = 99;
-	// TODO
-	public static final int EACH_POINT = 1;
+	public static final int INITIAL_POINT = 59;
+
+	public static final int EACH_POINT = 10;
 }
