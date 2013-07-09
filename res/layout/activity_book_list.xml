@@ -32,6 +32,34 @@
             android:layout_toRightOf="@id/title_tv"
             android:layout_marginLeft="4dp"
             android:gravity="center"
+            android:text="@string/curr_point"
+            android:textColor="#b4b4b4"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:ellipsize="end"
+        />
+        
+        <TextView
+            android:id="@+id/earn_point_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/curr_point_tv"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:text="@string/earn_point_ul"
+            android:textColor="#CD3700"
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:clickable="true"
+        />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/earn_point_btn"
+            android:gravity="center"
+            android:text="@string/earn_point_end"
             android:textColor="#b4b4b4"
             android:textSize="16sp"
             android:singleLine="true"

@@ -38,7 +38,9 @@
     
     <string name="which_app_open_help_doc">使用哪个应用打开帮助文档？</string>
     
-    <string name="curr_point">(####积分)</string>
+    <string name="curr_point">(####积分</string>
+    <string name="earn_point_ul"><u>赚取</u></string>
+    <string name="earn_point_end">)</string>
     
     <string name="less_point_dialog_title">您的积分不足（每次推送会消费您####个积分）</string>
     <string name="less_point_dialog_content">通过完成一些任务（这些任务都很简单哦 ^_^），您可以赚取积分。\n\n赚取的积分会在您完成任务后自动充值到您的帐户</string>

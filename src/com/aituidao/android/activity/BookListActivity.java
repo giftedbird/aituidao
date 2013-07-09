@@ -42,6 +42,7 @@ public class BookListActivity extends BaseActivity {
 	private PointModel mPointModel;
 	private TextView mPointTv;
 	private boolean mHasMore = false;
+	private View mEarnPointBtn;
 
 	private int mSortType = BookListHelper.SORT_TYPE_TIME;
 
@@ -252,6 +253,17 @@ public class BookListActivity extends BaseActivity {
 		mPointTv = (TextView) findViewById(R.id.curr_point_tv);
 		mPointTv.setText(getString(R.string.curr_point).replace("####",
 				mPointModel.getCurrPoint() + ""));
+
+		mEarnPointBtn = findViewById(R.id.earn_point_btn);
+		mEarnPointBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PointModel.getInstance(BookListActivity.this).startLaunchPoint(
+						BookListActivity.this);
+
+				MobclickAgent.onEvent(BookListActivity.this, "directEarnPoint");
+			}
+		});
 	}
 
 	private void startRefreshBySortType(int type) {
