@@ -332,6 +332,6 @@ public class ImageDownloadAndCacheModel {
 	}
 
 	private static String convertUrlToFilename(String url) {
-		return url.replaceAll("[:/.#]", "_");
+		return url.replaceAll("[:/=#%?]", "_");
 	}
 }

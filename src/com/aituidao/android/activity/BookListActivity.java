@@ -91,11 +91,10 @@ public class BookListActivity extends BaseActivity {
 	}
 
 	private void initYM() {
+		AdManager.getInstance(this).setEnableDebugLog(false);
 		AdManager.getInstance(this).init(PersonalConfig.YOUMI_KEY,
 				PersonalConfig.YOUMI_PASSWD, false);
 		OffersManager.getInstance(this).onAppLaunch();
-
-		AdManager.getInstance(this).setEnableDebugLog(false);
 
 		RelativeLayout adLayout = (RelativeLayout) findViewById(R.id.offers_ad_layout);
 		OffersBanner banner = new OffersBanner(this,
