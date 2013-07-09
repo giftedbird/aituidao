@@ -55,7 +55,7 @@ public class ImageDownloadAndCacheModel {
 	private String mImageFolderPath;
 
 	private ExecutorService mLoadingEs = Executors.newSingleThreadExecutor();
-	private ExecutorService mDownloadingEs = Executors.newFixedThreadPool(3);
+	private ExecutorService mDownloadingEs = Executors.newFixedThreadPool(2);
 
 	private static final int GOT_FROM_NETWORK = 1;
 	private static final int GOT_FROM_LOCAL = 2;
@@ -92,8 +92,8 @@ public class ImageDownloadAndCacheModel {
 
 		int memClass = ((ActivityManager) mContext
 				.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
-		int cacheSizeMB = 1024 * 1024 * memClass / 10;
-		mCache = new LruCache<String, BitmapInfo>(cacheSizeMB) {
+		int cacheSize = 1024 * 1024 * memClass / 6;
+		mCache = new LruCache<String, BitmapInfo>(cacheSize) {
 			@Override
 			protected int sizeOf(String key, BitmapInfo value) {
 				if (value == null) {
@@ -207,7 +207,16 @@ public class ImageDownloadAndCacheModel {
 			public void run() {
 				Bitmap bitmap = null;
 				try {
-					bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+					String path = file.getAbsolutePath();
+					BitmapFactory.Options opts = new BitmapFactory.Options();
+					BitmapFactory.decodeFile(path, opts);
+
+					int srcWidth = opts.outWidth;
+
+					opts = new BitmapFactory.Options();
+					opts.inSampleSize = (int) Math.ceil(srcWidth / 350.0);
+					bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(),
+							opts);
 				} catch (Exception e) {
 					// do nothing
 				}
@@ -217,7 +226,7 @@ public class ImageDownloadAndCacheModel {
 
 				btUrl.mUrl = url;
 				btUrl.mBitmapInfo.mBitmap = bitmap;
-				btUrl.mBitmapInfo.mSize = (int) file.length();
+				btUrl.mBitmapInfo.mSize = 700000;
 
 				mHandler.sendMessage(mHandler.obtainMessage(GOT_FROM_LOCAL,
 						btUrl));
