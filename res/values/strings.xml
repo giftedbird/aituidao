@@ -15,7 +15,7 @@
     <string name="book_list_no_getting_more">没有更多</string>
     
     <string name="set_push_address_activity_title">设置推送地址</string>
-    <string name="set_push_address">请填写推送到的地址:</string>
+    <string name="set_push_address">请填写并选择推送到的地址:</string>
     <string name="set_push_address_next_step">下一步</string>
     <string name="please_input_addr">还没有输入地址哦 -_-</string>
     <string name="please_input_valid_addr">地址格式不对呀，请重新输入</string>
