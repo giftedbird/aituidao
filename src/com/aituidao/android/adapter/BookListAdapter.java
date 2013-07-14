@@ -1,5 +1,6 @@
 package com.aituidao.android.adapter;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -105,6 +106,26 @@ public class BookListAdapter extends BaseAdapter {
 										R.string.push_book_error_str).replace(
 										"####", book.title), Toast.LENGTH_SHORT)
 								.show();
+					}
+
+					@Override
+					public void filePushSuccess(File file) {
+						Toast.makeText(
+								mActivity,
+								mActivity.getString(
+										R.string.push_book_success_str)
+										.replace("####", file.getName()),
+								Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void filePushError(File file) {
+						Toast.makeText(
+								mActivity,
+								mActivity.getString(
+										R.string.push_book_error_str).replace(
+										"####", file.getName()),
+								Toast.LENGTH_SHORT).show();
 					}
 				});
 

@@ -28,6 +28,7 @@ import com.umeng.analytics.MobclickAgent;
 
 public class SetPushAddressActivity extends BaseActivity {
 	public static final String KEY_BOOK = "key_book";
+	public static final String KEY_FILE = "key_file";
 
 	private EditText mAddrHeadEt;
 	private Spinner mAddrTailSpinner;
@@ -43,6 +44,7 @@ public class SetPushAddressActivity extends BaseActivity {
 	private ArrayAdapter<CharSequence> mSpinnerAdapter;
 
 	private Book mBook;
+	private String mFilePath;
 	private String mAddrTailStr = "";
 
 	private ImageDownloadAndCacheModel mImageCache;
@@ -50,15 +52,19 @@ public class SetPushAddressActivity extends BaseActivity {
 	private GetBitmapCB mGetBitmapCB = new GetBitmapCB() {
 		@Override
 		public void onGetBitmapSuccess(String url, Bitmap bitmap) {
-			if (url.equals(mBook.coverUrl)) {
-				mBookCoverIv.setImageBitmap(bitmap);
+			if (mBook != null) {
+				if (url.equals(mBook.coverUrl)) {
+					mBookCoverIv.setImageBitmap(bitmap);
+				}
 			}
 		}
 
 		@Override
 		public void onGetBitmapError(String url) {
-			if (url.equals(mBook.coverUrl)) {
-				mImageCache.getBitmap(mBook.coverUrl);
+			if (mBook != null) {
+				if (url.equals(mBook.coverUrl)) {
+					mImageCache.getBitmap(mBook.coverUrl);
+				}
 			}
 		}
 	};
@@ -70,13 +76,10 @@ public class SetPushAddressActivity extends BaseActivity {
 
 		if (savedInstanceState != null) {
 			mBook = savedInstanceState.getParcelable(KEY_BOOK);
+			mFilePath = savedInstanceState.getString(KEY_FILE);
 		} else {
 			mBook = getIntent().getParcelableExtra(KEY_BOOK);
-		}
-
-		if (mBook == null) {
-			finish();
-			return;
+			mFilePath = getIntent().getStringExtra(KEY_FILE);
 		}
 
 		initData();
@@ -86,6 +89,7 @@ public class SetPushAddressActivity extends BaseActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putParcelable(KEY_BOOK, mBook);
+		outState.putString(KEY_FILE, mFilePath);
 		super.onSaveInstanceState(outState);
 	}
 
@@ -157,18 +161,29 @@ public class SetPushAddressActivity extends BaseActivity {
 			}
 		});
 
-		Bitmap bitmap = mImageCache.getBitmap(mBook.coverUrl);
-		if (bitmap != null) {
-			mBookCoverIv.setImageBitmap(bitmap);
+		if (mBook != null) {
+			Bitmap bitmap = mImageCache.getBitmap(mBook.coverUrl);
+			if (bitmap != null) {
+				mBookCoverIv.setImageBitmap(bitmap);
+			} else {
+				mBookCoverIv.setImageResource(R.drawable.book_default_cover);
+			}
+
+			mBookTitleTv.setText(mBook.title);
+
+			mBookAuthorTv.setText(mBook.author);
+
+			mBookIntroTv.setText(mBook.intro);
 		} else {
 			mBookCoverIv.setImageResource(R.drawable.book_default_cover);
+
+			mBookTitleTv
+					.setText(mFilePath.substring(mFilePath.lastIndexOf('/') + 1));
+
+			mBookAuthorTv.setText(null);
+
+			mBookIntroTv.setText(null);
 		}
-
-		mBookTitleTv.setText(mBook.title);
-
-		mBookAuthorTv.setText(mBook.author);
-
-		mBookIntroTv.setText(mBook.intro);
 
 		mNextStepBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -229,6 +244,7 @@ public class SetPushAddressActivity extends BaseActivity {
 			String addrTail) {
 		Intent intent = new Intent(this, ConfirmPushAddrTrustActivity.class);
 		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_BOOK, mBook);
+		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_FILE, mFilePath);
 		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_HEAD, addrHead);
 		intent.putExtra(ConfirmPushAddrTrustActivity.KEY_ADDR_TAIL, addrTail);
 

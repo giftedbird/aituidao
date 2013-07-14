@@ -1,5 +1,6 @@
 package com.aituidao.android.activity;
 
+import java.io.File;
 import java.util.HashMap;
 
 import android.app.AlertDialog;
@@ -8,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,10 +27,12 @@ import com.umeng.analytics.MobclickAgent;
 
 public class ConfirmPushAddrTrustActivity extends BaseActivity {
 	public static final String KEY_BOOK = "key_book";
+	public static final String KEY_FILE = "key_file";
 	public static final String KEY_ADDR_HEAD = "key_addr_head";
 	public static final String KEY_ADDR_TAIL = "key_addr_tail";
 
 	private Book mBook;
+	private String mFilePath;
 	private String mAddrHead;
 	private String mAddrTail;
 
@@ -51,15 +53,19 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 	private GetBitmapCB mGetBitmapCB = new GetBitmapCB() {
 		@Override
 		public void onGetBitmapSuccess(String url, Bitmap bitmap) {
-			if (url.equals(mBook.coverUrl)) {
-				mBookCoverIv.setImageBitmap(bitmap);
+			if (mBook != null) {
+				if (url.equals(mBook.coverUrl)) {
+					mBookCoverIv.setImageBitmap(bitmap);
+				}
 			}
 		}
 
 		@Override
 		public void onGetBitmapError(String url) {
-			if (url.equals(mBook.coverUrl)) {
-				mImageCache.getBitmap(mBook.coverUrl);
+			if (mBook != null) {
+				if (url.equals(mBook.coverUrl)) {
+					mImageCache.getBitmap(mBook.coverUrl);
+				}
 			}
 		}
 	};
@@ -71,18 +77,14 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 
 		if (savedInstanceState != null) {
 			mBook = savedInstanceState.getParcelable(KEY_BOOK);
+			mFilePath = savedInstanceState.getString(KEY_FILE);
 			mAddrHead = savedInstanceState.getString(KEY_ADDR_HEAD);
 			mAddrTail = savedInstanceState.getString(KEY_ADDR_TAIL);
 		} else {
 			mBook = getIntent().getParcelableExtra(KEY_BOOK);
+			mFilePath = getIntent().getStringExtra(KEY_FILE);
 			mAddrHead = getIntent().getStringExtra(KEY_ADDR_HEAD);
 			mAddrTail = getIntent().getStringExtra(KEY_ADDR_TAIL);
-		}
-
-		if ((mBook == null) || (TextUtils.isEmpty(mAddrHead))
-				|| (TextUtils.isEmpty(mAddrTail))) {
-			finish();
-			return;
 		}
 
 		initData();
@@ -92,6 +94,7 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putParcelable(KEY_BOOK, mBook);
+		outState.putString(KEY_FILE, mFilePath);
 		outState.putString(KEY_ADDR_HEAD, mAddrHead);
 		outState.putString(KEY_ADDR_TAIL, mAddrTail);
 		super.onSaveInstanceState(outState);
@@ -118,6 +121,24 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 										.replace("####", book.title),
 								Toast.LENGTH_SHORT).show();
 					}
+
+					@Override
+					public void filePushSuccess(File file) {
+						Toast.makeText(
+								ConfirmPushAddrTrustActivity.this,
+								getString(R.string.push_book_success_str)
+										.replace("####", file.getName()),
+								Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void filePushError(File file) {
+						Toast.makeText(
+								ConfirmPushAddrTrustActivity.this,
+								getString(R.string.push_book_error_str)
+										.replace("####", file.getName()),
+								Toast.LENGTH_SHORT).show();
+					}
 				});
 
 		mImageCache = ImageDownloadAndCacheModel.getInstance(this);
@@ -142,18 +163,29 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 		mBackBtn = findViewById(R.id.back_btn);
 		mWhyBtn = findViewById(R.id.why_need_trust_addr_btn);
 
-		Bitmap bitmap = mImageCache.getBitmap(mBook.coverUrl);
-		if (bitmap != null) {
-			mBookCoverIv.setImageBitmap(bitmap);
+		if (mBook != null) {
+			Bitmap bitmap = mImageCache.getBitmap(mBook.coverUrl);
+			if (bitmap != null) {
+				mBookCoverIv.setImageBitmap(bitmap);
+			} else {
+				mBookCoverIv.setImageResource(R.drawable.book_default_cover);
+			}
+
+			mBookTitleTv.setText(mBook.title);
+
+			mBookAuthorTv.setText(mBook.author);
+
+			mBookIntroTv.setText(mBook.intro);
 		} else {
 			mBookCoverIv.setImageResource(R.drawable.book_default_cover);
+
+			mBookTitleTv
+					.setText(mFilePath.substring(mFilePath.lastIndexOf('/') + 1));
+
+			mBookAuthorTv.setText(null);
+
+			mBookIntroTv.setText(null);
 		}
-
-		mBookTitleTv.setText(mBook.title);
-
-		mBookAuthorTv.setText(mBook.author);
-
-		mBookIntroTv.setText(mBook.intro);
 
 		String trustSourceStr = mAddrHead
 				+ SrcAddrTailModel.getInstance(this).getSrcAddrTail();
@@ -223,51 +255,106 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 	private boolean startToPushBook() {
 		boolean result;
 
-		if (mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, mBook)) {
-			Toast.makeText(
-					this,
-					getString(R.string.start_push_book_str).replace("####",
-							mBook.title), Toast.LENGTH_SHORT).show();
+		if (mBook != null) {
+			if (mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, mBook)) {
+				Toast.makeText(
+						this,
+						getString(R.string.start_push_book_str).replace("####",
+								mBook.title), Toast.LENGTH_SHORT).show();
 
-			result = true;
+				result = true;
+			} else {
+				new AlertDialog.Builder(this)
+						.setTitle(
+								getString(R.string.less_point_dialog_title)
+										.replace("####", "" + Config.EACH_POINT))
+						.setMessage(R.string.less_point_dialog_content)
+						.setCancelable(false)
+						.setPositiveButton(R.string.less_point_dialog_ok,
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										PointModel
+												.getInstance(
+														ConfirmPushAddrTrustActivity.this)
+												.startLaunchPoint(
+														ConfirmPushAddrTrustActivity.this);
+
+										HashMap<String, String> map = new HashMap<String, String>();
+										map.put("dest", "get more");
+										MobclickAgent
+												.onEvent(
+														ConfirmPushAddrTrustActivity.this,
+														"needMorePoint", map);
+									}
+								})
+						.setNegativeButton(R.string.less_point_dialog_cancel,
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										HashMap<String, String> map = new HashMap<String, String>();
+										map.put("dest", "later");
+										MobclickAgent
+												.onEvent(
+														ConfirmPushAddrTrustActivity.this,
+														"needMorePoint", map);
+									}
+								}).show();
+				result = false;
+			}
 		} else {
-			new AlertDialog.Builder(this)
-					.setTitle(
-							getString(R.string.less_point_dialog_title)
-									.replace("####", "" + Config.EACH_POINT))
-					.setMessage(R.string.less_point_dialog_content)
-					.setCancelable(false)
-					.setPositiveButton(R.string.less_point_dialog_ok,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									PointModel
-											.getInstance(
-													ConfirmPushAddrTrustActivity.this)
-											.startLaunchPoint(
-													ConfirmPushAddrTrustActivity.this);
+			if (mBookPushHelper.startToPushBook(mAddrHead, mAddrTail, new File(
+					mFilePath))) {
+				Toast.makeText(
+						this,
+						getString(R.string.start_push_book_str).replace("####",
+								new File(mFilePath).getName()),
+						Toast.LENGTH_SHORT).show();
 
-									HashMap<String, String> map = new HashMap<String, String>();
-									map.put("dest", "get more");
-									MobclickAgent.onEvent(
-											ConfirmPushAddrTrustActivity.this,
-											"needMorePoint", map);
-								}
-							})
-					.setNegativeButton(R.string.less_point_dialog_cancel,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									HashMap<String, String> map = new HashMap<String, String>();
-									map.put("dest", "later");
-									MobclickAgent.onEvent(
-											ConfirmPushAddrTrustActivity.this,
-											"needMorePoint", map);
-								}
-							}).show();
-			result = false;
+				result = true;
+			} else {
+				new AlertDialog.Builder(this)
+						.setTitle(
+								getString(R.string.less_point_dialog_title)
+										.replace("####", "" + Config.EACH_POINT))
+						.setMessage(R.string.less_point_dialog_content)
+						.setCancelable(false)
+						.setPositiveButton(R.string.less_point_dialog_ok,
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										PointModel
+												.getInstance(
+														ConfirmPushAddrTrustActivity.this)
+												.startLaunchPoint(
+														ConfirmPushAddrTrustActivity.this);
+
+										HashMap<String, String> map = new HashMap<String, String>();
+										map.put("dest", "get more");
+										MobclickAgent
+												.onEvent(
+														ConfirmPushAddrTrustActivity.this,
+														"needMorePoint", map);
+									}
+								})
+						.setNegativeButton(R.string.less_point_dialog_cancel,
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										HashMap<String, String> map = new HashMap<String, String>();
+										map.put("dest", "later");
+										MobclickAgent
+												.onEvent(
+														ConfirmPushAddrTrustActivity.this,
+														"needMorePoint", map);
+									}
+								}).show();
+				result = false;
+			}
 		}
 
 		MobclickAgent.onEvent(this, "pushCount");

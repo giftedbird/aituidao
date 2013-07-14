@@ -1,5 +1,7 @@
 package com.aituidao.android.helper;
 
+import java.io.File;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
@@ -20,6 +22,8 @@ public class BookPushHelper {
 
 	private static final int PUSH_BOOK_SUCCESS = 1;
 	private static final int PUSH_BOOK_ERROR = 2;
+	private static final int PUSH_FILE_SUCCESS = 3;
+	private static final int PUSH_FILE_ERROR = 4;
 
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -39,6 +43,20 @@ public class BookPushHelper {
 					mCB.bookPushError((Book) msg.obj);
 				}
 				break;
+
+			case PUSH_FILE_SUCCESS:
+				if (mCB != null) {
+					mCB.filePushSuccess((File) msg.obj);
+				}
+				break;
+
+			case PUSH_FILE_ERROR:
+				mPointModel.awardPoint(Config.EACH_POINT);
+
+				if (mCB != null) {
+					mCB.filePushError((File) msg.obj);
+				}
+				break;
 			}
 		}
 	};
@@ -51,6 +69,10 @@ public class BookPushHelper {
 		public void bookPushSuccess(Book book);
 
 		public void bookPushError(Book book);
+
+		public void filePushSuccess(File file);
+
+		public void filePushError(File file);
 	}
 
 	public void setBookPushHelperCB(BookPushHelperCB cb) {
@@ -88,6 +110,33 @@ public class BookPushHelper {
 					mHandler.sendMessage(mHandler.obtainMessage(
 							PUSH_BOOK_ERROR, book));
 				}
+			}
+		}).start();
+
+		return true;
+	}
+
+	public boolean startToPushBook(String addrHead, String addrTail,
+			final File file) {
+		if (!mPointModel.spendPoint(Config.EACH_POINT)) {
+			return false;
+		}
+
+		final String addr = addrHead + "@" + addrTail;
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				mHandler.sendMessage(mHandler.obtainMessage(PUSH_FILE_SUCCESS,
+						file));
+
 			}
 		}).start();
 
