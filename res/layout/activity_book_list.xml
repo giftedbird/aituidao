@@ -92,12 +92,36 @@
         
     </RelativeLayout>
     
+    <RelativeLayout
+	    android:id="@+id/local_upload_btn"
+	    android:layout_width="match_parent"
+	    android:layout_height="48dp"
+	    android:background="@drawable/title_bar_bg"
+	    android:layout_alignParentBottom="true"
+	    android:clickable="true" >
+        
+        <TextView
+		    android:layout_width="match_parent"
+            android:layout_height="48dp"
+		    android:background="@drawable/title_bar_controller_bg"
+		    android:duplicateParentState="true"
+		    android:text="@string/local_upload"
+		    android:textStyle="bold"
+	        android:textColor="#CD3700"
+	        android:textSize="20sp"
+	        android:singleLine="true"
+	        android:ellipsize="end"
+		    android:gravity="center"
+		/>
+    
+    </RelativeLayout>
+    
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/book_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/title_bar"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/local_upload_btn"
         android:clipChildren="false"
         android:cacheColorHint="#00000000"
         android:divider="@null"
@@ -108,21 +132,20 @@
         android:scrollingCache="true"
     />
     
-    <!-- ad -->
-    <RelativeLayout
-        android:id="@+id/offers_ad_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-    />
-    
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_below="@id/title_bar"
         android:scaleType="fitXY"
         android:src="@drawable/title_bar_shadow"
+    />
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_above="@id/local_upload_btn"
+        android:scaleType="fitXY"
+        android:src="@drawable/bottom_bar_shadow"
     />
 
 </RelativeLayout>

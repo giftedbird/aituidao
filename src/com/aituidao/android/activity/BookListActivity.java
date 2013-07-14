@@ -5,15 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.youmi.android.AdManager;
-import net.youmi.android.offers.OffersAdSize;
-import net.youmi.android.offers.OffersBanner;
 import net.youmi.android.offers.OffersManager;
 import net.youmi.android.offers.PointsChangeNotify;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +40,7 @@ public class BookListActivity extends BaseActivity {
 	private TextView mPointTv;
 	private boolean mHasMore = false;
 	private View mEarnPointBtn;
+	private View mLocalUploadBtn;
 
 	private int mSortType = BookListHelper.SORT_TYPE_TIME;
 
@@ -95,11 +93,6 @@ public class BookListActivity extends BaseActivity {
 		AdManager.getInstance(this).init(PersonalConfig.YOUMI_KEY,
 				PersonalConfig.YOUMI_PASSWD, false);
 		OffersManager.getInstance(this).onAppLaunch();
-
-		RelativeLayout adLayout = (RelativeLayout) findViewById(R.id.offers_ad_layout);
-		OffersBanner banner = new OffersBanner(this,
-				OffersAdSize.SIZE_MATCH_SCREENx60);
-		adLayout.addView(banner);
 
 		mPointModel.registerNotify(mPointsChangeNotify);
 	}
@@ -261,6 +254,14 @@ public class BookListActivity extends BaseActivity {
 						BookListActivity.this);
 
 				MobclickAgent.onEvent(BookListActivity.this, "directEarnPoint");
+			}
+		});
+
+		mLocalUploadBtn = findViewById(R.id.local_upload_btn);
+		mLocalUploadBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
 			}
 		});
 	}

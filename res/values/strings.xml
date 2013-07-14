@@ -51,6 +51,8 @@
     
     <string name="upload_user_str">上传者:####</string>
     
+    <string name="local_upload">本地文件推送</string>
+    
     <string-array name="push_address_tail_array">
         <item>kindle.cn</item>
         <item>kindle.com</item>
