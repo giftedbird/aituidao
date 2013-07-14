@@ -1,5 +1,6 @@
 package com.aituidao.android.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,9 @@ import java.util.List;
 import net.youmi.android.AdManager;
 import net.youmi.android.offers.OffersManager;
 import net.youmi.android.offers.PointsChangeNotify;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
@@ -30,6 +34,9 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 public class BookListActivity extends BaseActivity {
+	private static final int REQUEST_FILE_PATH = 456;
+	private static final long MAX_LOCAL_FILE_SIZE = 1024L * 1024 * 10;
+
 	private PullToRefreshListView mBookListView;
 	private BookListHelper mBookListHelper;
 	private List<Book> mBookListData = new ArrayList<Book>();
@@ -261,9 +268,53 @@ public class BookListActivity extends BaseActivity {
 		mLocalUploadBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				try {
+					Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+					intent.setType("file/*");
+					startActivityForResult(intent, REQUEST_FILE_PATH);
+				} catch (Exception e) {
+					Toast.makeText(BookListActivity.this,
+							R.string.need_file_browser, Toast.LENGTH_LONG)
+							.show();
+				}
 			}
 		});
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if ((requestCode == REQUEST_FILE_PATH)
+				&& (resultCode == Activity.RESULT_OK)) {
+			Uri uri = data.getData();
+			try {
+				File file = new File(uri.getPath());
+
+				if ((!file.exists()) || (!file.canRead())) {
+					Toast.makeText(BookListActivity.this,
+							R.string.unsupport_file, Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				if (file.length() > MAX_LOCAL_FILE_SIZE) {
+					String msg = getString(R.string.too_large_file).replace(
+							"####", "" + (MAX_LOCAL_FILE_SIZE / 1024 / 1024));
+					Toast.makeText(BookListActivity.this, msg,
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				wantToLocalPush(file);
+			} catch (Exception e) {
+				Toast.makeText(BookListActivity.this, R.string.unsupport_file,
+						Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
+
+	private void wantToLocalPush(File file) {
+		// TODO
 	}
 
 	private void startRefreshBySortType(int type) {

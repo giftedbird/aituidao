@@ -53,6 +53,10 @@
     
     <string name="local_upload">本地文件推送</string>
     
+    <string name="need_file_browser">请先安装一个文件浏览器。“爱推到”要使用它来选择您要推送的文件</string>
+    <string name="unsupport_file">选择的文件有误</string>
+    <string name="too_large_file">当前只能推送####M大小以下的文件</string>
+    
     <string-array name="push_address_tail_array">
         <item>kindle.cn</item>
         <item>kindle.com</item>
