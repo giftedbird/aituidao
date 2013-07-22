@@ -127,16 +127,17 @@ public class BookPushHelper {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				String responseStr = HttpClientHelper.requestUploadFile(file,
+						addr);
+
+				if ((responseStr != null)
+						&& (responseStr.contains("\"code\":200"))) {
+					mHandler.sendMessage(mHandler.obtainMessage(
+							PUSH_FILE_SUCCESS, file));
+				} else {
+					mHandler.sendMessage(mHandler.obtainMessage(
+							PUSH_FILE_ERROR, file));
 				}
-
-				mHandler.sendMessage(mHandler.obtainMessage(PUSH_FILE_SUCCESS,
-						file));
-
 			}
 		}).start();
 
