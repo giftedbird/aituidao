@@ -20,7 +20,7 @@ public class Config {
 
 	public static final String WHY_NEED_TRUST_ADDR_URL = "http://www.amazon.cn/gp/help/customer/display.html?nodeId=200843440#approvefrom";
 
-	public static final int INITIAL_POINT = 69;
+	public static final int INITIAL_POINT = 29;
 
 	public static final int EACH_POINT = 10;
 }

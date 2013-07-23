@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- 1st versonCode=2 versionName=1.6 -->
+<!-- 2nd versonCode=3 versionName=1.8 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aituidao.android"
-    android:versionCode="2"
-    android:versionName="1.6" >
+    android:versionCode="3"
+    android:versionName="1.8" >
 
     <uses-sdk
         android:minSdkVersion="8"
