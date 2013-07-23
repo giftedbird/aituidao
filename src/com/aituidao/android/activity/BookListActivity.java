@@ -481,6 +481,10 @@ public class BookListActivity extends BaseActivity {
 		}
 
 		MobclickAgent.onEvent(BookListActivity.this, "pushCount");
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("from", "local");
+		MobclickAgent.onEvent(this, "pushType", map);
 	}
 
 	private void startRefreshBySortType(int type) {

@@ -461,6 +461,10 @@ public class BookListAdapter extends BaseAdapter {
 		}
 
 		MobclickAgent.onEvent(mActivity, "pushCount");
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("from", "network");
+		MobclickAgent.onEvent(mActivity, "pushType", map);
 	}
 
 	private void startItemAnim(final View view) {

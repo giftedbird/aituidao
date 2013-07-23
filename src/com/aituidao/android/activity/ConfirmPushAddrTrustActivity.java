@@ -359,6 +359,15 @@ public class ConfirmPushAddrTrustActivity extends BaseActivity {
 
 		MobclickAgent.onEvent(this, "pushCount");
 
+		HashMap<String, String> map = new HashMap<String, String>();
+		if (mBook != null) {
+			map.put("from", "network");
+		} else {
+			map.put("from", "local");
+		}
+		MobclickAgent.onEvent(ConfirmPushAddrTrustActivity.this, "pushType",
+				map);
+
 		return result;
 	}
 }
